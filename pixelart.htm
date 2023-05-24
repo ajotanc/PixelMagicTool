@@ -44,7 +44,6 @@
     }
 
     h3 {
-      padding: 0 0 20px;
       color: #5f5f5f;
     }
 
@@ -162,7 +161,7 @@
       color: #666;
       font-size: 14px;
       text-align: center;
-      padding: 40px 0;
+      padding: 40px 10px;
       border-radius: 5px;
       margin: 20px 0;
     }
@@ -483,6 +482,9 @@
 
     .header {
       display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 0 20px;
     }
 
     .header .brand {
@@ -547,6 +549,13 @@
     }
 
     @media (max-width: 767px) {
+      .title h1 {
+        font-size: 20px;
+      }
+      .title h3 {
+        font-size: 14px;
+      }
+
       .row {
         flex-direction: column;
       }
@@ -957,7 +966,7 @@
 
       await Promise.all(promises);
 
-      isAnimated &&
+      if (isAnimated) {
         setTimeout(async () => {
           await playlist()
             .then(() => {
@@ -967,6 +976,9 @@
               hideOverlay();
             });
         }, delay);
+      } else {
+        hideOverlay();
+      }
     }
 
     async function segments() {
