@@ -461,6 +461,20 @@
       scroll-snap-align: center;
     }
 
+    .header {
+      display: flex;
+    }
+
+    .header .brand {
+      max-width: 50px;
+      height: 100%;
+      margin-right: 20px;
+    }
+
+    .github {
+      padding: 10px 0;
+    }
+
     @media (max-width: 767px) {
       .row {
         flex-direction: column;
@@ -531,8 +545,17 @@
     <div class="container">
       <div class="content">
         <form id="formGenerate" novalidate>
-          <h1>PixelArt Converter</h1>
-          <h3>Image converter for WLED presets and playlists JSON</h3>
+          <div class="header">
+            <img
+              class="brand"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAMAAADDpiTIAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAA8lAAAPJQGo42USAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAV9QTFRF////AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdljQDwAAAHR0Uk5TAAEDBAYHCAkLDA4PEhUXGB0gISMnLDE1ODo8QEJESE1OT1BRU1RVVlhZX2BmaGxtb3BzdHZ3eHx9fn+Cg4SFiImLkJGXmJmboKGipqeoq62usLa7vMLFx8jM0NHS09XW2Nne4ePl5+nq7O3v9ff4+vv8/f6cGFczAAAIFUlEQVR42u3c6VuUVRzH4UO2jSlLTUFDRVlRJOkYQYVFUzktU0nQEEkWWdFGEMr8/1eKVprIAzHHmud3f17z4lzfczPALKS0d5XaeL3Raq+ud9RTra+2W436eK2SDtHA5OKmKXu7zcXJgX93+9Xp5W37laHt5enqga9/bMVwZWpl7EDXP7JksrK1NLL/B/95c5Wx+f39IOhvbtmqnG01+4vvf3jNUOVtbbjo/ic2rFTmNib2vP6+OROVvbm+PZ72W7BP+Vu445ODgxetE6GLg3f4/nf/UQTs+hjQ5/E/TAu7/R7g979Aze3y959VInXbX4PD/v4P1cY/nhHq9/xfsNZufVa4aZFoNW95/c/rP+Hauvm1Qa//Bmz+pvd/WCNif79DxPt/Qrb01/v/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"
+              alt="PixelArt Converter"
+            />
+            <div class="title">
+              <h1>PixelArt Converter</h1>
+              <h3>Image converter for WLED presets and playlists JSON</h3>
+            </div>
+          </div>
           <div class="row">
             <div class="w-full">
               <label for="hostname">Hostname</label>
@@ -633,11 +656,40 @@
             <div id="multipleCanvas"></div>
           </div>
         </div>
+        <div class="github">
+          <a
+            class="github-button"
+            href="https://github.com/ajotanc"
+            data-size="large"
+            data-show-count="true"
+            aria-label="Follow @ajotanc on GitHub"
+            >Follow @ajotanc</a
+          >
+          <a
+            class="github-button"
+            href="https://github.com/ajotanc/pixelart-converter"
+            data-icon="octicon-star"
+            data-size="large"
+            data-show-count="true"
+            aria-label="Star ajotanc/pixelart-converter on GitHub"
+            >Star</a
+          >
+          <a
+            class="github-button"
+            href="https://github.com/ajotanc/pixelart-converter/issues"
+            data-icon="octicon-issue-opened"
+            data-size="large"
+            aria-label="Issue ajotanc/pixelart-converter on GitHub"
+            >Issue</a
+          >
+        </div>
       </div>
     </div>
     <div id="toast-container"></div>
     <div id="overlay"></div>
   </body>
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
     const hostname = window.location.host;
     document.getElementById("hostname").value = hostname;
@@ -899,40 +951,6 @@
           }
         }
       });
-    // document
-    //   .getElementById("btnGenerate")
-    //   .addEventListener("click", async (event) => {
-    //     const source = document.getElementById("source").files;
-    //     const animation = document.getElementById("animation");
-    //     const preview = document.getElementById("preview");
-
-    //     const isNotAnimation = document.getElementById("isNotAnimation");
-    //     const singleCanvas = document.getElementById("singleCanvas");
-
-    //     const isAnimation = document.getElementById("isAnimation");
-    //     const multipleCanvas = document.getElementById("multipleCanvas");
-
-    //     if (source.length === 0) {
-    //       showToast("Select one image to generate!", "error");
-    //       return;
-    //     }
-
-    //     preview.style.display = "block";
-
-    //     if (animation.checked) {
-    //       isAnimation.style.display = "block";
-    //       isNotAnimation.style.display = "none";
-    //       singleCanvas.innerHTML = "";
-
-    //       await generateAnimation();
-    //     } else {
-    //       isAnimation.style.display = "none";
-    //       isNotAnimation.style.display = "block";
-    //       multipleCanvas.innerHTML = "";
-
-    //       await generate();
-    //     }
-    //   });
 
     async function generate() {
       const file = document.getElementById("source").files[0];
