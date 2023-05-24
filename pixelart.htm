@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAMAAADDpiTIAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAA8lAAAPJQGo42USAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAV9QTFRF////AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICdljQDwAAAHR0Uk5TAAEDBAYHCAkLDA4PEhUXGB0gISMnLDE1ODo8QEJESE1OT1BRU1RVVlhZX2BmaGxtb3BzdHZ3eHx9fn+Cg4SFiImLkJGXmJmboKGipqeoq62usLa7vMLFx8jM0NHS09XW2Nne4ePl5+nq7O3v9ff4+vv8/f6cGFczAAAIFUlEQVR42u3c6VuUVRzH4UO2jSlLTUFDRVlRJOkYQYVFUzktU0nQEEkWWdFGEMr8/1eKVprIAzHHmud3f17z4lzfczPALKS0d5XaeL3Raq+ud9RTra+2W436eK2SDtHA5OKmKXu7zcXJgX93+9Xp5W37laHt5enqga9/bMVwZWpl7EDXP7JksrK1NLL/B/95c5Wx+f39IOhvbtmqnG01+4vvf3jNUOVtbbjo/ic2rFTmNib2vP6+OROVvbm+PZ72W7BP+Vu445ODgxetE6GLg3f4/nf/UQTs+hjQ5/E/TAu7/R7g979Aze3y959VInXbX4PD/v4P1cY/nhHq9/xfsNZufVa4aZFoNW95/c/rP+Hauvm1Qa//Bmz+pvd/WCNif79DxPt/Qrb01/v/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"
+    />
+    <title>Pixel Art Converter</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-size: 14px;
+      font-family: "Arial" !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+    }
+
+    h3 {
+      padding: 0 0 20px;
+      color: #5f5f5f;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 768px;
+      margin: 20px;
+    }
+
+    #response,
+    #preview,
+    #image,
+    form,
+    canvas {
+      width: 100%;
+    }
+
+    form {
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      border: 1px solid #cccccc;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .column {
+      flex-basis: calc(50% - 10px);
+      margin: 20px 0 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #f0f0f0;
+      font-size: 14px;
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath d='M.6 2.6L4 6l3.4-3.4L8 3.2 4 7.2.1 3.3z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 10px 10px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    input[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .dropzone {
+      width: 100%;
+      border: 1px dashed #ccc;
+      background-color: #f5f5f5;
+      color: #666;
+      font-size: 14px;
+      text-align: center;
+      padding: 40px 0;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+
+    .dropzone p {
+      margin: 0;
+      padding: 0;
+    }
+
+    .dropzone:hover {
+      cursor: pointer;
+      background-color: #eee;
+    }
+
+    .dropzone.dragover {
+      background-color: #ddd;
+    }
+
+    .range-slider {
+      appearance: none;
+      background-color: #ddd;
+      height: 8px;
+      width: 100%;
+      border-radius: 10px;
+      outline: none;
+      margin: 16px 0;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      appearance: none;
+      height: 16px;
+      width: 16px;
+      background-color: #4caf50;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 0;
+    }
+
+    .range-slider::-moz-range-thumb {
+      appearance: none;
+      height: 16px;
+      width: 16px;
+      background-color: #4caf50;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 0;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .switch-slider {
+      background-color: #4caf50;
+    }
+
+    input:focus + .switch-slider {
+      box-shadow: 0 0 1px #4caf50;
+    }
+
+    input:checked + .switch-slider:before {
+      transform: translateX(18px);
+    }
+
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 300px;
+      padding: 8px 8px 8px 16px;
+      border-radius: 8px;
+      background-color: #333;
+      color: #fff;
+      font-size: 12px;
+      box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      animation-name: fadeIn;
+      animation-duration: 0.5s;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-in-out;
+    }
+
+    .toast.success {
+      background-color: #28a745;
+    }
+
+    .toast.error {
+      background-color: #dc3545;
+    }
+
+    .toast.warning {
+      background-color: #dcb535;
+    }
+
+    .toast .close {
+      cursor: pointer;
+      width: 22px;
+      height: 22px;
+      padding: 4px;
+      border-radius: 50%;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .toast .close:hover {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    #multipleCanvas {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+    }
+
+    #multipleCanvas .controls {
+      width: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 23px;
+    }
+
+    #multipleCanvas .controls button {
+      border: 0;
+      outline: 0;
+      width: 46px;
+      height: 46px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fdfdfd;
+      text-align: center;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #multipleCanvas .controls span {
+      vertical-align: middle;
+    }
+
+    #multipleCanvas .carousel {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    #multipleCanvas .carousel img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin-right: 20px;
+      border: 0;
+    }
+
+    #multipleCanvas .carousel img:last-child {
+      margin-right: 0;
+    }
+
+    .button {
+      width: 100%;
+      border: 0;
+      padding: 10px 18px;
+      border-radius: 4px;
+      color: #fdfdfd;
+      cursor: pointer;
+      margin: 0 0 10px;
+      background: #3f51b5;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .button:hover {
+      background: #2d3b8d;
+    }
+
+    .button:last-child {
+      margin-bottom: 0;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .buttonRainbow {
+      width: 100%;
+      border: 0;
+      padding: 10px 18px;
+      border-radius: 4px;
+      color: #fdfdfd;
+      cursor: pointer;
+      background: linear-gradient(
+        to right,
+        red,
+        orange,
+        yellow,
+        green,
+        blue,
+        indigo,
+        violet
+      );
+      background-size: 400% 400%;
+      animation: rainbow 10s linear infinite;
+    }
+
+    .buttonRainbow:hover {
+      animation-play-state: paused;
+    }
+
+    #preview {
+      border: 1px solid #cccccc;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+
+    #preview .buttons {
+      margin: 0 0 20px;
+    }
+
+    .w-full {
+      width: 100% !important;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Opacidade de 50% */
+      display: none; /* Começa escondido */
+    }
+
+    #overlay.loading::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 26px;
+      height: 26px;
+      border: 6px solid #fdfdfd;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Estilo padrão para o input */
+    input {
+      border: 1px solid #ccc;
+    }
+
+    /* Estilo para o input inválido */
+    input.invalid,
+    select.invalid,
+    textarea.invalid {
+      border: 1px solid #df1f1f;
+    }
+
+    /* Estilo para a mensagem de erro */
+    input.invalid + .error-message,
+    select.invalid + .error-message,
+    textarea.invalid + .error-message {
+      display: block;
+      color: #df1f1f;
+      padding: 4px 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .slide-container {
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+
+    .slide {
+      scroll-snap-align: center;
+    }
+
+    @media (max-width: 767px) {
+      .row {
+        flex-direction: column;
+      }
+
+      .column {
+        flex-basis: 100%;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .row {
+        flex-wrap: nowrap;
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+      0% {
+        border-top-color: red;
+      }
+      16.6% {
+        border-top-color: orange;
+      }
+      33.3% {
+        border-top-color: yellow;
+      }
+      50% {
+        border-top-color: green;
+      }
+      66.6% {
+        border-top-color: blue;
+      }
+      83.3% {
+        border-top-color: indigo;
+      }
+      100% {
+        border-top-color: violet;
+      }
+    }
+
+    @keyframes rainbow {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(50%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="content">
+        <form id="formGenerate" novalidate>
+          <h1>PixelArt Converter</h1>
+          <h3>Image converter for WLED presets and playlists JSON</h3>
+          <div class="row">
+            <div class="w-full">
+              <label for="hostname">Hostname</label>
+              <input type="text" name="hostname" id="hostname" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="preSegment">Per-segment</label>
+              <select name="preSegment" id="preSegment" required>
+                <option value="">Select a choice</option>
+                <option value="1" title="['FFFFFF']" selected>
+                  Individual
+                </option>
+                <option value="2" title="[0, 'FFFFFF']">Index</option>
+                <option value="3" title="[0, 5, 'FFFFFF']">Range</option>
+              </select>
+            </div>
+            <div class="column">
+              <label for="name">Preset Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value="New Preset"
+                required
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="segments">Segment Id</label>
+              <select name="segments" id="segments" required>
+                <option value="">Select a choice</option>
+                <option value="0">Segment 0</option>
+              </select>
+            </div>
+            <div class="column">
+              <label for="brightness">Brightness</label>
+              <input
+                type="range"
+                name="brightness"
+                id="brightness"
+                min="0"
+                max="255"
+                value="128"
+                class="range-slider"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="animation">Animation</label>
+              <label class="switch">
+                <input type="checkbox" name="animation" id="animation" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <div class="column frames" style="display: none">
+              <label for="frames">Frames</label>
+              <input type="text" name="frames" id="frames" value="4" />
+            </div>
+          </div>
+          <div id="dropzone" class="dropzone">
+            <p id="dropzoneLabel">
+              Drag and drop a file here or click to select a file
+            </p>
+            <input
+              type="file"
+              name="source"
+              id="source"
+              accept="image/*"
+              style="display: none"
+            />
+          </div>
+          <button type="submit" class="buttonRainbow" id="btnGenerate">
+            Generate
+          </button>
+        </form>
+        <div id="preview" style="display: none">
+          <div id="isNotAnimation">
+            <div class="buttons">
+              <button type="button" class="button" id="btnSimulatePreset">
+                Simulate
+              </button>
+              <button type="button" class="button" id="btnSavePreset">
+                Save
+              </button>
+            </div>
+            <div id="singleCanvas"></div>
+          </div>
+          <div id="isAnimation">
+            <div class="buttons">
+              <button type="button" class="button" id="btnSavePlaylist">
+                Save
+              </button>
+            </div>
+            <div id="multipleCanvas"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="toast-container"></div>
+    <div id="overlay"></div>
+  </body>
+  <script>
+    const hostname = window.location.host;
+    document.getElementById("hostname").value = hostname;
+
+    let jsonSaveWLED = [];
+    let jsonSendWLED = {};
+
+    (async function () {
+      // showOverlay();
+      await segments();
+    })();
+
+    async function playlist(duration = 10, transition = 5) {
+      const { value: name } = document.getElementById("name");
+      const urlPreset = `http://${hostname}/presets.json`;
+      const url = `http://${hostname}/json`;
+
+      try {
+        const response = await fetch(urlPreset);
+        const data = await response.json();
+        const items = Object.keys(data);
+
+        const ps = items.filter((key) => data[key].n?.includes(name));
+        const psave =
+          items.find((key) => data[key].n === name) ||
+          parseInt(items.pop()) + 1;
+
+        const body = {
+          psave,
+          n: name,
+          on: true,
+          o: false,
+          playlist: {
+            ps,
+            dur: Array.from({ length: ps.length }, () => duration),
+            transition: Array.from({ length: ps.length }, () => transition),
+            repeat: 0,
+            end: 0,
+          },
+        };
+
+        const options = {
+          method: "POST",
+          body: JSON.stringify(body),
+        };
+
+        try {
+          const response = await fetch(url, options);
+          const { success } = await response.json();
+
+          if (success) {
+            showToast(`Playlist "${name}" save successfully!`);
+          }
+        } catch (error) {
+          showToast(`Error saving preset: ${error}`, "error");
+        }
+      } catch (error) {
+        showToast(error, "error");
+      }
+    }
+
+    async function insert(data, isAnimated = false, delay = 2500) {
+      const urlPreset = `http://${hostname}/presets.json`;
+      const url = `http://${hostname}/json`;
+
+      let requestsCompleted = 0;
+      let i = 0;
+
+      const promises = data.map(async (item) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(async () => {
+            try {
+              showOverlay();
+
+              const response = await fetch(urlPreset);
+              const data = await response.json();
+              const items = Object.keys(data);
+
+              const psave =
+                items.find((key) => data[key].n === item.n) ||
+                parseInt(items.pop()) + 1;
+
+              const body = Object.assign(item, { psave });
+              const options = {
+                method: "POST",
+                body: JSON.stringify(body),
+              };
+
+              try {
+                const response = await fetch(url, options);
+                const { success } = await response.json();
+
+                if (success) {
+                  showToast(`Preset "${item.n}" save successfully!`);
+                }
+              } catch (error) {
+                showToast(`Error saving preset: ${error}`, "error");
+              }
+            } catch (error) {
+              showToast(error, "error");
+            } finally {
+              resolve();
+            }
+          }, delay * i++);
+        });
+      });
+
+      await Promise.all(promises);
+
+      isAnimated &&
+        setTimeout(async () => {
+          await playlist()
+            .then(() => {
+              hideOverlay();
+            })
+            .catch(() => {
+              hideOverlay();
+            });
+        }, delay);
+    }
+
+    async function segments() {
+      const url = `http://${hostname}/json/state`;
+      const selectSegments = document.getElementById("segments");
+
+      showOverlay();
+
+      try {
+        const response = await fetch(url);
+        const { seg: segments } = await response.json();
+
+        segments &&
+          segments.forEach(function ({ id, n }, index) {
+            const option = document.createElement("option");
+            option.text = n ? n : `Segment ${id}`;
+            option.value = id;
+
+            if (index === 0) {
+              option.selected = true;
+            }
+
+            selectSegments.add(option);
+          });
+      } catch (error) {
+        showToast(error, "error");
+      } finally {
+        hideOverlay();
+      }
+    }
+
+    const dropzone = document.getElementById("dropzone");
+    const source = document.getElementById("source");
+
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const source = document.getElementById("source");
+      source.files = e.dataTransfer.files;
+
+      handleFileUpload(e);
+    });
+
+    dropzone.addEventListener("click", () => {
+      const source = document.getElementById("source");
+      source.click();
+    });
+
+    source.addEventListener("change", (e) => {
+      const { name } = e.target.files[0];
+      const label = document.getElementById("dropzoneLabel");
+      label.textContent = `Image ${name} selected!`;
+    });
+
+    document
+      .getElementById("btnSimulatePreset")
+      .addEventListener("click", async () => {
+        const url = `http://${hostname}/json/state`;
+
+        const options = {
+          method: "POST",
+          body: jsonSendWLED,
+        };
+
+        showOverlay();
+
+        try {
+          const response = await fetch(url, options);
+          const { success } = await response.json();
+
+          if (success) {
+            showToast("Preset sent successfully!");
+          }
+        } catch (error) {
+          showToast(error, "error");
+        } finally {
+          hideOverlay();
+        }
+      });
+
+    document
+      .getElementById("btnSavePreset")
+      .addEventListener("click", async () => {
+        const { value: name } = document.getElementById("name");
+
+        jsonSaveWLED.push(
+          Object.assign({}, jsonSendWLED, { n: name, o: false })
+        );
+
+        await insert(jsonSaveWLED);
+      });
+
+    document
+      .getElementById("btnSavePlaylist")
+      .addEventListener("click", async () => {
+        await insert(jsonSaveWLED, true);
+      });
+
+    document.getElementById("animation").addEventListener("change", (e) => {
+      const frames = document.getElementsByClassName("frames")[0];
+      const { checked } = e.target;
+
+      if (checked) {
+        frames.style.display = "block";
+      } else {
+        frames.style.display = "none";
+      }
+    });
+
+    document
+      .getElementById("formGenerate")
+      .addEventListener("submit", async (event) => {
+        const animation = document.getElementById("animation");
+        const preview = document.getElementById("preview");
+
+        const isNotAnimation = document.getElementById("isNotAnimation");
+        const singleCanvas = document.getElementById("singleCanvas");
+
+        const isAnimation = document.getElementById("isAnimation");
+        const multipleCanvas = document.getElementById("multipleCanvas");
+
+        if (validateForm(event)) {
+          preview.style.display = "block";
+
+          if (animation.checked) {
+            isAnimation.style.display = "block";
+            isNotAnimation.style.display = "none";
+            singleCanvas.innerHTML = "";
+
+            await generateAnimation();
+          } else {
+            isAnimation.style.display = "none";
+            isNotAnimation.style.display = "block";
+            multipleCanvas.innerHTML = "";
+
+            await generate();
+          }
+        }
+      });
+    // document
+    //   .getElementById("btnGenerate")
+    //   .addEventListener("click", async (event) => {
+    //     const source = document.getElementById("source").files;
+    //     const animation = document.getElementById("animation");
+    //     const preview = document.getElementById("preview");
+
+    //     const isNotAnimation = document.getElementById("isNotAnimation");
+    //     const singleCanvas = document.getElementById("singleCanvas");
+
+    //     const isAnimation = document.getElementById("isAnimation");
+    //     const multipleCanvas = document.getElementById("multipleCanvas");
+
+    //     if (source.length === 0) {
+    //       showToast("Select one image to generate!", "error");
+    //       return;
+    //     }
+
+    //     preview.style.display = "block";
+
+    //     if (animation.checked) {
+    //       isAnimation.style.display = "block";
+    //       isNotAnimation.style.display = "none";
+    //       singleCanvas.innerHTML = "";
+
+    //       await generateAnimation();
+    //     } else {
+    //       isAnimation.style.display = "none";
+    //       isNotAnimation.style.display = "block";
+    //       multipleCanvas.innerHTML = "";
+
+    //       await generate();
+    //     }
+    //   });
+
+    async function generate() {
+      const file = document.getElementById("source").files[0];
+
+      const singleCanvas = document.getElementById("singleCanvas");
+      singleCanvas.innerHTML = "";
+
+      if (!file.type.startsWith("image/")) {
+        showToast("The selected file is not an image!", "error");
+        return;
+      }
+
+      const image = new Image();
+
+      await new Promise((resolve) => {
+        image.onload = resolve;
+        image.src = URL.createObjectURL(file);
+      });
+
+      const { canvas, bri, i, id } = await recreate(image);
+
+      Object.assign(jsonSendWLED, {
+        on: true,
+        bri,
+        seg: {
+          id,
+          i,
+        },
+      });
+
+      singleCanvas.appendChild(canvas);
+    }
+
+    async function generateAnimation() {
+      const file = document.getElementById("source").files[0];
+
+      const preview = document.getElementById("preview");
+
+      const { value: presetName } = document.getElementById("name");
+      const { value: amount } = document.getElementById("frames");
+
+      const body = new FormData();
+      body.append("image", file);
+
+      showOverlay();
+
+      try {
+        const response = await fetch(
+          `https://ajotark.vercel.app/wled/frames/${amount}`,
+          {
+            method: "POST",
+            body,
+          }
+        );
+
+        jsonSaveWLED = [];
+
+        const canvases = [];
+        const { status, message, frames } = await response.json();
+
+        if (!status) {
+          preview.style.display = "none";
+          showToast(message, "error");
+          return;
+        }
+
+        const promises = frames.map((frame, index) => {
+          return new Promise((resolve, reject) => {
+            const image = new Image();
+
+            image.src = frame;
+
+            image.onload = async () => {
+              const { canvas, bri, i, id } = await recreate(image);
+
+              jsonSaveWLED.push({
+                n: `${presetName} ${index}`,
+                on: true,
+                o: false,
+                bri,
+                seg: {
+                  id,
+                  i,
+                },
+              });
+
+              canvases.push(canvas);
+              resolve();
+            };
+          });
+        });
+
+        showToast(message);
+        await Promise.all(promises);
+        carousel("multipleCanvas", canvases);
+      } catch (error) {
+        showToast(error, "error");
+      } finally {
+        hideOverlay();
+      }
+    }
+
+    async function recreate(image) {
+      const { value: preSegment } = document.getElementById("preSegment");
+      const { value: segmentId } = document.getElementById("segments");
+      const { value: bri } = document.getElementById("brightness");
+
+      const pixelsRef = 16;
+      const pixels = pixelsRef * 3;
+      const size = pixels * pixelsRef;
+      const fontSize = window.innerWidth < 768 ? 14 : 18;
+      const colors = [];
+
+      let i = [];
+
+      const { canvas, ctx } = createCanvas(size, size);
+      const { canvas: reference } = createCanvas(
+        pixelsRef,
+        pixelsRef,
+        false,
+        image
+      );
+
+      for (let y = 0; y < pixelsRef; y++) {
+        for (let x = 0; x < pixelsRef; x++) {
+          const { rgb, hex } = getPixelColor(reference, x, y);
+          const [r, g, b] = rgb;
+
+          let pixelId = y * pixelsRef + x + 1;
+          let coordinateX = x * pixels;
+          let coordinateY = y * pixels;
+
+          colors.push(hex);
+
+          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+          ctx.fillRect(coordinateX, coordinateY, pixels, pixels);
+
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = "#FFFFFF";
+          ctx.strokeRect(coordinateX, coordinateY, pixels, pixels);
+
+          let offsetX = coordinateX + pixels / 2;
+          let offsetY = coordinateY + pixels / 2;
+
+          ctx.font = `${fontSize}px Arial`;
+          ctx.fillStyle = hex == "ffffff" ? "#111111" : "#FFFFFF";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(pixelId, offsetX, offsetY);
+        }
+      }
+
+      switch (preSegment) {
+        case "1":
+          i = colors;
+          break;
+        case "2":
+          i = individualLedIndex(colors);
+          break;
+        case "3":
+          i = rangeLeds(colors);
+          break;
+      }
+
+      return { canvas, bri, i, id: segmentId ? segmentId : 0 };
+    }
+
+    function color(data) {
+      const [r, g, b, a] = data;
+      return a === 0 ? { r: 255, b: 255, g: 255 } : { r, g, b };
+    }
+
+    function getPixelColor(img, x, y) {
+      const ctx = img.getContext("2d");
+      const { data } = ctx.getImageData(x, y, 1, 1);
+      const { r, g, b } = color(data);
+
+      return {
+        rgb: [r, g, b],
+        hex: rgbToHex(r, g, b),
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const hex = ((r << 16) | (g << 8) | b).toString(16);
+      return ("000000" + hex).slice(-6);
+    }
+
+    function individualLedIndex(array) {
+      const leds = [];
+      array.forEach((led, index) => {
+        leds.push(index, led);
+      });
+
+      return leds;
+    }
+
+    function rangeLeds(array, colorFormat = "HEX") {
+      const leds = [];
+      const isDifferent = (a, b) => {
+        return colorFormat === "HEX"
+          ? a !== b
+          : JSON.stringify(a) !== JSON.stringify(b);
+      };
+
+      array.forEach((led, index, arr) => {
+        const start = leds.length === 0 ? 0 : leds[leds.length - 2];
+        if (index === 0 || isDifferent(led, arr[index - 1])) {
+          leds.push(start, index, led);
+        } else {
+          leds[leds.length - 2] = index + 1;
+        }
+      });
+
+      return leds;
+    }
+
+    function createCanvas(width, height, id = null, image = null) {
+      const canvas =
+        document.getElementById(id) || document.createElement("canvas");
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+      ctx.imageSmoothingQuality = "high";
+      ctx.imageSmoothingEnabled = false;
+
+      image && ctx.drawImage(image, 0, 0, width, height);
+      return { canvas, ctx };
+    }
+
+    function showToast(message, type = "success", duration = 2000) {
+      const toast = document.createElement("div");
+      toast.classList.add("toast", type);
+
+      const body = document.createElement("span");
+      body.classList.add("body");
+      body.textContent = message;
+      toast.appendChild(body);
+
+      const close = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+      );
+      close.setAttribute("class", "close");
+      close.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      close.setAttribute("viewBox", "0 0 24 24");
+      close.innerHTML =
+        '<path fill="#FFFFFF" d="M18.3 6.3c-.4-.4-1-.4-1.4 0L12 10.6 7.7 6.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4L10.6 12l-4.3 4.3c-.4.4-.4 1 0 1.4.2.2.5.3.7.3s.5-.1.7-.3L12 13.4l4.3 4.3c.2.2.5.3.7.3s.5-.1.7-.3c.4-.4.4-1 0-1.4L13.4 12l4.3-4.3c.4-.4.4-1 0-1.4z"/>';
+      toast.appendChild(close);
+
+      close.addEventListener("click", () => {
+        toast.remove();
+      });
+
+      document.getElementById("toast-container").appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.remove();
+        }, 500);
+      }, duration);
+    }
+
+    function carousel(id, images, delay = 2500) {
+      let index = 0;
+      const carousel = document.createElement("div");
+      carousel.classList.add("carousel");
+
+      images.forEach((canvas, i) => {
+        if (i === index) {
+          carousel.appendChild(canvas);
+        } else {
+          canvas.style.display = "none";
+          carousel.appendChild(canvas);
+        }
+      });
+
+      const container = document.getElementById(id);
+      container.innerHTML = "";
+      container.appendChild(carousel);
+
+      function next() {
+        images[index].style.display = "none";
+        index++;
+        if (index >= images.length) {
+          index = 0;
+        }
+
+        images[index].style.display = "block";
+        loop();
+      }
+
+      function previous() {
+        images[index].style.display = "none";
+        index--;
+        if (index < 0) {
+          index = images.length - 1;
+        }
+
+        images[index].style.display = "block";
+        loop();
+      }
+
+      const buttonNext = document.createElement("button");
+      buttonNext.classList.add("btnNext");
+      buttonNext.innerHTML =
+        '<span class="material-icons">navigate_next</span>';
+      buttonNext.addEventListener("click", () => {
+        clearTimeout(timeoutId);
+        next();
+      });
+
+      const buttonPrevious = document.createElement("button");
+      buttonPrevious.classList.add("btnPrevious");
+      buttonPrevious.innerHTML =
+        '<span class="material-icons">navigate_before</span>';
+      buttonPrevious.addEventListener("click", () => {
+        clearTimeout(timeoutId);
+        previous();
+      });
+
+      const controls = document.createElement("div");
+      controls.classList.add("controls");
+      controls.appendChild(buttonPrevious);
+      controls.appendChild(buttonNext);
+
+      container.appendChild(controls);
+
+      let timeoutId;
+      function loop() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          next();
+          if (index === 0) {
+            carousel.scrollTo(0, 0);
+          }
+        }, delay);
+      }
+      loop();
+
+      carousel.addEventListener("mouseover", () => {
+        clearTimeout(timeoutId);
+      });
+
+      carousel.addEventListener("mouseout", () => {
+        loop();
+      });
+    }
+
+    function showOverlay() {
+      const overlay = document.getElementById("overlay");
+      overlay.classList.add("loading");
+      overlay.style.display = "block";
+      overlay.style.cursor = "not-allowed";
+
+      document.body.style.overflow = "hidden";
+    }
+
+    function hideOverlay() {
+      const overlay = document.getElementById("overlay");
+      overlay.classList.remove("loading");
+      overlay.style.display = "none";
+      overlay.style.cursor = "default";
+
+      document.body.style.overflow = "auto";
+    }
+
+    function validateForm(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const inputs = form.querySelectorAll("input, select, textarea");
+
+      let isValid = true;
+
+      const browserLanguage = navigator.language || navigator.userLanguage; // Obtém a linguagem do navegador
+
+      inputs.forEach((input) => {
+        const parent = input.parentNode;
+
+        if (
+          !input.checkValidity() ||
+          (input.type === "file" && input.files.length === 0)
+        ) {
+          input.classList.add("invalid");
+
+          const errorMessage =
+            input.dataset.errorMessage ||
+            input.validationMessage ||
+            getRequiredFieldMessage(browserLanguage); // Obtém a mensagem de campo obrigatório de acordo com a linguagem
+          let errorElement = parent.querySelector(".error-message");
+
+          if (!errorElement) {
+            errorElement = document.createElement("div");
+            errorElement.classList.add("error-message");
+            parent.appendChild(errorElement);
+          }
+
+          errorElement.innerText = errorMessage;
+          isValid = false;
+        } else {
+          input.classList.remove("invalid");
+          const errorElement = parent.querySelector(".error-message");
+
+          if (errorElement) {
+            parent.removeChild(errorElement);
+          }
+        }
+      });
+
+      return isValid;
+    }
+
+    function getRequiredFieldMessage(language) {
+      if (language.includes("-")) {
+        language = language.split("-")[1];
+      }
+
+      const messages = {
+        en: "This field is required.",
+        br: "Este campo é obrigatório.",
+        pt: "Este campo é obrigatório.",
+        es: "¡Este campo es obligatorio.",
+        fr: "Ce champ est obligatoire.",
+        de: "Dieses Feld ist erforderlich.",
+        it: "Questo campo è obbligatorio.",
+      };
+
+      return messages[language.toLowerCase()] || messages.en;
+    }
+  </script>
+</html>
