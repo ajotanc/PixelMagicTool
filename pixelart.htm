@@ -95,6 +95,10 @@
       font-weight: bold;
     }
 
+    button {
+      font-family: monospace !important;
+    }
+
     input[type="text"],
     input[type="number"],
     input[type="email"],
@@ -108,7 +112,7 @@
       background-color: #f0f0f0;
       font-size: 14px;
       display: inline-block;
-      position: relative;
+      font-family: monospace !important;
     }
 
     .input-group {
@@ -695,7 +699,6 @@
                   name="transition"
                   id="transition"
                   value="1"
-                  min="0"
                   required="required"
                 />
                 <div class="input-description">sec</div>
@@ -709,7 +712,6 @@
                   name="duration"
                   id="duration"
                   value="0.5"
-                  min="0"
                   required="required"
                 />
                 <div class="input-description">sec</div>
@@ -802,8 +804,14 @@
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
-    const hostname = window.location.host;
-    document.getElementById("hostname").value = hostname;
+    let host = window.location.host;
+    const hostname = document.getElementById("hostname");
+
+    hostname.value = host;
+
+    hostname.addEventListener("change", () => {
+      host = hostname.value;
+    });
 
     let jsonSaveWLED = [];
     let jsonSendWLED = {};
@@ -853,8 +861,8 @@
       const { value: duration } = document.getElementById("duration");
       const { value: transition } = document.getElementById("transition");
       const { value: name } = document.getElementById("name");
-      const urlPreset = `http://${hostname}/presets.json`;
-      const url = `http://${hostname}/json`;
+      const urlPreset = `http://${host}/presets.json`;
+      const url = `http://${host}/json`;
 
       try {
         const response = await fetch(urlPreset);
@@ -904,8 +912,8 @@
     }
 
     async function insert(data, isAnimated = false, delay = 2500) {
-      const urlPreset = `http://${hostname}/presets.json`;
-      const url = `http://${hostname}/json`;
+      const urlPreset = `http://${host}/presets.json`;
+      const url = `http://${host}/json`;
 
       let requestsCompleted = 0;
       let i = 0;
@@ -964,7 +972,7 @@
     }
 
     async function segments() {
-      const url = `http://${hostname}/json/state`;
+      const url = `http://${host}/json/state`;
       const selectSegments = document.getElementById("segments");
 
       showOverlay();
@@ -1021,11 +1029,11 @@
     document
       .getElementById("btnSimulatePreset")
       .addEventListener("click", async () => {
-        const url = `http://${hostname}/json/state`;
+        const url = `http://${host}/json/state`;
 
         const options = {
           method: "POST",
-          body: jsonSendWLED,
+          body: JSON.stringify(jsonSendWLED),
         };
 
         showOverlay();
@@ -1087,8 +1095,10 @@
         const isAnimation = document.getElementById("isAnimation");
         const multipleCanvas = document.getElementById("multipleCanvas");
         const duration = document.getElementById("duration").value;
-        console.log(duration);
+
         if (validateForm(event)) {
+          event.preventDefault();
+
           preview.style.display = "block";
 
           if (animation.checked) {
