@@ -442,11 +442,11 @@
       content: "";
       display: block;
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: calc(50% - 19px);
+      left: calc(50% - 19px);
       width: 26px;
       height: 26px;
-      border: 6px solid #fdfdfd;
+      border: 6px solid rgba(255, 255, 255, 0.5);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -826,6 +826,7 @@
     (async function () {
       await github();
       await segments();
+      showOverlay();
     })();
 
     async function github() {
