@@ -667,13 +667,33 @@
               <input type="text" name="hostname" id="hostname" required />
             </div>
             <div class="column">
-              <label for="output">Output</label>
-              <select name="output" id="output" required>
-                <option value="">Select a choice</option>
-                <option value="wled" selected>WLED JSON</option>
-                <option value="homeassistant">Home Assistant</option>
-                <option value="curl">CURL</option>
-              </select>
+              <label for="name">Preset Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value="New Preset"
+                required
+              />
+            </div>
+          </div>
+          <div class="row output" style="display: none">
+            <div class="column">
+              <label for="device">Device</label>
+              <input type="text" name="device" id="device" required />
+            </div>
+            <div class="column">
+              <label for="uniqueId">Unique Id</label>
+              <input type="text" name="uniqueId" id="uniqueId" required />
+            </div>
+            <div class="column">
+              <label for="friendlyName">Friendly Name</label>
+              <input
+                type="text"
+                name="friendlyName"
+                id="friendlyName"
+                required
+              />
             </div>
           </div>
           <div class="row">
@@ -689,14 +709,13 @@
               </select>
             </div>
             <div class="column">
-              <label for="name">Preset Name</label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                value="New Preset"
-                required
-              />
+              <label for="output">Output</label>
+              <select name="output" id="output" required>
+                <option value="">Select a choice</option>
+                <option value="json" selected>WLED JSON</option>
+                <option value="ha">Home Assistant</option>
+                <option value="curl">CURL</option>
+              </select>
             </div>
           </div>
           <div class="row">
@@ -801,11 +820,14 @@
                 name="response"
                 id="response"
                 cols="30"
-                rows="5"
+                rows="10"
                 readonly="readonly"
               ></textarea>
             </div>
             <div class="buttons">
+              <button type="button" class="button" id="btnDownloadPreset">
+                Download
+              </button>
               <button type="button" class="button" id="btnSimulatePreset">
                 Simulate
               </button>
@@ -1142,6 +1164,32 @@
       });
 
     document
+      .getElementById("btnDownloadPreset")
+      .addEventListener("click", () => {
+        const { value: response } = document.getElementById("response");
+        const { value: output } = document.getElementById("output");
+
+        const { name } = document.getElementById("source").files[0];
+        const [filename, extension] = name.split(".");
+
+        downloadFile(response, filename, output);
+      });
+
+    document.getElementById("output").addEventListener("change", (e) => {
+      const output = document.getElementsByClassName("output");
+      const { selectedIndex } = e.target;
+      const { value } = e.target.options[selectedIndex];
+
+      Array.from(output).forEach(function (element) {
+        if (value === "ha") {
+          element.style.display = "flex";
+        } else {
+          element.style.display = "none";
+        }
+      });
+    });
+
+    document
       .getElementById("transparentImage")
       .addEventListener("change", (e) => {
         const transparentImage =
@@ -1204,8 +1252,97 @@
         }
       });
 
+    function downloadFile(text, filename, output) {
+      let mimeType;
+      let fileExtension;
+      let response;
+
+      switch (output) {
+        case "json":
+          mimeType = "application/json";
+          fileExtension = "json";
+          break;
+        case "ha":
+          mimeType = "application/x-yaml";
+          fileExtension = "yaml";
+          break;
+        case "curl":
+          mimeType = "text/plain";
+          fileExtension = "txt";
+          break;
+      }
+
+      const blob = new Blob([text], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+
+      const anchorElement = document.createElement("a");
+      anchorElement.href = url;
+      anchorElement.download = `${filename}.${fileExtension}`;
+
+      anchorElement.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function homeAssistant(jsonData) {
+      const { value: device } = document.getElementById("device");
+      const { value: friendly_name } = document.getElementById("friendlyName");
+      const { value: unique_id } = document.getElementById("uniqueId");
+      const { value: hostname } = document.getElementById("hostname");
+
+      if (device) {
+        const yamlData = {
+          switches: {
+            [device]: {
+              friendly_name,
+              unique_id,
+              command_on: `curl -X POST "http://${hostname}/json/state" -d '${jsonData}' -H "Content-Type: application/json"`,
+              command_off: `curl -X POST "http://${hostname}/json/state" -d '{"on":false}' -H "Content-Type: application/json"`,
+            },
+          },
+        };
+
+        return convertToYaml(yamlData);
+      }
+    }
+
+    function curl(jsonData) {
+      const { value: hostname } = document.getElementById("hostname");
+      return `curl -X POST "http://${hostname}/json/state" -d '${jsonData}' -H "Content-Type: application/json"`;
+    }
+
+    function convertToYaml(obj) {
+      function processValue(value, indentationLevel) {
+        if (typeof value === "object" && !Array.isArray(value)) {
+          return processObject(value, indentationLevel + 1);
+        } else {
+          return value;
+        }
+      }
+
+      function processObject(obj, indentationLevel = 0) {
+        const indent = "  ".repeat(indentationLevel);
+        const lines = Object.entries(obj).map(([key, value]) => {
+          if (typeof value === "object" && !Array.isArray(value)) {
+            return `${indent}${key}:\n${processObject(
+              value,
+              indentationLevel + 1
+            )}`;
+          } else {
+            return `${indent}${key}: ${processValue(value, indentationLevel)}`;
+          }
+        });
+
+        return lines.join("\n");
+      }
+
+      return processObject(obj);
+    }
+
     async function generate() {
       const file = document.getElementById("source").files[0];
+
+      const { value: output } = document.getElementById("output");
 
       const response = document.getElementById("response");
       const singleCanvas = document.getElementById("singleCanvas");
@@ -1239,7 +1376,19 @@
       });
 
       singleCanvas.appendChild(canvas);
-      response.value = JSON.stringify(jsonSendWLED);
+      const jsonData = JSON.stringify(jsonSendWLED);
+
+      switch (output) {
+        case "json":
+          response.value = jsonData;
+          break;
+        case "ha":
+          response.value = homeAssistant(jsonData);
+          break;
+        case "curl":
+          response.value = curl(jsonData);
+          break;
+      }
     }
 
     async function generateAnimation() {
@@ -1614,21 +1763,33 @@
 
       let isValid = true;
 
-      const browserLanguage = navigator.language || navigator.userLanguage; // Obtém a linguagem do navegador
+      const browserLanguage = navigator.language || navigator.userLanguage;
 
       inputs.forEach((input) => {
-        const parent = input.parentNode;
+        let parent = input.parentNode;
+        let isVisible = true;
+
+        while (parent !== document.body) {
+          const parentStyles = getComputedStyle(parent);
+          if (parentStyles.display === "none") {
+            isVisible = false;
+            break;
+          }
+          parent = parent.parentNode;
+        }
 
         if (
-          !input.checkValidity() ||
-          (input.type === "file" && input.files.length === 0)
+          isVisible &&
+          (!input.checkValidity() ||
+            (input.type === "file" && input.files.length === 0))
         ) {
           input.classList.add("invalid");
 
           const errorMessage =
             input.dataset.errorMessage ||
             input.validationMessage ||
-            getRequiredFieldMessage(browserLanguage); // Obtém a mensagem de campo obrigatório de acordo com a linguagem
+            getRequiredFieldMessage(browserLanguage);
+
           let errorElement = parent.querySelector(".error-message");
 
           if (!errorElement) {
