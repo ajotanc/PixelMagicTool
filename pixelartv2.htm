@@ -303,6 +303,7 @@
       justify-content: space-between;
       min-width: 300px;
       padding: 8px 8px 8px 16px;
+      margin: 10px 0 0;
       border-radius: 8px;
       background-color: #333;
       color: #fff;
@@ -440,7 +441,6 @@
       );
       background-size: 400% 400%;
       animation: rainbow 10s linear infinite;
-      margin: 20px 0 0;
     }
 
     .buttonRainbow:hover {
@@ -733,7 +733,6 @@
               <label for="segments">Segment Id</label>
               <select name="segments" id="segments" required>
                 <option value="">Select a choice</option>
-                <!-- <option value="0" selected>Segment 0</option> -->
               </select>
             </div>
             <div class="column">
@@ -815,9 +814,23 @@
               </select>
             </div>
           </div>
-          <button type="button" class="buttonRainbow" id="btnGenerate">
-            Generate
-          </button>
+          <div id="dropzone" class="dropzone" style="display: none">
+            <p id="dropzoneLabel">
+              Drag and drop a file here or click to select a file
+            </p>
+            <input
+              type="file"
+              name="source"
+              id="source"
+              accept="image/*"
+              style="display: none"
+            />
+          </div>
+          <div class="row">
+            <button type="button" class="buttonRainbow" id="btnGenerate">
+              Generate
+            </button>
+          </div>
         </form>
         <div id="preview" style="display: none">
           <div id="isNotAnimation">
@@ -1079,13 +1092,24 @@
     async function images() {
       const url = `${wledUrl}/edit?list=/`;
       const selectImages = document.getElementById("images");
+      selectImages.innerHTML = "";
+
+      const options = [
+        { text: "Select a choice", value: "" },
+        { text: "Upload", value: "upload" },
+      ];
+
+      options.forEach(({ text, value }) => {
+        const option = new Option(text, value);
+        selectImages.appendChild(option);
+      });
 
       showOverlay();
 
       try {
         const response = await fetch(url);
         const data = await response.json();
-        const validImageFormats = ["jpeg", "jpg", "png", "gif"];
+        const mimeTypes = ["jpeg", "jpg", "png", "gif"];
 
         const images = data
           .filter((file) => {
@@ -1094,7 +1118,7 @@
 
             file.name = name.replace("/", "");
 
-            return validImageFormats.includes(mimetype);
+            return mimeTypes.includes(mimetype);
           })
           .map((file) => {
             const { name } = file;
@@ -1115,6 +1139,17 @@
     async function segments() {
       const url = `${wledUrl}/json/state`;
       const selectSegments = document.getElementById("segments");
+      selectSegments.innerHTML = "";
+
+      const options = [
+        { text: "Select a choice", value: "" },
+        // { text: "Segment 0", value: 0 },
+      ];
+
+      options.forEach(({ text, value }) => {
+        const option = new Option(text, value);
+        selectSegments.appendChild(option);
+      });
 
       showOverlay();
 
@@ -1140,6 +1175,32 @@
         hideOverlay();
       }
     }
+
+    const dropzone = document.getElementById("dropzone");
+    const source = document.getElementById("source");
+
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const source = document.getElementById("source");
+      source.files = e.dataTransfer.files;
+
+      handleFileUpload(e);
+    });
+
+    dropzone.addEventListener("click", () => {
+      const source = document.getElementById("source");
+      source.click();
+    });
+
+    source.addEventListener("change", (e) => {
+      const { name } = e.target.files[0];
+      const label = document.getElementById("dropzoneLabel");
+      label.textContent = `Image ${name} selected!`;
+    });
 
     document
       .getElementById("btnSimulatePreset")
@@ -1190,19 +1251,22 @@
       .addEventListener("click", () => {
         const { value: response } = document.getElementById("response");
         const { value: output } = document.getElementById("output");
+        const { name: source } = document.getElementById("source").files[0];
 
         const images = document.getElementById("images");
+        const { value, text } = images.selectedOptions[0];
 
-        const { text: name } = images.selectedOptions[0];
-        const [filename, extension] = name.split(".");
+        const filename =
+          value === "upload"
+            ? source.replace(/\.[^.]+$/, "")
+            : text.replace(/\.[^.]+$/, "");
 
         downloadFile(response, filename, output);
       });
 
     document.getElementById("output").addEventListener("change", (e) => {
       const output = document.getElementsByClassName("output");
-      const { selectedIndex } = e.target;
-      const { value } = e.target.options[selectedIndex];
+      const { value } = e.target.selectedOptions[0];
 
       Array.from(output).forEach(function (element) {
         if (value === "ha") {
@@ -1211,6 +1275,24 @@
           element.style.display = "none";
         }
       });
+    });
+
+    document.getElementById("images").addEventListener("change", (e) => {
+      const dropzone = document.getElementById("dropzone");
+      const { value } = e.target.selectedOptions[0];
+
+      if (value === "upload") {
+        const dropzoneLabel = document.getElementById("dropzoneLabel");
+        const source = document.getElementById("source");
+
+        dropzoneLabel.textContent =
+          "Drag and drop a file here or click to select a file";
+        source.value = "";
+
+        dropzone.style.display = "block";
+      } else {
+        dropzone.style.display = "none";
+      }
     });
 
     document
@@ -1364,124 +1446,146 @@
     }
 
     async function generate() {
+      const file = document.getElementById("source").files[0];
+
       const { value: images } = document.getElementById("images");
       const { value: output } = document.getElementById("output");
 
-      console.log(images);
-      const response = document.getElementById("response");
-      const singleCanvas = document.getElementById("singleCanvas");
-      singleCanvas.innerHTML = "";
+      if (checkMimeType()) {
+        try {
+          showOverlay();
 
-      const image = new Image();
+          const response = document.getElementById("response");
 
-      await new Promise((resolve, reject) => {
-        image.onload = resolve;
-        image.onerror = reject;
-        image.src = images;
-      });
+          const singleCanvas = document.getElementById("singleCanvas");
+          singleCanvas.innerHTML = "";
 
-      const { canvas, bri, i, id } = await recreate(image);
+          const image = new Image();
 
-      await new Promise((resolve) => {
-        Object.assign(jsonSendWLED, {
-          on: true,
-          bri,
-          seg: {
-            id,
-            i,
-          },
-        });
+          await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = reject;
+            image.src =
+              images === "upload" ? URL.createObjectURL(file) : images;
+          });
 
-        resolve();
-      });
+          const { canvas, bri, i, id } = await recreate(image);
 
-      singleCanvas.appendChild(canvas);
-      const jsonData = JSON.stringify(jsonSendWLED);
+          await new Promise((resolve) => {
+            Object.assign(jsonSendWLED, {
+              on: true,
+              bri,
+              seg: {
+                id,
+                i,
+              },
+            });
 
-      switch (output) {
-        case "json":
-          response.value = jsonData;
-          break;
-        case "ha":
-          response.value = homeAssistant(jsonData);
-          break;
-        case "curl":
-          response.value = curl(jsonData);
-          break;
+            resolve();
+          });
+
+          singleCanvas.appendChild(canvas);
+          const jsonData = JSON.stringify(jsonSendWLED);
+
+          switch (output) {
+            case "json":
+              response.value = jsonData;
+              break;
+            case "ha":
+              response.value = homeAssistant(jsonData);
+              break;
+            case "curl":
+              response.value = curl(jsonData);
+              break;
+          }
+        } catch (error) {
+          showToast(error, "error");
+        } finally {
+          hideOverlay();
+        }
       }
     }
 
     async function generateAnimation() {
+      const file = document.getElementById("source").files[0];
+
       const preview = document.getElementById("preview");
       const images = document.getElementById("images");
 
       const { value: presetName } = document.getElementById("name");
       const { value: amount } = document.getElementById("frames");
 
-      const { text: imageName, value: imageUrl } = images.selectedOptions[0];
+      const { text: imageName, value: imageValue } = images.selectedOptions[0];
 
-      showOverlay();
+      if (checkMimeType(true)) {
+        try {
+          showOverlay();
 
-      try {
-        const responseImage = await fetch(imageUrl);
-        const blob = await responseImage.blob();
+          const body = new FormData();
 
-        const file = new File([blob], imageName, { type: blob.type });
+          if (imageValue === "upload") {
+            body.append("image", file);
+          } else {
+            const responseImage = await fetch(imageValue);
+            const blob = await responseImage.blob();
 
-        const body = new FormData();
-        body.append("image", file);
+            const file = new File([blob], imageName, { type: blob.type });
 
-        const response = await fetch(
-          `https://ajotark.vercel.app/api/wled/frames?amount=${amount}`,
-          {
-            method: "POST",
-            body,
+            body.append("image", file);
           }
-        );
 
-        jsonSaveWLED = [];
+          const response = await fetch(
+            `https://ajotark.vercel.app/api/wled/frames?amount=${amount}`,
+            {
+              method: "POST",
+              body,
+            }
+          );
 
-        const canvases = [];
-        const { message, frames } = await response.json();
+          jsonSaveWLED = [];
 
-        if (!response.ok) {
-          showToast(message, "error");
-          return;
-        }
+          const canvases = [];
+          const { message, frames } = await response.json();
 
-        const promises = frames.map((frame, index) => {
-          return new Promise((resolve, reject) => {
-            const image = new Image();
+          if (!response.ok) {
+            showToast(message, "error");
+            return;
+          }
 
-            image.src = frame;
+          const promises = frames.map((frame, index) => {
+            return new Promise((resolve, reject) => {
+              const image = new Image();
 
-            image.onload = async () => {
-              const { canvas, bri, i, id } = await recreate(image);
+              image.src = frame;
 
-              jsonSaveWLED.push({
-                n: `${presetName} ${index}`,
-                on: true,
-                o: false,
-                bri,
-                seg: {
-                  id,
-                  i,
-                },
-              });
+              image.onload = async () => {
+                const { canvas, bri, i, id } = await recreate(image);
 
-              canvases.push(canvas);
-              resolve();
-            };
+                jsonSaveWLED.push({
+                  n: `${presetName} ${index}`,
+                  on: true,
+                  o: false,
+                  bri,
+                  seg: {
+                    id,
+                    i,
+                  },
+                });
+
+                canvases.push(canvas);
+                resolve();
+              };
+            });
           });
-        });
 
-        showToast(message);
-        await Promise.all(promises);
-        carousel("multipleCanvas", canvases);
-      } catch (error) {
-        showToast(error, "error");
-      } finally {
-        hideOverlay();
+          showToast(message);
+          await Promise.all(promises);
+          carousel("multipleCanvas", canvases);
+        } catch (error) {
+          showToast(error, "error");
+        } finally {
+          hideOverlay();
+        }
       }
     }
 
@@ -1642,7 +1746,13 @@
       return { canvas, ctx };
     }
 
-    function showToast(message, type = "success", duration = 2000) {
+    function showToast(
+      message,
+      type = "success",
+      duration = 2000,
+      hideElement = "preview"
+    ) {
+      const hide = document.getElementById(hideElement);
       const toast = document.createElement("div");
       toast.classList.add("toast", type);
 
@@ -1674,6 +1784,10 @@
           toast.remove();
         }, 500);
       }, duration);
+
+      if (type === "error") {
+        hide.style.display = "none";
+      }
     }
 
     function carousel(id, images, delay = 2500) {
@@ -1779,7 +1893,6 @@
 
       document.body.style.overflow = "auto";
     }
-
     function validateForm(event) {
       event.preventDefault();
 
@@ -1791,16 +1904,25 @@
       const browserLanguage = navigator.language || navigator.userLanguage;
 
       inputs.forEach((input) => {
-        let parent = input.parentNode;
+        const parent = input.closest(".column, .dropzone");
+
+        if (!parent) {
+          return;
+        }
+
         let isVisible = true;
 
-        while (parent !== document.body) {
-          const parentStyles = getComputedStyle(parent);
-          if (parentStyles.display === "none") {
+        let tempParent = parent;
+        while (tempParent !== document.body) {
+          const parentStyles = window.getComputedStyle(tempParent);
+          if (
+            parentStyles.display === "none" ||
+            parentStyles.display === "hidden"
+          ) {
             isVisible = false;
             break;
           }
-          parent = parent.parentNode;
+          tempParent = tempParent.parentNode;
         }
 
         if (
@@ -1854,6 +1976,32 @@
       };
 
       return messages[language.toLowerCase()] || messages.en;
+    }
+
+    function checkMimeType(onlyGif = false) {
+      const mimeTypes = onlyGif ? ["gif"] : ["jpeg", "jpg", "png", "gif"];
+
+      const source = document.getElementById("source").files[0];
+      const images = document.getElementById("images");
+
+      const { value: image } = images.selectedOptions[0];
+
+      const extension =
+        image === "upload"
+          ? source.name.split(".").pop()
+          : image.split(".").pop();
+
+      if (!mimeTypes.includes(extension)) {
+        showToast(
+          onlyGif
+            ? "Image format is not valid, select a GIF!"
+            : "Image format is not valid",
+          "error"
+        );
+        return false;
+      }
+
+      return true;
     }
   </script>
 </html>
