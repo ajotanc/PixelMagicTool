@@ -33,17 +33,17 @@ https://github.com/ajotanc/pixelart-converter/assets/47322034/76bec6c3-7143-4453
 #### Description of parameters
 | Parameters | Type | Description | Default | Required |
 | ---------- | ---- | ------- | ----------- | -------- | 
-| `id` | `integer` | Segment id | 0 | [x]
-| `output` | `string` | Output type, options [json, curl, ha] | json | [x] 
-| `brightness` | `integer` | Brightness of the LEDs | 128 | [x] 
-| `pre_segment` | `string` | Address type, options [individual ("FFFFFF"), index(0, "FFFFFF"), range(0, 5, "FFFFFF") | individual | [x]
-| `hostname` | `string` | WLED IP | - | [x]
-| `color` | `string` | If the image contains a transparent background, you can change it to a desired color by passing the color in the HEX pattern | - | []
-| `image` | `string` | Image which will be converted to standard JSON WLED | - | [x]
-| `device` | `string` | Device name, mandatory if the output is "ha" | - | []
-| `unique_id` | `string` | Unique device id, required if output is "ha" | - | []
-| `friendly_name` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | []
-| `file` | `boolean` | If true, it will download the file according to the output | false | [] |
-| `simulate` | `boolean` | If true, it will simulate the JSON WLED | false | []
+| `id` | `integer` | Segment id | 0 | ✅
+| `output` | `string` | Output type, options [json, curl, ha] | json | ✅
+| `brightness` | `integer` | Brightness of the LEDs | 128 | ✅
+| `pre_segment` | `string` | Address type, options [individual ("FFFFFF"), index(0, "FFFFFF"), range(0, 5, "FFFFFF") | individual | ✅
+| `hostname` | `string` | WLED IP | - | ✅
+| `color` | `string` | If the image contains a transparent background, you can change it to a desired color by passing the color in the HEX pattern | - | ⬜️
+| `image` | `string` | Image which will be converted to standard JSON WLED | - | ✅
+| `device` | `string` | Device name, mandatory if the output is "ha" | - | ⬜️
+| `unique_id` | `string` | Unique device id, required if output is "ha" | - | ⬜️
+| `friendly_name` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | ⬜️
+| `file` | `boolean` | If true, it will download the file according to the output | false | ⬜️
+| `simulate` | `boolean` | If true, it will simulate the JSON WLED | false | ⬜️
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
