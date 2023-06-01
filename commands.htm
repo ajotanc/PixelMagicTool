@@ -125,7 +125,7 @@
     }
 
     async function execute(body, query, params) {
-      const mode = params.get("mode") ? params.get("mode") : "dev";
+      const mode = params.get("mode") ? params.get("mode") : "production";
       const filename = params.get("image").replace(/\.[^.]+$/, "");
       const hostname = params.get("hostname");
       const output = params.get("output");
