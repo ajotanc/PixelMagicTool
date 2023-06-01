@@ -1,4 +1,4 @@
-# pixelart-converter
+# matrix-converter
 Image converter for WLED presets and playlists JSON 
 
 Soon I will add the documentation, in the meantime follow a tutorial below:
