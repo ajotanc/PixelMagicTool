@@ -46,10 +46,63 @@
         white-space: pre-wrap;
         word-wrap: break-word;
       }
+
+      #toast-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+
+      .toast {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 300px;
+        padding: 8px 8px 8px 16px;
+        margin: 10px 0 0;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 12px;
+        box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+        animation-name: fadeIn;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-in-out;
+      }
+
+      .toast.success {
+        background-color: #28a745;
+      }
+
+      .toast.error {
+        background-color: #dc3545;
+      }
+
+      .toast.warning {
+        background-color: #dcb535;
+      }
+
+      .toast .close {
+        cursor: pointer;
+        width: 22px;
+        height: 22px;
+        padding: 4px;
+        border-radius: 50%;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .toast .close:hover {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: background-color 0.2s ease-in-out;
+      }
     </style>
   </head>
   <body>
     <pre id="code"></pre>
+    <div id="toast-container"></div>
   </body>
   <script>
     async function extractUrlParameters() {
@@ -59,7 +112,6 @@
 
       const hostname = params.get("hostname");
       const image = params.get("image");
-      const mode = params.get("mode");
 
       const response = await fetch(`${protocol}//${hostname}/${image}`);
       const blob = await response.blob();
@@ -69,27 +121,158 @@
       const file = new File([blob], "image", { type: blob.type });
       body.append("image", file);
 
-      await execute(body, query, mode);
+      await execute(body, query, params);
     }
 
-    async function execute(body, query, mode = "production") {
-      try {
-        const url =
-          mode === "dev"
-            ? `http://localhost:3333/api/wled/url${query}`
-            : `https://ajotark.vercel.app/api/wled/url${query}`;
+    async function execute(body, query, params) {
+      const mode = params.get("mode") ? params.get("mode") : "dev";
+      const filename = params.get("image").replace(/\.[^.]+$/, "");
+      const hostname = params.get("hostname");
+      const output = params.get("output");
 
+      const download =
+        params.get("download") && params.get("download") === "true"
+          ? true
+          : false;
+
+      const simulate =
+        params.get("simulate") && params.get("simulate") === "true"
+          ? true
+          : false;
+
+      const url =
+        mode === "dev"
+          ? `http://localhost:3333/api/wled/url${query}`
+          : `https://ajotark.vercel.app/api/wled/url${query}`;
+
+      try {
         const response = await fetch(url, {
           method: "POST",
           body: body,
         });
         const data = await response.text();
 
+        if (!response.ok) {
+          const { issues } = JSON.parse(data);
+
+          Object.entries(issues).forEach((issue) => {
+            const [error, message] = issue;
+
+            if (error !== "_errors") {
+              showToast(`Error: [${error}] ${message["_errors"]}`, "warning");
+            }
+          });
+
+          return;
+        }
+
+        if (download) {
+          downloadFile(data, filename, output);
+        }
+
+        if (simulate && output === "json") {
+          await teste(hostname, data);
+        }
+
         const code = document.getElementById("code");
         code.textContent = data;
       } catch (error) {
-        console.error(error);
+        showToast(error, "error");
       }
+    }
+
+    async function teste(hostname, body) {
+      const protocol = window.location.protocol;
+      const url = `${protocol}//${hostname}/json/state`;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body,
+        });
+
+        const { ok, status, statusText } = response;
+
+        if (!ok) {
+          showToast(`Error: [${status}] ${statusText}`, "error");
+          return;
+        }
+
+        const { success } = await response.json();
+
+        if (success) {
+          showToast("Preset sent successfully!");
+        }
+      } catch (error) {
+        showToast(error, "error");
+      }
+    }
+
+    function downloadFile(text, filename, output) {
+      let mimeType;
+      let fileExtension;
+      let response;
+
+      switch (output) {
+        case "json":
+          mimeType = "application/json";
+          fileExtension = "json";
+          break;
+        case "ha":
+          mimeType = "application/x-yaml";
+          fileExtension = "yaml";
+          break;
+        case "curl":
+          mimeType = "text/plain";
+          fileExtension = "txt";
+          break;
+      }
+
+      const blob = new Blob([text], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+
+      const anchorElement = document.createElement("a");
+      anchorElement.href = url;
+      anchorElement.download = `${filename}.${fileExtension}`;
+
+      anchorElement.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function showToast(message, type = "success", duration = 3000) {
+      const toast = document.createElement("div");
+      toast.classList.add("toast", type);
+
+      const body = document.createElement("span");
+      body.classList.add("body");
+      body.textContent = message;
+      toast.appendChild(body);
+
+      const close = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+      );
+
+      close.setAttribute("class", "close");
+      close.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      close.setAttribute("viewBox", "0 0 24 24");
+      close.innerHTML =
+        '<path fill="#FFFFFF" d="M18.3 6.3c-.4-.4-1-.4-1.4 0L12 10.6 7.7 6.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4L10.6 12l-4.3 4.3c-.4.4-.4 1 0 1.4.2.2.5.3.7.3s.5-.1.7-.3L12 13.4l4.3 4.3c.2.2.5.3.7.3s.5-.1.7-.3c.4-.4.4-1 0-1.4L13.4 12l4.3-4.3c.4-.4.4-1 0-1.4z"/>';
+      toast.appendChild(close);
+
+      close.addEventListener("click", () => {
+        toast.remove();
+      });
+
+      document.getElementById("toast-container").appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = 0;
+        setTimeout(() => {
+          toast.remove();
+        }, 500);
+      }, duration);
     }
 
     window.addEventListener("load", async () => {
