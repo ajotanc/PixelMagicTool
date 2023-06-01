@@ -614,6 +614,7 @@
       .column {
         flex-basis: 100%;
         margin: 20px 0 0;
+        padding: 0;
       }
     }
 
@@ -844,9 +845,11 @@
             />
           </div>
           <div class="row">
-            <button type="button" class="buttonRainbow" id="btnGenerate">
-              Generate
-            </button>
+            <div class="column w-full">
+              <button type="button" class="buttonRainbow" id="btnGenerate">
+                Generate
+              </button>
+            </div>
           </div>
         </form>
         <div id="preview" style="display: none">
@@ -1078,7 +1081,7 @@
       }
     }
 
-    async function insert(data, isAnimated = false, delay = 2500) {
+    async function insert(data, isAnimated = false, delay = 5000) {
       const urlPreset = `${wledUrl}/presets.json`;
       const url = `${wledUrl}/json`;
 
@@ -1887,7 +1890,7 @@
       }
     }
 
-    function carousel(id, images, delay = 2500) {
+    function carousel(id, images, delay = 3000) {
       let index = 0;
       const carousel = document.createElement("div");
       carousel.classList.add("carousel");
