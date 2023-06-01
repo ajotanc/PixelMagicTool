@@ -130,10 +130,8 @@
       const hostname = params.get("hostname");
       const output = params.get("output");
 
-      const download =
-        params.get("download") && params.get("download") === "true"
-          ? true
-          : false;
+      const file =
+        params.get("file") && params.get("file") === "true" ? true : false;
 
       const simulate =
         params.get("simulate") && params.get("simulate") === "true"
@@ -166,7 +164,7 @@
           return;
         }
 
-        if (download) {
+        if (file) {
           downloadFile(data, filename, output);
         }
 
