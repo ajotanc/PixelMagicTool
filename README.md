@@ -1,4 +1,4 @@
-![Logo](https://kno.wled.ge/assets/images/ui/headers/wled_logo_akemi.png)
+![Logo](https://github.com/ajotanc/wled-matrix-converter/assets/47322034/5f843b5b-90ca-4722-807d-56ca794a2163)
 
 # WLED 2D Matrix Converter
 It is an application that converts any image into code in JSON WLED format to 2D Matrix standards, currently it has only been tested on the 2D Matrix panel, but soon I will post news for the serpentine version.
