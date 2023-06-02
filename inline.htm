@@ -47,15 +47,6 @@
         word-wrap: break-word;
       }
 
-      .key {
-        color: blue;
-        font-weight: bold;
-      }
-
-      .value {
-        color: red;
-      }
-
       #toast-container {
         position: fixed;
         bottom: 20px;
@@ -179,7 +170,7 @@
         }
 
         if (simulate && output === "json") {
-          await request(hostname, data);
+          await requestSimulate(hostname, data);
         }
 
         const code = document.getElementById("code");
@@ -189,7 +180,7 @@
       }
     }
 
-    async function request(hostname, body) {
+    async function requestSimulate(hostname, body) {
       const protocol = window.location.protocol;
       const url = `${protocol}//${hostname}/json/state`;
 
