@@ -1,6 +1,6 @@
 ![Logo](https://kno.wled.ge/assets/images/ui/headers/wled_logo_akemi.png)
 
-# WLED 2D Matrx Converter
+# WLED 2D Matrix Converter
 It is an application that converts any image into code in JSON WLED format to 2D Matrix standards, currently it has only been tested on the 2D Matrix panel, but soon I will post news for the serpentine version.
 
 ### Features
@@ -10,7 +10,7 @@ It is an application that converts any image into code in JSON WLED format to 2D
 - Choice of brightness intensity
 - Convert transparent pixels to chosen color
 - Convert animated GIFs
-- Select image direct from [WLED-IP]/edit or upload
+- Select image direct from **[WLED-IP]/edit** or **upload**
 - Can save, simulate, copy or download generated code
 
 ## INTERFACE VERSION
@@ -27,7 +27,7 @@ https://github.com/ajotanc/pixelart-converter/assets/47322034/76bec6c3-7143-4453
 
 ### Example of what the URL looks like
 ```
-  GET http://WLED-IP/inline.htm?id=0&output=ha&brightness=255&pre_segment=individual&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=WLED-IP&color=%23CCFFE5&image=33.png&download=true&simulate=false
+  GET http://[WLED-IP]/inline.htm?id=0&output=ha&brightness=255&pre_segment=individual&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=[WLED-IP]&color=3CCFFE5&image=33.png&download=true&simulate=false
 ```
 
 #### Description of parameters
