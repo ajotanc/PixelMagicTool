@@ -32,6 +32,11 @@ https://github.com/ajotanc/wled-matrix-converter/assets/47322034/20ad60d1-3b01-4
 ```
   GET http://[WLED-IP]/inline.htm?id=0&output=ha&brightness=255&pre_segment=individual&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=[WLED-IP]&color=3CCFFE5&image=33.png&download=true&simulate=false
 ```
+## CURL GENERATE WLED JSON
+```bash
+curl -X POST -F "file=@\path\image.png" "https://ajotark.vercel.app/api/wled/url?id=0&output=ha&brightness=255&pre_segment=individual&hostname=10.0.0.41&&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&color=3CCFFE5"
+```
+Remember to change the **\path\image.png** path to the desired image path.
 
 #### Description of parameters
 | Parameters | Type | Description | Default | Required |
