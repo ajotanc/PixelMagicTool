@@ -1,4 +1,4 @@
-![Logo](https://kno.wled.ge/assets/images/ui/headers/wled_logo_akemi.png)
+![Logo](https://github.com/ajotanc/wled-matrix-converter/assets/47322034/3f03c754-3624-45b7-9a77-21b661562f3d)
 
 # WLED 2D Matrix Converter
 It is an application that converts any image into code in JSON WLED format to 2D Matrix standards, currently it has only been tested on the 2D Matrix panel, but soon I will post news for the serpentine version.
@@ -34,7 +34,7 @@ https://github.com/ajotanc/wled-matrix-converter/assets/47322034/20ad60d1-3b01-4
 ```
 ## CURL GENERATE WLED JSON
 ```bash
-curl -X POST -F "file=@\path\image.png" "https://ajotark.vercel.app/api/wled/image?id=0&output=ha&brightness=255&pre_segment=individual&hostname=10.0.0.41&&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&color=3CCFFE5"
+curl -X POST -F "file=@\path\image.png" "https://ajota.vercel.app/api/wled/image?id=0&output=ha&brightness=255&pre_segment=individual&hostname=10.0.0.41&&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&color=3CCFFE5"
 ```
 Remember to change the **\path\image.png** path to the desired image path.
 
@@ -47,7 +47,7 @@ Remember to change the **\path\image.png** path to the desired image path.
 | `pre_segment` | `string` | Address type, options [individual ("FFFFFF"), index(0, "FFFFFF"), range(0, 5, "FFFFFF") | **individual** | ✅
 | `hostname` | `string` | WLED IP | - | ✅
 | `color` | `string` | If the image contains a transparent background, you can change it to a desired color by passing the color in the HEX pattern | - | ⬜️
-| `image` | `string` | Image which will be converted to standard JSON WLED | - | ✅
+| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ✅
 | `device` | `string` | Device name, mandatory if the output is "ha" | - | ⬜️
 | `unique_id` | `string` | Unique device id, required if output is "ha" | - | ⬜️
 | `friendly_name` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | ⬜️
