@@ -19,7 +19,10 @@ It is an application that converts any image into code in JSON WLED format to 2D
 
 ### Tutorial
 Showing usability in the interface version in an easy, simple and intuitive way.
-https://github.com/ajotanc/pixelart-converter/assets/47322034/76bec6c3-7143-4453-815e-cc73fdc3a137
+
+https://github.com/ajotanc/wled-matrix-converter/assets/47322034/20ad60d1-3b01-42b6-9937-4dda3862a3a4
+
+
 
 ## INLINE VERSION
 ### Download
