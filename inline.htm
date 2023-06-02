@@ -105,9 +105,10 @@
     <div id="toast-container"></div>
   </body>
   <script>
-    async function extractUrlParameters() {
-      const protocol = window.location.protocol;
-      const query = window.location.search;
+    const protocol = window.location.protocol;
+    const query = window.location.search;
+
+    async function execute() {
       const params = new URLSearchParams(query);
 
       const hostname = params.get("hostname");
@@ -121,10 +122,10 @@
       const file = new File([blob], "image", { type: blob.type });
       body.append("image", file);
 
-      await execute(body, query, params);
+      await convertImage(body, query, params);
     }
 
-    async function execute(body, query, params) {
+    async function convertImage(body, query, params) {
       const mode = params.get("mode") ? params.get("mode") : "production";
       const filename = params.get("image").replace(/\.[^.]+$/, "");
       const hostname = params.get("hostname");
@@ -181,7 +182,6 @@
     }
 
     async function requestSimulate(hostname, body) {
-      const protocol = window.location.protocol;
       const url = `${protocol}//${hostname}/json/state`;
 
       try {
@@ -275,7 +275,7 @@
     }
 
     window.addEventListener("load", async () => {
-      await extractUrlParameters();
+      await execute();
     });
   </script>
 </html>
