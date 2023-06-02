@@ -47,7 +47,7 @@ Remember to change the **\path\image.png** path to the desired image path.
 | `pre_segment` | `string` | Address type, options [individual ("FFFFFF"), index(0, "FFFFFF"), range(0, 5, "FFFFFF") | **individual** | ✅
 | `hostname` | `string` | WLED IP | - | ✅
 | `color` | `string` | If the image contains a transparent background, you can change it to a desired color by passing the color in the HEX pattern | - | ⬜️
-| `image` | `string` | Image which will be converted to standard JSON WLED | - | ✅
+| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ✅
 | `device` | `string` | Device name, mandatory if the output is "ha" | - | ⬜️
 | `unique_id` | `string` | Unique device id, required if output is "ha" | - | ⬜️
 | `friendly_name` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | ⬜️
