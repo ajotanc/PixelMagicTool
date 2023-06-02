@@ -47,6 +47,15 @@
         word-wrap: break-word;
       }
 
+      .key {
+        color: blue;
+        font-weight: bold;
+      }
+
+      .value {
+        color: red;
+      }
+
       #toast-container {
         position: fixed;
         bottom: 20px;
@@ -148,6 +157,7 @@
           method: "POST",
           body: body,
         });
+
         const data = await response.text();
 
         if (!response.ok) {
@@ -157,7 +167,7 @@
             const [error, message] = issue;
 
             if (error !== "_errors") {
-              showToast(`Error: [${error}] ${message["_errors"]}`, "warning");
+              showToast(`Error: [${error}] ${message["_errors"]}`, "error");
             }
           });
 
@@ -169,7 +179,7 @@
         }
 
         if (simulate && output === "json") {
-          await teste(hostname, data);
+          await request(hostname, data);
         }
 
         const code = document.getElementById("code");
@@ -179,7 +189,7 @@
       }
     }
 
-    async function teste(hostname, body) {
+    async function request(hostname, body) {
       const protocol = window.location.protocol;
       const url = `${protocol}//${hostname}/json/state`;
 

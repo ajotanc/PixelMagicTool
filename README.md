@@ -27,7 +27,7 @@ https://github.com/ajotanc/pixelart-converter/assets/47322034/76bec6c3-7143-4453
 
 ### Example of what the URL looks like
 ```
-  GET http://WLED-IP/commands.htm?id=0&output=json&brightness=256&pre_segment=range&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=WLED-IP&color=%23CCFFE5&image=33.png&download=true&simulate=false
+  GET http://WLED-IP/inline.htm?id=0&output=ha&brightness=255&pre_segment=individual&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=WLED-IP&color=%23CCFFE5&image=33.png&download=true&simulate=false
 ```
 
 #### Description of parameters
@@ -44,6 +44,6 @@ https://github.com/ajotanc/pixelart-converter/assets/47322034/76bec6c3-7143-4453
 | `unique_id` | `string` | Unique device id, required if output is "ha" | - | ⬜️
 | `friendly_name` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | ⬜️
 | `file` | `boolean` | If true, it will download the file according to the output | **false** | ⬜️
-| `simulate` | `boolean` | If true, it will simulate the JSON WLED | **false** | ⬜️
+| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED | **false** | ⬜️
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
