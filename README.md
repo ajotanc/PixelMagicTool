@@ -10,6 +10,7 @@ It is an application that converts any image into code in JSON WLED format to 2D
 - Choice of brightness intensity
 - Convert transparent pixels to chosen color
 - Convert animated GIFs
+- Resize image
 - Select image direct from **[WLED-IP]/edit** or **upload**
 - Can save, simulate, copy or download generated code
 
