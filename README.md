@@ -23,8 +23,6 @@ Showing usability in the interface version in an easy, simple and intuitive way.
 
 https://github.com/ajotanc/wled-matrix-converter/assets/47322034/20ad60d1-3b01-42b6-9937-4dda3862a3a4
 
-
-
 ## INLINE VERSION
 ### Download
 **Right-Click** [[Inline]](https://raw.githubusercontent.com/ajotanc/wled-matrix-converter/main/inline.htm) and select save to your local computer.
@@ -58,7 +56,15 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `device` | `string` | Device name, mandatory if the output is "ha" | - | ⬜️
 | `unique_id` | `string` | Unique device id, required if output is "ha" | - | ⬜️
 | `friendly_name` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | ⬜️
-| `file` | `boolean` | If true, it will download the file according to the output | **false** | ⬜️
-| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED | **false** | ⬜️
+| `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
+| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
+| `width` | `number` | Resize image width | **16** | ⬜️
+| `height` | `number` | Resize image height | **16** | ⬜️
+| `animation` | `boolean` | If true, it will return the WLED JSON according to the number of frames in the GIF image. | **false** | ⬜️
+| `amount` | `number` | Number of frames contained in the GIF image, if the **animation** parameter is **true** | **0** | ⬜️
+| `delay` | `number` | Delay seconds between executions **curl**, optional and only for **output** curl | **2** | ⬜️
+
+## Utility
+Function and performance tests were carried out if you use a 32x32 panel or larger, the ideal `pre_segment` parameter is **range**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
