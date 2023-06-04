@@ -10,6 +10,7 @@ It is an application that converts any image into code in JSON WLED format to 2D
 - Choice of brightness intensity
 - Convert transparent pixels to chosen color
 - Convert animated GIFs
+- Resize image
 - Select image direct from **[WLED-IP]/edit** or **upload**
 - Can save, simulate, copy or download generated code
 
@@ -34,9 +35,15 @@ https://github.com/ajotanc/wled-matrix-converter/assets/47322034/20ad60d1-3b01-4
 ```
 ## CURL GENERATE WLED JSON
 ```bash
-curl -X POST -F "file=@\path\image.png" "https://ajota.vercel.app/api/wled/image?id=0&output=ha&brightness=255&pre_segment=individual&hostname=10.0.0.41&&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&color=3CCFFE5"
+# Local image upload
+# Remember to change the \path\image.png path to the desired image path.
+curl -X POST -F "file=@\path\image.png" "https://ajota.vercel.app/api/wled/image?id=0&output=json&brightness=255&pre_segment=individual&hostname=10.0.0.41&color=CCFFE5"
+
+# External image upload
+curl -X POST -F "file=@-;filename=image.png" "https://ajota.vercel.app/api/wled/image?id=0&output=curl&brightness=255&pre_segment=individual&hostname=10.0.0.41&color=CCFFE5" < <(curl -s "https://img.freepik.com/premium-vector/lightning-pixel-art-gaming-item-game-pixel-lightning_158677-585.jpg")
+# OR
+curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixel-art-gaming-item-game-pixel-lightning_158677-585.jpg" && curl -X POST -F "file=@/tmp/image.png" "https://ajota.vercel.app/api/wled/image?id=0&output=curl&brightness=255&pre_segment=individual&hostname=10.0.0.41&color=3CCFFE5"
 ```
-Remember to change the **\path\image.png** path to the desired image path.
 
 #### Description of parameters
 | Parameters | Type | Description | Default | Required |
