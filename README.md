@@ -49,20 +49,20 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `id` | `integer` | Segment id | **0** | ✅
 | `output` or `o` | `string` | Output type, options [json, curl, ha] | **json** | ✅
 | `brightness` or `bri` | `integer` | Brightness of the LEDs | **128** | ✅
-| `pre_segment` or `ps` | `string` | Address type, options [individual ("FFFFFF"), index(0, "FFFFFF"), range(0, 5, "FFFFFF") | **individual** | ✅
+| `pre_segment` or `ps` | `string` | Address type, options [individual ["FFFFFF"], index [0, "FFFFFF"], range [0, 5, "FFFFFF"] | **individual** | ✅
 | `hostname` or `hn` | `string` | WLED IP | - | ✅
-| `color` or `c` | `string` | If the image contains a transparent background, you can change it to a desired color by passing the color in the HEX pattern | - | ⬜️
-| `image` or `img` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ✅
+| `width` or `w` | `number` | Resize image width | **16** | ⬜️
+| `height` or `h` | `number` | Resize image height | **16** | ⬜️
 | `device` or `d` | `string` | Device name, mandatory if the output is "ha" | - | ⬜️
 | `unique_id` or `uid` | `string` | Unique device id, required if output is "ha" | - | ⬜️
 | `friendly_name` or `fn` | `string` | Friendly name of the device, mandatory if the output is "ha" | - | ⬜️
-| `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
-| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
-| `width` or `w` | `number` | Resize image width | **16** | ⬜️
-| `height` or `h` | `number` | Resize image height | **16** | ⬜️
+| `color` or `c` | `string` | If the image contains a transparent background, you can change it to a desired color by passing the color in the HEX pattern | - | ⬜️
 | `animation` or `anim` | `boolean` | If true, it will return the WLED JSON according to the number of frames in the GIF image. | **false** | ⬜️
 | `amount` or `amt` | `number` | Number of frames contained in the GIF image, if the **animation** parameter is **true** | **0** | ⬜️
 | `delay` or `dl` | `number` | Delay seconds between executions **curl**, optional and only for **output** curl | **2** | ⬜️
+| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ✅
+| `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
+| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
 
 ## Utility
 Function and performance tests were carried out if you use a 32x32 panel or larger, the ideal `pre_segment` parameter is **range**
