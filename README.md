@@ -1,6 +1,6 @@
 ![Logo](https://github.com/ajotanc/wled-matrix-converter/assets/47322034/3f03c754-3624-45b7-9a77-21b661562f3d)
 
-# WLED 2D Matrix Converter
+# Pixel Magic Tool
 It is an application that converts any image into code in JSON WLED format to 2D Matrix standards, currently it has only been tested on the 2D Matrix panel, but soon I will post news for the serpentine version.
 
 ### Features
