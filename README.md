@@ -62,11 +62,11 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `delay` or `dl` | `number` | Delay seconds between executions **curl**, optional and only for **output** curl | **2** | ⬜️
 | `name` or `n` | `string` | Name of the preset to be saved | - | ⬜️
 | `psave` or `ps` | `number` | Preset id to be saved | - | ⬜️
-| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ✅
+| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ⬜️
 | `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
 | `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
 
 ## Utility
-Function and performance tests were carried out if you use a 32x32 panel or larger, the ideal `pre_segment` parameter is **range**
+Function and performance tests were carried out if you use a 32x32 panel or larger, the ideal `pattern` parameter is **range**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
