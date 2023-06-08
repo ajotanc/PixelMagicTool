@@ -49,7 +49,7 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `id` | `integer` | Segment id | **0** | ✅
 | `output` or `o` | `string` | Output type, options [json, curl, ha] | **json** | ✅
 | `brightness` or `bri` | `integer` | Brightness of the LEDs | **128** | ✅
-| `pre_segment` or `ps` | `string` | Address type, options [individual ["FFFFFF"], index [0, "FFFFFF"], range [0, 5, "FFFFFF"] | **individual** | ✅
+| `pattern` or `pat` | `string` | Pattern type, options [individual ["FFFFFF"], index [0, "FFFFFF"], range [0, 5, "FFFFFF"] | **individual** | ✅
 | `hostname` or `hn` | `string` | WLED IP | - | ✅
 | `width` or `w` | `number` | Resize image width | **16** | ⬜️
 | `height` or `h` | `number` | Resize image height | **16** | ⬜️
@@ -60,6 +60,8 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `animation` or `anim` | `boolean` | If true, it will return the WLED JSON according to the number of frames in the GIF image. | **false** | ⬜️
 | `amount` or `amt` | `number` | Number of frames contained in the GIF image, if the **animation** parameter is **true** | **0** | ⬜️
 | `delay` or `dl` | `number` | Delay seconds between executions **curl**, optional and only for **output** curl | **2** | ⬜️
+| `name` or `n` | `string` | Name of the preset to be saved | - | ⬜️
+| `psave` or `ps` | `number` | Preset id to be saved | - | ⬜️
 | `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ✅
 | `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
 | `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
