@@ -1,7 +1,7 @@
 ![PixelMagicTool](https://github.com/ajotanc/PixelMagicTool/assets/47322034/300b240b-40a3-4a9a-a6f0-925631919d9b)
 
 # Pixel Magic Tool
-It is an application that converts any image into code in JSON WLED format to 2D Matrix standards, currently it has only been tested on the 2D Matrix panel, but soon I will post news for the serpentine version.
+It is a tool that converts any image into code in JSON WLED format, currently being tested on a 2D Matrix panel, soon I will post news for the serpentine version.
 
 ### Improvements
 - Fixed animation generation
