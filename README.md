@@ -11,6 +11,7 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 - Parameter text interpretation
 - Interaction of functionality
 - Save presets via API
+- Auto default segment width and height
 
 ### Features
 - Converts any type of image
