@@ -3,6 +3,15 @@
 # Pixel Magic Tool
 It is an application that converts any image into code in JSON WLED format to 2D Matrix standards, currently it has only been tested on the 2D Matrix panel, but soon I will post news for the serpentine version.
 
+### Improvements
+- Fixed animation generation
+- Fixed drag and drop function
+- Fix when saving presets and playlist
+- Function performance fixes
+- Parameter text interpretation
+- Interaction of functionality
+- Save presets via API
+
 ### Features
 - Converts any type of image
 - Option on tape address format
