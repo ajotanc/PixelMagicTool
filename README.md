@@ -6,7 +6,7 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 ### Improvements and fixes
 #### (12/06/2023)
 - The API domain was **ajota.vercel.app** now it's **pixelmagictool.vercel.app**
-- Performance and performance in **pxmagic** and **inline** version
+- Performance in **pxmagic** and **inline** version
 - Significantly decreased **pxmagic.htm** file size
 - **range** pattern now in hybrid style to improve JSON size
 
