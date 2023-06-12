@@ -9,6 +9,7 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 - Performance in **pxmagic** and **inline** version
 - Significantly decreased **pxmagic.htm** file size
 - **range** pattern now in hybrid style to improve JSON size
+- Version name change from **interface.htm** to **pxmagic.htm**
 
 #### (09/06/2023)
 - Fixed animation generation
