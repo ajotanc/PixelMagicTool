@@ -34,7 +34,7 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 
 ## INTERFACE VERSION
 ### Download
-**Right-Click** [[Interface]](https://raw.githubusercontent.com/ajotanc/wled-matrix-converter/main/interface.htm) and select save to your local computer.
+**Right-Click** [[Interface]](https://raw.githubusercontent.com/ajotanc/wled-matrix-converter/main/pxmagic.htm) and select save to your local computer.
 
 ### Tutorial
 Showing usability in the interface version in an easy, simple and intuitive way.
