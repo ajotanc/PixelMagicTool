@@ -3,7 +3,14 @@
 # Pixel Magic Tool
 It is a tool that converts any image into code in JSON WLED format, currently being tested on a 2D Matrix panel, soon I will post news for the serpentine version.
 
-### Improvements
+### Improvements and fixes
+#### (12/06/2023)
+- The API domain was **ajota.vercel.app** now it's **pixelmagictool.vercel.app**
+- Performance and performance in **pxmagic** and **inline** version
+- Significantly decreased **pxmagic.htm** file size
+- **range** pattern now in hybrid style to improve JSON size
+
+#### (09/06/2023)
 - Fixed animation generation
 - Fixed drag and drop function
 - Fix when saving presets and playlist
