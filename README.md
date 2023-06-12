@@ -3,6 +3,17 @@
 # Pixel Magic Tool
 It is a tool that converts any image into code in JSON WLED format, currently being tested on a 2D Matrix panel, soon I will post news for the serpentine version.
 
+### Features
+- Converts any type of image
+- Option on tape address format
+- Result output option
+- Choice of brightness intensity
+- Convert transparent pixels to chosen color
+- Convert animated GIFs
+- Resize image
+- Select image direct from **[WLED-IP]/edit** or **upload**
+- Can save, simulate, copy or download generated code
+
 ### Improvements and fixes
 #### (12/06/2023)
 - The API domain was **ajota.vercel.app** now it's **pixelmagictool.vercel.app**
@@ -20,17 +31,6 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 - Interaction of functionality
 - Save presets via API
 - Auto default segment width and height
-
-### Features
-- Converts any type of image
-- Option on tape address format
-- Result output option
-- Choice of brightness intensity
-- Convert transparent pixels to chosen color
-- Convert animated GIFs
-- Resize image
-- Select image direct from **[WLED-IP]/edit** or **upload**
-- Can save, simulate, copy or download generated code
 
 ## INTERFACE VERSION
 ### Download
@@ -83,8 +83,3 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ⬜️
 | `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
 | `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
-
-## Utility
-Function and performance tests were carried out if you use a 32x32 panel or larger, the ideal `pattern` parameter is **range**
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
