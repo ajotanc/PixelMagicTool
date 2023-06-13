@@ -17,10 +17,11 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 ### Improvements and fixes
 #### (12/06/2023)
 - The API domain was **ajota.vercel.app** now it's **pixelmagictool.vercel.app**
-- Performance in **pxmagic** and **inline** version
+- Performance in **pxmagic** and **inpxmagic** version
 - Significantly decreased **pxmagic.htm** file size
 - **range** pattern now in hybrid style to improve JSON size
 - Version name change from **interface.htm** to **pxmagic.htm**
+- Version name change from **inline.htm** to **inpxmagic.htm**
 
 #### (09/06/2023)
 - Fixed animation generation
@@ -43,11 +44,11 @@ https://github.com/ajotanc/wled-matrix-converter/assets/47322034/20ad60d1-3b01-4
 
 ## INLINE VERSION
 ### Download
-**Right-Click** [[Inline]](https://raw.githubusercontent.com/ajotanc/wled-matrix-converter/main/inline.htm) and select save to your local computer.
+**Right-Click** [[Inline]](https://raw.githubusercontent.com/ajotanc/wled-matrix-converter/main/inpxmagic.htm) and select save to your local computer.
 
 ### Example of what the URL looks like
 ```
-  GET http://[WLED-IP]/inline.htm?id=0&output=ha&brightness=255&pre_segment=individual&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=[WLED-IP]&color=3CCFFE5&image=33.png&download=true&simulate=false
+  GET http://[WLED-IP]/inpxmagic.htm?id=0&output=ha&brightness=255&pre_segment=individual&device=pixel_art_controller_001&unique_id=pixel_art_controller_001a&friendly_name=PixelArt&hostname=[WLED-IP]&color=3CCFFE5&image=33.png&download=true&simulate=false
 ```
 ## CURL GENERATE WLED JSON
 ```bash
@@ -80,6 +81,6 @@ curl -o /tmp/image.png -s "https://img.freepik.com/premium-vector/lightning-pixe
 | `delay` or `dl` | `number` | Delay seconds between executions **curl**, optional and only for **output** curl | **2** | ⬜️
 | `name` or `n` | `string` | Name of the preset to be saved | - | ⬜️
 | `psave` or `ps` | `number` | Preset id to be saved | - | ⬜️
-| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inline** version | - | ⬜️
-| `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inline** version | **false** | ⬜️
-| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inline** version | **false** | ⬜️
+| `image` | `string` | Image that will be converted to JSON WLED, required only if using the **inpxmagic** version | - | ⬜️
+| `file` | `boolean` | If true, it will download the file according to the output, required only if using the **inpxmagic** version | **false** | ⬜️
+| `simulate` | `boolean` | If true and output is "json" then simulate JSON WLED, required only if using the **inpxmagic** version | **false** | ⬜️
