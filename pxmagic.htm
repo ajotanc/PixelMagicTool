@@ -914,6 +914,1167 @@
     <div id="overlay"></div>
   </body>
   <script>
-    const e="file:"===window.location.protocol?"http:":window.location.protocol,t=window.location.host||"0.0.0.0";let n=`${e}//${t}`;const a=document.getElementById("hostname");a.value=t,a.addEventListener("change",(async()=>{n=`${e}//${a.value}`,await d(),await i(),c()}));let o=[],s={};function c(){const e=document.getElementById("images").parentNode.querySelector("a");e.href=e.href.replace("[wled-ip]",a.value)}async function l(e,t=!1,a=5e3){const o=`${n}/presets.json`,s=`${n}/json`;let c=0;I();const l=e.map((async e=>new Promise(((t,n)=>{setTimeout((async()=>{try{const t=await fetch(o),n=await t.json(),a=Object.keys(n),c=a.find((t=>"object"==typeof n[t]&&!n[t].playlist&&n[t].n===e.n))||parseInt(a.pop())+1,l=Object.assign(e,{psave:c}),i={method:"POST",body:JSON.stringify(l)};try{const t=await fetch(s,i),{success:n}=await t.json();n&&v(`Preset "${e.n}" save successfully!`)}catch(e){v(`Error saving preset: ${e}`,"error")}}catch(e){v(e,"error")}finally{t()}}),a*c++)}))));await Promise.all(l),t?setTimeout((async()=>{await async function(){const{value:e}=document.getElementById("duration"),{value:t}=document.getElementById("transition"),{value:a}=document.getElementById("name"),o=`${n}/presets.json`,s=`${n}/json`;try{const n=await fetch(o),c=await n.json(),l=Object.keys(c),i=l.filter((e=>"object"==typeof c[e]&&!c[e].playlist&&c[e].n&&c[e].n.startWith(a))),d={psave:l.find((e=>"object"==typeof c[e]&&c[e].playlist&&c[e].n&&c[e].n===a))||parseInt(l.pop())+1,n:a,on:!0,o:!1,playlist:{ps:i,dur:Array.from({length:i.length},(()=>10*e)),transition:Array.from({length:i.length},(()=>10*t)),repeat:0,end:0}},r={method:"POST",body:JSON.stringify(d)};try{const e=await fetch(s,r),{success:t}=await e.json();t&&v(`Playlist "${a}" save successfully!`)}catch(e){v(`Error saving preset: ${e}`,"error")}}catch(e){v(e,"error")}}().then((()=>{B()})).catch((()=>{B()}))}),a):B()}async function i(){const e=`${n}/edit?list=/`,t=document.getElementById("images");t.innerHTML="";[{text:"Select a choice",value:""},{text:"Upload",value:"upload"}].forEach((({text:e,value:n})=>{const a=new Option(e,n);t.appendChild(a)})),I();try{const a=await fetch(e),o=await a.json(),s=["jpeg","jpg","png","gif"];o.filter((e=>{const{name:t}=e,[n,a]=t.split(".");return e.name=t.replace("/",""),s.includes(a)})).map((e=>{const{name:a}=e,o=document.createElement("option");o.text=a,o.value=`${n}/${a}`,t.add(o)}))}catch(e){v(e,"error")}finally{B()}}async function d(){const e=document.getElementById("segments"),t=document.getElementById("pattern"),a=document.getElementById("width"),o=document.getElementById("height"),s=`${n}/json/state`;e.innerHTML="";[{text:"Select a choice",value:""}].forEach((({text:t,value:n})=>{const a=new Option(t,n);e.appendChild(a)})),I();try{const n=await fetch(s),{seg:c}=await n.json();c&&c.forEach((function({id:n,n:s,stop:c,stopY:l},i){const d=document.createElement("option");d.text=s||`Segment ${n}`,d.value=n,d.dataset.width=c,d.dataset.height=l,0===i&&(d.selected=!0,a.value=c,o.value=l,t.value=c*l>512?3:1),e.add(d)}))}catch(e){v(e,"error")}finally{B()}}!async function(){await d(),await i(),c()}();const r=document.getElementById("dropzone"),m=document.getElementById("source");function u(e){return new Promise(((t,n)=>{const a=new Image;a.addEventListener("load",(function(){t(a)})),a.addEventListener("error",(function(){n(new Error("Error loading image"))})),a.src=e}))}function y(e){const{value:t}=document.getElementById("pattern"),{value:n}=document.getElementById("segments"),{value:a}=document.getElementById("brightness"),{value:o}=document.getElementById("width"),{value:s}=document.getElementById("height"),{checked:c}=document.getElementById("resizeImage"),l=48,i=o*l,d=s*l,r=i<=768?14:18,m=o*s,u=[];let y=[];const{ctx:f}=h(o,s);f.drawImage(e,0,0,o,s);const E=f.getImageData(0,0,o,s).data,{canvas:v,ctx:I}=h(i,d);for(let e=0;e<s;e++)for(let t=0;t<o;t++){const n=e*o+t,a=g(E[4*n],E[4*n+1],E[4*n+2],E[4*n+3]),{r:s,g:c,b:i}=p(a);u.push(a);let d=t*l,m=e*l;I.fillStyle=`rgb(${s}, ${c}, ${i})`,I.fillRect(d,m,l,l),I.lineWidth=1,I.strokeStyle="#ffffff",I.strokeRect(d,m,l,l);let y=d+24,f=m+24;I.font=`${r}px Arial`,I.fillStyle="ffffff"==a?"#252525":"#ffffff",I.textAlign="center",I.textBaseline="middle",I.fillText(n+1,y,f)}switch(t){case"1":y=u;break;case"2":y=function(e){const t=[];return e.forEach(((e,n)=>{t.push(n,e)})),t}(u);break;case"3":y=function(e){let t=0,n=0,a=e[0],o=[];e.forEach(((e,s)=>{if(e!==a){n=s;1==n-t?o.push(a):o.push(t,n,a),t=s}a=e}));const s=e.length-t;1===s?o.push(a):o.push(t,e.length,a);return o}(u)}return{canvas:v,bri:a,id:n,i:y,length:m}}function g(e,t,n,a){const{checked:o}=document.getElementById("transparentImage"),{value:s}=document.getElementById("color");return 0===a?o?s.replace("#","").toLowerCase():f(255,255,255):f(e,t,n)}function p(e){3===(e=e.replace("#","")).length&&(e=e.replace(/(.)/g,"$1$1"));const[t,n,a]=e.match(/.{2}/g).map((e=>parseInt(e,16)));return{r:t,g:n,b:a}}function f(e,t,n){return("000000"+(e<<16|t<<8|n).toString(16)).slice(-6)}function h(e,t){const n=document.createElement("canvas");n.width=e,n.height=t;const a=n.getContext("2d",{willReadFrequently:!0});return a.imageSmoothingQuality="high",a.imageSmoothingEnabled=!1,{canvas:n,ctx:a}}function E(e,t){return"ha"===e?function(e){const{value:t}=document.getElementById("device"),{value:n}=document.getElementById("friendlyName"),{value:a}=document.getElementById("uniqueId"),{value:o}=document.getElementById("hostname");if(t){return function(e){function t(e,t){return"object"!=typeof e||Array.isArray(e)?e:n(e,t+1)}function n(e,a=0){const o="  ".repeat(a);return Object.entries(e).map((([e,s])=>"object"!=typeof s||Array.isArray(s)?`${o}${e}: ${t(s,a)}`:`${o}${e}:\n${n(s,a+1)}`)).join("\n")}return n(e)}({switches:{[t]:{friendly_name:n,unique_id:a,command_on:`curl -X POST "http://${o}/json/state" -d '${e}' -H "Content-Type: application/json"`,command_off:`curl -X POST "http://${o}/json/state" -d '{"on":false}' -H "Content-Type: application/json"`}}})}}(t):"curl"===e?function(e){const{value:t}=document.getElementById("hostname");return`curl -X POST "http://${t}/json/state" -d '${e}' -H "Content-Type: application/json"`}(t):t}function v(e,t="success",n=2e3,a="preview"){const o=document.getElementById(a),s=document.createElement("div");s.style.animation="fadeIn",s.style.animationDuration=`${n+100}ms`,s.style.animationTimingFunction="linear",s.classList.add("toast",t);const c=document.createElement("span");c.classList.add("toast-body"),c.textContent=e,s.appendChild(c);const l=document.createElement("div");l.classList.add("toast-progress"),l.style.animation="progress",l.style.animationDuration=`${n+100}ms`,l.style.animationDelay="0s",s.appendChild(l),document.getElementById("toast-container").appendChild(s),setTimeout((()=>{s.style.opacity=0,setTimeout((()=>{s.remove()}),100)}),n),"error"===t&&(o.style.display="none")}function I(){const e=document.getElementById("overlay");e.classList.add("loading"),e.style.display="block",e.style.cursor="not-allowed",document.body.style.overflow="hidden"}function B(){const e=document.getElementById("overlay");e.classList.remove("loading"),e.style.display="none",e.style.cursor="default",document.body.style.overflow="auto"}function w(e){e.preventDefault();const t=document.getElementById("formGenerate").querySelectorAll("input, select, textarea");let n=!0;const a=navigator.language||navigator.userLanguage;return t.forEach((e=>{const t=e.closest(".valitade");if(!t)return;let o=!0,s=t;for(;s!==document.body;){const e=window.getComputedStyle(s);if("none"===e.display||"hidden"===e.display){o=!1;break}s=s.parentNode}if(o&&(!e.checkValidity()||"file"===e.type&&0===e.files.length)){e.classList.add("invalid");const o=e.dataset.errorMessage||e.validationMessage||function(e){e.includes("-")&&(e=e.split("-")[1]);const t={en:"This field is required.",br:"Este campo é obrigatório.",pt:"Este campo é obrigatório.",es:"¡Este campo es obligatorio.",fr:"Ce champ est obligatoire.",de:"Dieses Feld ist erforderlich.",it:"Questo campo è obbligatorio."};return t[e.toLowerCase()]||t.en}(a);let s=t.querySelector(".error-message");s||(s=document.createElement("div"),s.classList.add("error-message"),t.appendChild(s)),s.innerText=o,n=!1}else{e.classList.remove("invalid");const n=t.querySelector(".error-message");n&&t.removeChild(n)}})),n}function b(){const{checked:e}=document.getElementById("animation"),t=e?["gif"]:["jpeg","jpg","png","gif"],n=document.getElementById("source").files[0],a=document.getElementById("images"),{value:o}=a.selectedOptions[0],s="upload"===o?n.name.split(".").pop():o.split(".").pop();return!!t.includes(s)||(v(e?"Image format is not valid, select a GIF!":"Image format is not valid","error"),!1)}r.addEventListener("dragover",(e=>{e.preventDefault()})),r.addEventListener("drop",(e=>{e.preventDefault();const t=document.getElementById("dropzoneLabel");m.files=e.dataTransfer.files;const{name:n}=m.files[0];t.textContent=`Image ${n} selected!`,w(e)})),r.addEventListener("click",(()=>{m.click()})),m.addEventListener("change",(e=>{const t=document.getElementById("dropzoneLabel"),{name:n}=e.target.files[0];t.textContent=`Image ${n} selected!`,w(e)})),document.getElementById("btnSimulatePreset").addEventListener("click",(async()=>{const e=`${n}/json/state`,t={method:"POST",body:JSON.stringify(s)};I();try{const n=await fetch(e,t),{success:a}=await n.json();a&&v("Preset sent successfully!")}catch(e){v(e,"error")}finally{B()}})),document.getElementById("btnSavePreset").addEventListener("click",(async()=>{const{value:e}=document.getElementById("name");o.splice(0),o.push(Object.assign({},s,{n:e,o:!1})),await l(o)})),document.getElementById("btnSavePlaylist").addEventListener("click",(async()=>{await l(o,!0)})),document.querySelectorAll("#btnCopyToClipboard").forEach((e=>{e.addEventListener("click",(async()=>{const e=document.getElementById("response");e.select();try{await navigator.clipboard.writeText(e.value),v("Text copied to clipboard")}catch(e){try{await document.execCommand("copy"),v("Text copied to clipboard")}catch(e){v(e,"error")}}}))})),document.querySelectorAll("#btnDownloadPreset").forEach((e=>{e.addEventListener("click",(()=>{const{value:e}=document.getElementById("response"),{value:t}=document.getElementById("output");!function(e,t,n){let a,o;switch(n){case"json":a="application/json",o="json";break;case"ha":a="application/x-yaml",o="yaml";break;case"curl":a="text/plain",o="txt"}const s=new Blob([e],{type:a}),c=URL.createObjectURL(s),l=document.createElement("a");l.href=c,l.download=`${t}.${o}`,l.click(),URL.revokeObjectURL(c)}(e,`WLED_${(new Date).getTime()}`,t)}))})),document.getElementById("segments").addEventListener("change",(e=>{const t=document.getElementById("width"),n=document.getElementById("height"),{width:a,height:o}=e.target.selectedOptions[0].dataset;t.value=a,n.value=o})),document.getElementById("output").addEventListener("change",(e=>{const t=document.getElementsByClassName("output"),{value:n}=e.target.selectedOptions[0];Array.from(t).forEach((function(e){e.style.display="ha"===n?"flex":"none"}))})),document.getElementById("images").addEventListener("change",(e=>{const t=document.getElementById("dropzone"),{value:n}=e.target.selectedOptions[0];if("upload"===n){const e=document.getElementById("dropzoneLabel"),n=document.getElementById("source");e.textContent="Drag and drop a file here or click to select a file",n.value="",t.style.display="block"}else t.style.display="none"})),document.getElementById("transparentImage").addEventListener("change",(e=>{const t=document.getElementsByClassName("transparentImage"),{checked:n}=e.target;Array.from(t).forEach((function(e){e.style.display=n?"flex":"none"}))})),document.getElementById("resizeImage").addEventListener("change",(e=>{const t=document.getElementsByClassName("resizeImage"),n=document.getElementById("pattern"),{checked:a}=e.target;Array.from(t).forEach((function(e){a?(n.value=3,e.style.display="flex"):(n.value=1,e.style.display="none")}))})),document.getElementById("animation").addEventListener("change",(e=>{const t=document.getElementsByClassName("animation"),n=document.getElementById("pattern"),{checked:a}=e.target;Array.from(t).forEach((function(e){a?(v('If you want all frames in the image, set it to "0"',"warning",5e3),e.style.display="flex",n.value=3):(e.style.display="none",n.value=1)}))})),document.getElementById("btnGenerate").addEventListener("click",(async e=>{const{checked:t}=document.getElementById("animation"),n=document.getElementById("preview"),a=document.getElementById("isNotAnimation"),c=document.getElementById("singleCanvas"),l=document.getElementById("isAnimation"),i=document.getElementById("multipleCanvas");w(e)&&(o.splice(0),n.style.display="block",t?(l.style.display="block",a.style.display="none",c.innerHTML="",await async function(){if(b()){const e=document.getElementById("source").files[0],t=document.getElementById("images"),n=(document.getElementById("preview"),document.getElementById("response")),{value:a}=document.getElementById("name"),{value:s}=document.getElementById("frames"),{value:c}=document.getElementById("output"),{value:l}=document.getElementById("duration"),{text:i,value:d}=t.selectedOptions[0];I();try{const t=new FormData;if("upload"===d)t.append("image",e);else{const e=await fetch(d),n=await e.blob(),a=new File([n],i,{type:n.type});t.append("image",a)}const r=await fetch(`https://pixelmagictool.vercel.app/api/wled/frames?amount=${s}`,{method:"POST",body:t}),{message:m,frames:g}=await r.json();if(!r.ok)return void v(m,"error");o=[];const p=[],f=[],h=1e3*l,I=g.map((async(e,t)=>{const n=await u(e),{canvas:s,bri:c,id:l,i:i}=y(n),d={on:!0,bri:c,seg:{id:l,i:i}},r=`${a} ${t+1}`;p.push(`${r}|${JSON.stringify(d)}`),f.push(s),o.push(Object.assign(d,{n:r,o:!0}))}));await Promise.all(I);const B=p.map((e=>{const[t,n]=e.split("|"),a=E(c,n);return`${["ha","curl"].includes(c)?"#":"//"} ${t}\n${a}`}));n.value=B.join("\n"),v(m),function(e,t,n=3e3){let a=0;const o=document.createElement("div");o.classList.add("carousel"),t.forEach(((e,t)=>{t===a||(e.style.display="none"),o.appendChild(e)}));const s=document.getElementById(e);function c(){t[a].style.display="none",a++,a>=t.length&&(a=0),t[a].style.display="block",i()}let l;function i(){clearTimeout(l),l=setTimeout((()=>{c(),0===a&&o.scrollTo(0,0)}),n)}s.innerHTML="",s.appendChild(o),i(),o.addEventListener("mouseover",(()=>{clearTimeout(l)})),o.addEventListener("mouseout",(()=>{i()}))}("multipleCanvas",f,h)}catch(e){v(e,"error")}finally{B()}}}()):(l.style.display="none",a.style.display="block",i.innerHTML="",await async function(){if(b()){const e=document.getElementById("source").files[0],{value:t}=document.getElementById("images"),{value:n}=document.getElementById("output");I();try{const a=document.getElementById("response"),o=document.getElementById("singleCanvas");o.innerHTML="";const c="upload"===t?URL.createObjectURL(e):t,l=await u(c),{canvas:i,bri:d,id:r,i:m,length:g}=y(l);await new Promise((e=>{Object.assign(s,{on:!0,bri:d,seg:{id:r,i:m}}),e()}));const p=E(n,JSON.stringify(s));a.value=p,o.appendChild(i)}catch(e){v(e,"error")}finally{B()}}}()))}));
+    const protocol =
+      window.location.protocol === "file:" ? "http:" : window.location.protocol;
+    const host = "10.0.0.41";
+    // const host = window.location.host || "0.0.0.0";
+
+    let wledUrl = `${protocol}//${host}`;
+
+    const hostname = document.getElementById("hostname");
+    hostname.value = host;
+
+    hostname.addEventListener("change", async () => {
+      wledUrl = `${protocol}//${hostname.value}`;
+
+      await segments();
+      await images();
+
+      hostnameLabel();
+    });
+
+    let jsonSaveWLED = [];
+    let jsonSendWLED = {};
+
+    (async function () {
+      await segments();
+      await images();
+
+      hostnameLabel();
+    })();
+
+    function hostnameLabel() {
+      const images = document.getElementById("images");
+      const link = images.parentNode.querySelector("a");
+
+      link.href = link.href.replace("[wled-ip]", hostname.value);
+    }
+
+    async function playlist() {
+      const { value: duration } = document.getElementById("duration");
+      const { value: transition } = document.getElementById("transition");
+      const { value: name } = document.getElementById("name");
+      const urlPreset = `${wledUrl}/presets.json`;
+      const url = `${wledUrl}/json`;
+
+      try {
+        const response = await fetch(urlPreset);
+        const data = await response.json();
+        const items = Object.keys(data);
+
+        const ps = items.filter(
+          (key) =>
+            typeof data[key] === "object" &&
+            !data[key].playlist &&
+            data[key].n &&
+            data[key].n.startsWith(name)
+        );
+
+        const psave =
+          items.find(
+            (key) =>
+              typeof data[key] === "object" &&
+              data[key].playlist &&
+              data[key].n &&
+              data[key].n === name
+          ) || parseInt(items.pop()) + 1;
+
+        const body = {
+          psave,
+          n: name,
+          on: true,
+          o: false,
+          playlist: {
+            ps,
+            dur: Array.from({ length: ps.length }, () => duration * 10),
+            transition: Array.from(
+              { length: ps.length },
+              () => transition * 10
+            ),
+            repeat: 0,
+            end: 0,
+          },
+        };
+
+        const options = {
+          method: "POST",
+          body: JSON.stringify(body),
+        };
+
+        try {
+          const response = await fetch(url, options);
+          const { success } = await response.json();
+
+          if (success) {
+            toast(`Playlist "${name}" save successfully!`);
+          }
+        } catch (error) {
+          toast(`Error saving preset: ${error}`, "error");
+        }
+      } catch (error) {
+        toast(error, "error");
+      }
+    }
+
+    async function insert(data, isAnimated = false, delay = 5000) {
+      const urlPreset = `${wledUrl}/presets.json`;
+      const url = `${wledUrl}/json`;
+
+      let requestsCompleted = 0;
+
+      show();
+
+      const promises = data.map(async (item) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(async () => {
+            try {
+              const response = await fetch(urlPreset);
+              const data = await response.json();
+              const items = Object.keys(data);
+
+              const psave =
+                items.find(
+                  (key) =>
+                    typeof data[key] === "object" &&
+                    !data[key].playlist &&
+                    data[key].n === item.n
+                ) || parseInt(items.pop()) + 1;
+
+              const body = Object.assign(item, { psave });
+              const options = {
+                method: "POST",
+                body: JSON.stringify(body),
+              };
+
+              try {
+                const response = await fetch(url, options);
+                const { success } = await response.json();
+
+                if (success) {
+                  toast(`Preset "${item.n}" save successfully!`);
+                }
+              } catch (error) {
+                toast(`Error saving preset: ${error}`, "error");
+              }
+            } catch (error) {
+              toast(error, "error");
+            } finally {
+              resolve();
+            }
+          }, delay * requestsCompleted++);
+        });
+      });
+
+      await Promise.all(promises);
+
+      if (isAnimated) {
+        setTimeout(async () => {
+          await playlist()
+            .then(() => {
+              hide();
+            })
+            .catch(() => {
+              hide();
+            });
+        }, delay);
+      } else {
+        hide();
+      }
+    }
+
+    async function images() {
+      const url = `${wledUrl}/edit?list=/`;
+      const selectImages = document.getElementById("images");
+      selectImages.innerHTML = "";
+
+      const options = [
+        { text: "Select a choice", value: "" },
+        { text: "Upload", value: "upload" },
+      ];
+
+      options.forEach(({ text, value }) => {
+        const option = new Option(text, value);
+        selectImages.appendChild(option);
+      });
+
+      show();
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const mimeTypes = ["jpeg", "jpg", "png", "gif"];
+
+        const images = data
+          .filter((file) => {
+            const { name } = file;
+            const [filename, mimetype] = name.split(".");
+
+            file.name = name.replace("/", "");
+
+            return mimeTypes.includes(mimetype);
+          })
+          .map((file) => {
+            const { name } = file;
+            const option = document.createElement("option");
+
+            option.text = name;
+            option.value = `${wledUrl}/${name}`;
+
+            selectImages.add(option);
+          });
+      } catch (error) {
+        toast(error, "error");
+      } finally {
+        hide();
+      }
+    }
+
+    async function segments() {
+      const selectSegments = document.getElementById("segments");
+      const pattern = document.getElementById("pattern");
+      const width = document.getElementById("width");
+      const height = document.getElementById("height");
+
+      const url = `${wledUrl}/json/state`;
+
+      selectSegments.innerHTML = "";
+
+      const options = [{ text: "Select a choice", value: "" }];
+
+      options.forEach(({ text, value }) => {
+        const option = new Option(text, value);
+        selectSegments.appendChild(option);
+      });
+
+      show();
+
+      try {
+        const response = await fetch(url);
+        const { seg: segments } = await response.json();
+
+        segments &&
+          segments.forEach(function ({ id, n, stop: w, stopY: h }, index) {
+            const option = document.createElement("option");
+            option.text = n ? n : `Segment ${id}`;
+            option.value = id;
+            option.dataset.width = w;
+            option.dataset.height = h;
+
+            if (index === 0) {
+              option.selected = true;
+              width.value = w;
+              height.value = h;
+
+              pattern.value = w * h > 512 ? 3 : 1;
+            }
+
+            selectSegments.add(option);
+          });
+      } catch (error) {
+        toast(error, "error");
+      } finally {
+        hide();
+      }
+    }
+
+    const dropzone = document.getElementById("dropzone");
+    const source = document.getElementById("source");
+
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const label = document.getElementById("dropzoneLabel");
+
+      source.files = e.dataTransfer.files;
+
+      const { name } = source.files[0];
+      label.textContent = `Image ${name} selected!`;
+
+      validateForm(e);
+    });
+
+    dropzone.addEventListener("click", () => {
+      source.click();
+    });
+
+    source.addEventListener("change", (e) => {
+      const label = document.getElementById("dropzoneLabel");
+
+      const { name } = e.target.files[0];
+      label.textContent = `Image ${name} selected!`;
+
+      validateForm(e);
+    });
+
+    document
+      .getElementById("btnSimulatePreset")
+      .addEventListener("click", async () => {
+        const url = `${wledUrl}/json/state`;
+
+        const options = {
+          method: "POST",
+          body: JSON.stringify(jsonSendWLED),
+        };
+
+        show();
+
+        try {
+          const response = await fetch(url, options);
+          const { success } = await response.json();
+
+          if (success) {
+            toast("Preset sent successfully!");
+          }
+        } catch (error) {
+          toast(error, "error");
+        } finally {
+          hide();
+        }
+      });
+
+    document
+      .getElementById("btnSavePreset")
+      .addEventListener("click", async () => {
+        const { value: name } = document.getElementById("name");
+
+        jsonSaveWLED.splice(0);
+
+        jsonSaveWLED.push(
+          Object.assign({}, jsonSendWLED, { n: name, o: false })
+        );
+
+        await insert(jsonSaveWLED);
+      });
+
+    document
+      .getElementById("btnSavePlaylist")
+      .addEventListener("click", async () => {
+        await insert(jsonSaveWLED, true);
+      });
+
+    document.querySelectorAll("#btnCopyToClipboard").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const response = document.getElementById("response");
+
+        response.select();
+
+        try {
+          await navigator.clipboard.writeText(response.value);
+          toast("Text copied to clipboard");
+        } catch (error) {
+          try {
+            await document.execCommand("copy");
+            toast("Text copied to clipboard");
+          } catch (error) {
+            toast(error, "error");
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll("#btnDownloadPreset").forEach((button) => {
+      button.addEventListener("click", () => {
+        const { value: response } = document.getElementById("response");
+        const { value: output } = document.getElementById("output");
+
+        const timestamp = new Date().getTime();
+        const filename = `WLED_${timestamp}`;
+
+        downloadFile(response, filename, output);
+      });
+    });
+
+    document.getElementById("segments").addEventListener("change", (e) => {
+      const width = document.getElementById("width");
+      const height = document.getElementById("height");
+
+      const { width: w, height: h } = e.target.selectedOptions[0].dataset;
+
+      width.value = w;
+      height.value = h;
+    });
+
+    document.getElementById("output").addEventListener("change", (e) => {
+      const output = document.getElementsByClassName("output");
+      const { value } = e.target.selectedOptions[0];
+
+      Array.from(output).forEach(function (element) {
+        if (value === "ha") {
+          element.style.display = "flex";
+        } else {
+          element.style.display = "none";
+        }
+      });
+    });
+
+    document.getElementById("images").addEventListener("change", (e) => {
+      const dropzone = document.getElementById("dropzone");
+      const { value } = e.target.selectedOptions[0];
+
+      if (value === "upload") {
+        const dropzoneLabel = document.getElementById("dropzoneLabel");
+        const source = document.getElementById("source");
+
+        dropzoneLabel.textContent =
+          "Drag and drop a file here or click to select a file";
+        source.value = "";
+
+        dropzone.style.display = "block";
+      } else {
+        dropzone.style.display = "none";
+      }
+    });
+
+    document
+      .getElementById("transparentImage")
+      .addEventListener("change", (e) => {
+        const transparentImage =
+          document.getElementsByClassName("transparentImage");
+        const { checked } = e.target;
+
+        Array.from(transparentImage).forEach(function (element) {
+          if (checked) {
+            element.style.display = "flex";
+          } else {
+            element.style.display = "none";
+          }
+        });
+      });
+
+    document.getElementById("resizeImage").addEventListener("change", (e) => {
+      const resizeImage = document.getElementsByClassName("resizeImage");
+      const pattern = document.getElementById("pattern");
+      const { checked } = e.target;
+
+      Array.from(resizeImage).forEach(function (element) {
+        if (checked) {
+          pattern.value = 3;
+          element.style.display = "flex";
+        } else {
+          pattern.value = 1;
+          element.style.display = "none";
+        }
+      });
+    });
+
+    document.getElementById("animation").addEventListener("change", (e) => {
+      const animation = document.getElementsByClassName("animation");
+
+      const pattern = document.getElementById("pattern");
+
+      const { checked } = e.target;
+
+      Array.from(animation).forEach(function (element) {
+        if (checked) {
+          toast(
+            'If you want all frames in the image, set it to "0"',
+            "warning",
+            5000
+          );
+          element.style.display = "flex";
+          pattern.value = 3;
+        } else {
+          element.style.display = "none";
+          pattern.value = 1;
+        }
+      });
+    });
+
+    document
+      .getElementById("btnGenerate")
+      .addEventListener("click", async (event) => {
+        const { checked: animation } = document.getElementById("animation");
+        const preview = document.getElementById("preview");
+
+        const isNotAnimation = document.getElementById("isNotAnimation");
+        const singleCanvas = document.getElementById("singleCanvas");
+
+        const isAnimation = document.getElementById("isAnimation");
+        const multipleCanvas = document.getElementById("multipleCanvas");
+
+        if (validateForm(event)) {
+          jsonSaveWLED.splice(0);
+
+          preview.style.display = "block";
+
+          if (animation) {
+            isAnimation.style.display = "block";
+            isNotAnimation.style.display = "none";
+            singleCanvas.innerHTML = "";
+
+            await generateAnimation();
+          } else {
+            isAnimation.style.display = "none";
+            isNotAnimation.style.display = "block";
+            multipleCanvas.innerHTML = "";
+
+            await generate();
+          }
+        }
+      });
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+
+        image.addEventListener("load", function () {
+          resolve(image);
+        });
+
+        image.addEventListener("error", function () {
+          reject(new Error("Error loading image"));
+        });
+
+        image.src = src;
+      });
+    }
+
+    async function generate() {
+      if (checkMimeType()) {
+        const file = document.getElementById("source").files[0];
+
+        const { value: images } = document.getElementById("images");
+        const { value: output } = document.getElementById("output");
+
+        show();
+
+        try {
+          const response = document.getElementById("response");
+
+          const singleCanvas = document.getElementById("singleCanvas");
+          singleCanvas.innerHTML = "";
+
+          const urlImage =
+            images === "upload" ? URL.createObjectURL(file) : images;
+
+          const image = await loadImage(urlImage);
+          const { canvas, bri, id, i, length } = recreate(image);
+
+          await new Promise((resolve) => {
+            Object.assign(jsonSendWLED, {
+              on: true,
+              bri,
+              seg: {
+                id,
+                i,
+              },
+            });
+
+            resolve();
+          });
+
+          const jsonData = JSON.stringify(jsonSendWLED);
+          const dataResponse = formatOutput(output, jsonData);
+
+          response.value = dataResponse;
+          singleCanvas.appendChild(canvas);
+        } catch (error) {
+          toast(error, "error");
+        } finally {
+          hide();
+        }
+      }
+    }
+
+    async function generateAnimation() {
+      if (checkMimeType()) {
+        const file = document.getElementById("source").files[0];
+
+        const images = document.getElementById("images");
+
+        const preview = document.getElementById("preview");
+        const response = document.getElementById("response");
+
+        const { value: presetName } = document.getElementById("name");
+        const { value: amount } = document.getElementById("frames");
+        const { value: output } = document.getElementById("output");
+        const { value: duration } = document.getElementById("duration");
+
+        const { text: imageName, value: imageValue } =
+          images.selectedOptions[0];
+
+        show();
+
+        try {
+          const body = new FormData();
+
+          if (imageValue === "upload") {
+            body.append("image", file);
+          } else {
+            const responseImage = await fetch(imageValue);
+            const blob = await responseImage.blob();
+
+            const file = new File([blob], imageName, { type: blob.type });
+
+            body.append("image", file);
+          }
+
+          const responseFrames = await fetch(
+            `https://pixelmagictool.vercel.app/api/wled/frames?amount=${amount}`,
+            {
+              method: "POST",
+              body,
+            }
+          );
+
+          const { message, frames } = await responseFrames.json();
+
+          if (!responseFrames.ok) {
+            toast(message, "error");
+            return;
+          }
+
+          jsonSaveWLED = [];
+
+          const texteares = [];
+          const canvases = [];
+
+          const delay = duration * 1000;
+
+          const promises = frames.map(async (frame, index) => {
+            const image = await loadImage(frame);
+            const { canvas, bri, id, i } = recreate(image);
+            const jsonData = {
+              on: true,
+              bri,
+              seg: { id, i },
+            };
+
+            const n = `${presetName} ${index + 1}`;
+
+            texteares.push(`${n}|${JSON.stringify(jsonData)}`);
+            canvases.push(canvas);
+
+            jsonSaveWLED.push(Object.assign(jsonData, { n, o: true }));
+          });
+
+          await Promise.all(promises);
+
+          const dataResponse = texteares.map((item) => {
+            const [presetName, json] = item.split("|");
+            const outputFormatted = formatOutput(output, json);
+            const comment = ["ha", "curl"].includes(output) ? "#" : "//";
+
+            return `${comment} ${presetName}\n${outputFormatted}`;
+          });
+
+          response.value = dataResponse.join("\n");
+          toast(message);
+          carousel("multipleCanvas", canvases, delay);
+        } catch (error) {
+          toast(error, "error");
+        } finally {
+          hide();
+        }
+      }
+    }
+
+    function recreate(image) {
+      const { value: pattern } = document.getElementById("pattern");
+      const { value: segmentId } = document.getElementById("segments");
+      const { value: bri } = document.getElementById("brightness");
+      const { value: width } = document.getElementById("width");
+      const { value: height } = document.getElementById("height");
+
+      const { checked: resizeImage } = document.getElementById("resizeImage");
+
+      const pixelsRef = 48;
+      const fullWidth = width * pixelsRef;
+      const fullHeight = height * pixelsRef;
+      const fontSize = fullWidth <= 768 ? 14 : 18;
+      const length = width * height;
+
+      const colors = [];
+
+      let i = [];
+
+      const { ctx: reference } = createCanvas(width, height);
+
+      reference.drawImage(image, 0, 0, width, height);
+
+      const imageData = reference.getImageData(0, 0, width, height);
+      const pixels = imageData.data;
+
+      const { canvas, ctx } = createCanvas(fullWidth, fullHeight);
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const index = y * width + x;
+
+          const red = pixels[index * 4];
+          const green = pixels[index * 4 + 1];
+          const blue = pixels[index * 4 + 2];
+          const alpha = pixels[index * 4 + 3];
+
+          const hex = pixelColor(red, green, blue, alpha);
+          const { r, g, b } = hexToRgb(hex);
+
+          colors.push(hex);
+
+          let coordinateX = x * pixelsRef;
+          let coordinateY = y * pixelsRef;
+
+          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+          ctx.fillRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
+
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = "#ffffff";
+          ctx.strokeRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
+
+          let offsetX = coordinateX + pixelsRef / 2;
+          let offsetY = coordinateY + pixelsRef / 2;
+
+          ctx.font = `${fontSize}px Arial`;
+          ctx.fillStyle = hex == "ffffff" ? "#252525" : "#ffffff";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(index + 1, offsetX, offsetY);
+        }
+      }
+
+      switch (pattern) {
+        case "1":
+          i = colors;
+          break;
+        case "2":
+          i = individualLedIndex(colors);
+          break;
+        case "3":
+          i = rangeLeds(colors);
+          break;
+      }
+
+      return {
+        canvas,
+        bri,
+        id: segmentId,
+        i,
+        length,
+      };
+    }
+
+    function rangeLeds(colors) {
+      let startIndex = 0;
+      let endIndex = 0;
+      let currentColor = colors[0];
+      let pattern = [];
+
+      colors.forEach((color, index) => {
+        if (color !== currentColor) {
+          endIndex = index;
+          const repetitions = endIndex - startIndex;
+
+          if (repetitions == 1) {
+            pattern.push(currentColor);
+          } else {
+            pattern.push(startIndex, endIndex, currentColor);
+          }
+          startIndex = index;
+        }
+        currentColor = color;
+      });
+
+      const lastRepetition = colors.length - startIndex;
+
+      if (lastRepetition === 1) {
+        pattern.push(currentColor);
+      } else {
+        pattern.push(startIndex, colors.length, currentColor);
+      }
+
+      return pattern;
+    }
+
+    function pixelColor(r, g, b, a) {
+      const { checked } = document.getElementById("transparentImage");
+      const { value } = document.getElementById("color");
+
+      if (a === 0) {
+        if (checked) {
+          return value.replace("#", "").toLowerCase();
+        }
+
+        return rgbToHex(255, 255, 255);
+      }
+
+      return rgbToHex(r, g, b);
+    }
+
+    function hexToRgb(hex) {
+      hex = hex.replace("#", "");
+
+      if (hex.length === 3) {
+        hex = hex.replace(/(.)/g, "$1$1");
+      }
+
+      const [r, g, b] = hex
+        .match(/.{2}/g)
+        .map((component) => parseInt(component, 16));
+
+      return { r, g, b };
+    }
+
+    function rgbToHex(r, g, b) {
+      const hex = ((r << 16) | (g << 8) | b).toString(16);
+      return ("000000" + hex).slice(-6);
+    }
+
+    function individualLedIndex(colors) {
+      const pattern = [];
+      colors.forEach((led, index) => {
+        pattern.push(index, led);
+      });
+
+      return pattern;
+    }
+
+    function createCanvas(width, height) {
+      const canvas = document.createElement("canvas");
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+      ctx.imageSmoothingQuality = "high";
+      ctx.imageSmoothingEnabled = false;
+
+      return { canvas, ctx };
+    }
+
+    function formatOutput(output, json) {
+      return output === "ha"
+        ? homeAssistant(json)
+        : output === "curl"
+        ? curl(json)
+        : json;
+    }
+
+    function downloadFile(text, filename, output) {
+      let mimeType;
+      let fileExtension;
+      let response;
+
+      switch (output) {
+        case "json":
+          mimeType = "application/json";
+          fileExtension = "json";
+          break;
+        case "ha":
+          mimeType = "application/x-yaml";
+          fileExtension = "yaml";
+          break;
+        case "curl":
+          mimeType = "text/plain";
+          fileExtension = "txt";
+          break;
+      }
+
+      const blob = new Blob([text], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+
+      const anchorElement = document.createElement("a");
+      anchorElement.href = url;
+      anchorElement.download = `${filename}.${fileExtension}`;
+
+      anchorElement.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function homeAssistant(jsonData) {
+      const { value: device } = document.getElementById("device");
+      const { value: friendly_name } = document.getElementById("friendlyName");
+      const { value: unique_id } = document.getElementById("uniqueId");
+      const { value: hostname } = document.getElementById("hostname");
+
+      if (device) {
+        const yamlData = {
+          switches: {
+            [device]: {
+              friendly_name,
+              unique_id,
+              command_on: `curl -X POST "http://${hostname}/json/state" -d '${jsonData}' -H "Content-Type: application/json"`,
+              command_off: `curl -X POST "http://${hostname}/json/state" -d '{"on":false}' -H "Content-Type: application/json"`,
+            },
+          },
+        };
+
+        return convertToYaml(yamlData);
+      }
+    }
+
+    function curl(jsonData) {
+      const { value: hostname } = document.getElementById("hostname");
+      return `curl -X POST "http://${hostname}/json/state" -d '${jsonData}' -H "Content-Type: application/json"`;
+    }
+
+    function convertToYaml(obj) {
+      function processValue(value, indentationLevel) {
+        if (typeof value === "object" && !Array.isArray(value)) {
+          return processObject(value, indentationLevel + 1);
+        } else {
+          return value;
+        }
+      }
+
+      function processObject(obj, indentationLevel = 0) {
+        const indent = "  ".repeat(indentationLevel);
+        const lines = Object.entries(obj).map(([key, value]) => {
+          if (typeof value === "object" && !Array.isArray(value)) {
+            return `${indent}${key}:\n${processObject(
+              value,
+              indentationLevel + 1
+            )}`;
+          } else {
+            return `${indent}${key}: ${processValue(value, indentationLevel)}`;
+          }
+        });
+
+        return lines.join("\n");
+      }
+
+      return processObject(obj);
+    }
+
+    function toast(
+      message,
+      type = "success",
+      duration = 2000,
+      hideElement = "preview"
+    ) {
+      const hide = document.getElementById(hideElement);
+      const toast = document.createElement("div");
+      const wait = 100;
+
+      toast.style.animation = "fadeIn";
+      toast.style.animationDuration = `${duration + wait}ms`;
+      toast.style.animationTimingFunction = "linear";
+
+      toast.classList.add("toast", type);
+
+      const body = document.createElement("span");
+      body.classList.add("toast-body");
+
+      body.textContent = message;
+
+      toast.appendChild(body);
+
+      const progress = document.createElement("div");
+      progress.classList.add("toast-progress");
+
+      progress.style.animation = "progress";
+      progress.style.animationDuration = `${duration + wait}ms`;
+      progress.style.animationDelay = "0s";
+
+      toast.appendChild(progress);
+
+      document.getElementById("toast-container").appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = 0;
+        setTimeout(() => {
+          toast.remove();
+        }, wait);
+      }, duration);
+
+      if (type === "error") {
+        hide.style.display = "none";
+      }
+    }
+
+    function carousel(id, images, delay = 3000) {
+      let index = 0;
+      const carousel = document.createElement("div");
+      carousel.classList.add("carousel");
+
+      images.forEach((canvas, i) => {
+        if (i === index) {
+          carousel.appendChild(canvas);
+        } else {
+          canvas.style.display = "none";
+          carousel.appendChild(canvas);
+        }
+      });
+
+      const container = document.getElementById(id);
+      container.innerHTML = "";
+      container.appendChild(carousel);
+
+      function next() {
+        images[index].style.display = "none";
+        index++;
+        if (index >= images.length) {
+          index = 0;
+        }
+
+        images[index].style.display = "block";
+        loop();
+      }
+
+      function previous() {
+        images[index].style.display = "none";
+        index--;
+        if (index < 0) {
+          index = images.length - 1;
+        }
+
+        images[index].style.display = "block";
+        loop();
+      }
+
+      let timeoutId;
+      function loop() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          next();
+          if (index === 0) {
+            carousel.scrollTo(0, 0);
+          }
+        }, delay);
+      }
+      loop();
+
+      carousel.addEventListener("mouseover", () => {
+        clearTimeout(timeoutId);
+      });
+
+      carousel.addEventListener("mouseout", () => {
+        loop();
+      });
+    }
+
+    function show() {
+      const overlay = document.getElementById("overlay");
+      overlay.classList.add("loading");
+      overlay.style.display = "block";
+      overlay.style.cursor = "not-allowed";
+
+      document.body.style.overflow = "hidden";
+    }
+
+    function hide() {
+      const overlay = document.getElementById("overlay");
+      overlay.classList.remove("loading");
+      overlay.style.display = "none";
+      overlay.style.cursor = "default";
+
+      document.body.style.overflow = "auto";
+    }
+
+    function validateForm(event) {
+      event.preventDefault();
+
+      const form = document.getElementById("formGenerate");
+      const inputs = form.querySelectorAll("input, select, textarea");
+
+      let isValid = true;
+
+      const browserLanguage = navigator.language || navigator.userLanguage;
+
+      inputs.forEach((input) => {
+        const parent = input.closest(".valitade");
+
+        if (!parent) {
+          return;
+        }
+
+        let isVisible = true;
+
+        let tempParent = parent;
+        while (tempParent !== document.body) {
+          const parentStyles = window.getComputedStyle(tempParent);
+          if (
+            parentStyles.display === "none" ||
+            parentStyles.display === "hidden"
+          ) {
+            isVisible = false;
+            break;
+          }
+          tempParent = tempParent.parentNode;
+        }
+
+        if (
+          isVisible &&
+          (!input.checkValidity() ||
+            (input.type === "file" && input.files.length === 0))
+        ) {
+          input.classList.add("invalid");
+
+          const errorMessage =
+            input.dataset.errorMessage ||
+            input.validationMessage ||
+            getRequiredFieldMessage(browserLanguage);
+
+          let errorElement = parent.querySelector(".error-message");
+
+          if (!errorElement) {
+            errorElement = document.createElement("div");
+            errorElement.classList.add("error-message");
+            parent.appendChild(errorElement);
+          }
+
+          errorElement.innerText = errorMessage;
+          isValid = false;
+        } else {
+          input.classList.remove("invalid");
+          const errorElement = parent.querySelector(".error-message");
+
+          if (errorElement) {
+            parent.removeChild(errorElement);
+          }
+        }
+      });
+
+      return isValid;
+    }
+
+    function getRequiredFieldMessage(language) {
+      if (language.includes("-")) {
+        language = language.split("-")[1];
+      }
+
+      const messages = {
+        en: "This field is required.",
+        br: "Este campo é obrigatório.",
+        pt: "Este campo é obrigatório.",
+        es: "¡Este campo es obligatorio.",
+        fr: "Ce champ est obligatoire.",
+        de: "Dieses Feld ist erforderlich.",
+        it: "Questo campo è obbligatorio.",
+      };
+
+      return messages[language.toLowerCase()] || messages.en;
+    }
+
+    function checkMimeType() {
+      const { checked: animation } = document.getElementById("animation");
+      const mimeTypes = animation ? ["gif"] : ["jpeg", "jpg", "png", "gif"];
+
+      const source = document.getElementById("source").files[0];
+      const images = document.getElementById("images");
+
+      const { value: image } = images.selectedOptions[0];
+
+      const extension =
+        image === "upload"
+          ? source.name.split(".").pop()
+          : image.split(".").pop();
+
+      if (!mimeTypes.includes(extension)) {
+        toast(
+          animation
+            ? "Image format is not valid, select a GIF!"
+            : "Image format is not valid",
+          "error"
+        );
+        return false;
+      }
+
+      return true;
+    }
   </script>
 </html>
