@@ -4,23 +4,48 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="@ajotanc" />
     <meta
       http-equiv="Cache-Control"
       content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <title>Pixel Magic Tool - @ajotanc</title>
+    <title>Pixel Magic Tool</title>
 
     <link
       rel="shortcut icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAK9JREFUeNqUUssNwyAMJZWVUw4dhRHakZA6RqWMFEbwKDnk1FNBekEWxOBYQggL/D68yXXq+M7PtHkcefn89vrOw/UrP96w/NUFGiDLRz71GyY0QJa1Yn+nFa0ShqUNYCAF0QvoceOB4naEZif6UTNRapYaTyauRi4DEspr4Hbs5YKsbmtMyeJ0LxeESV4gB+hlSy4oO2txWysyus0a0+lO6vBjxcTMlG4mt2H6F2AAhU5NWu4dorQAAAAASUVORK5CYII=
-    " />
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKpJREFUeNqMU4sNxCAIpRcGODdxhN5ITnIj1RHYxG7QYsI1pD0+LyFGorzHExdwUEp581JlS2OM/X7mBT7m5U2i/juAAbO+VDn/UIIBs8ZX1g9Hz7YQwipAwtRUrkmOHh4YbnfpGVS+WybqnnWPPyVwZ74KMMsauN29ucCs25ZSzDjtzQVKpaqYm/RLmbnA6WzGbQuYdJscpXnMF+M4JFbvL0AwoZfSU4ABABLYR6r7lELpAAAAAElFTkSuQmCC" />
 
     <style>
+      :root {
+        --overlay: rgba(0, 0, 0, 0.5);
+        --background: #111;
+        --gray-dark: #222;
+        --gray-medium: #333;
+        --gray-light: #eee;
+        --gray: #bbb;
+        --blue-dark: #284352;
+        --blue-medium: #3b708b;
+        --blue-light: #48a;
+        --success-dark: #03440c;
+        --success-medium: #548c2f;
+        --success-light: #8ac926;
+        --error-dark: #a80a0a;
+        --error-medium: #c9262b;
+        --error-light: #ff595e;
+        --warning-dark: #dc2f02;
+        --warning-medium: #e85d04;
+        --warning-light: #f48c06;
+      }
+
+      ::selection {
+        background: var(--blue-light);
+      }
+
       * {
+        font-family: "Helvetica", Verdana, sans-serif;
         box-sizing: border-box;
-        font-family: "Tahoma", monospace;
         margin: 0;
         padding: 0;
       }
@@ -30,33 +55,28 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        font-size: 12px;
+        background: var(--background);
       }
 
       small {
         display: block;
-        font-size: 11px;
         font-weight: 400;
         margin: 2px 0 5px;
-        color: #1982c4;
+        color: var(--gray);
+        font-size: 12px;
       }
 
       a {
         text-decoration: none;
-        color: #1982c4;
+        color: var(--gray-light);
+        font-size: 12px;
+        font-weight: 600;
       }
 
       a:hover,
       a:focus,
       a:hide {
-        color: #235789;
-      }
-
-      .divider {
-        width: calc(100% - 10px);
-        height: 1px;
-        background: #ececec;
-        margin: 20px auto;
+        color: var(--gray-medium);
       }
 
       .container {
@@ -80,19 +100,18 @@
         margin: 0 !important;
       }
 
+      .m-bottom {
+        margin-bottom: 10px !important;
+      }
+
+      .m-top {
+        margin-top: 10px !important;
+      }
+
       #response,
-      #preview,
       form,
       canvas {
         width: 100%;
-      }
-
-      form {
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f8f8f8;
-        border-radius: 8px;
-        border: 1px solid #cccccc;
       }
 
       .row {
@@ -116,6 +135,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
+        color: var(--gray);
       }
 
       input[type="text"],
@@ -124,12 +144,13 @@
       textarea {
         width: 100%;
         padding: 10px;
-        border-radius: 5px;
-        border: none;
-        background-color: #f0f0f0;
-        font-size: 12px;
+        border-radius: 50px;
+        background-color: var(--gray-medium);
+        border: 1px solid var(--gray-medium);
         display: inline-block;
         outline: none;
+        color: var(--gray-light);
+        font-size: 14px;
       }
 
       input[type="color"] {
@@ -142,47 +163,83 @@
 
       .input-group {
         display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
-      .input-group input {
+      .input-group input:not([type="range"]) {
         border-radius: 5px 0 0 5px;
       }
 
       .input-group .input-description {
-        padding: 10px;
-        font-size: 14px;
-        color: #626262;
-        background: #d9d9d9;
+        min-width: 40px;
+        padding: 10px 0;
+        color: #222;
+        background: var(--gray);
         border-radius: 0px 5px 5px 0;
+        border: 1px solid var(--gray);
+        border-left: 0;
+        text-align: center;
+        font-size: 14px;
+        line-height: 16px;
+        height: 38px;
+        font-weight: 600;
+      }
+
+      .input-group .square {
+        border-radius: 5px;
+        margin-left: 10px;
       }
 
       textarea {
         resize: vertical;
         min-height: 200px;
         margin: 0 0 10px;
+        border-radius: 5px;
       }
 
-      input[type="submit"] {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4caf50;
-        color: #fff;
-        font-size: 12px;
+      .customSelect select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: none;
+        padding-right: 20px;
         cursor: pointer;
+        display: flex;
+        position: relative;
+      }
+
+      .customSelect::after {
+        content: "";
+        display: flex;
+        position: absolute;
+        top: calc(50% + 6px);
+        right: 16px;
+        transform: rotate(135deg);
+        width: 6px;
+        height: 6px;
+        border-top: 2px solid var(--gray-light);
+        border-right: 2px solid var(--gray-light);
+        pointer-events: none;
       }
 
       .dropzone {
-        width: 100%;
-        border: 1px dashed #a9a9a9;
-        background-color: #f5f5f5;
-        color: #666;
-        font-size: 12px;
+        width: calc(100% - 10px);
+        border: 1px dashed var(--gray-light);
+        background-color: var(--gray-dark);
+        color: var(--gray-light);
         text-align: center;
         padding: 40px 10px;
         border-radius: 5px;
-        margin: 20px 0;
+        margin: 20px 5px;
         transition: all 0.5s ease-in-out;
+      }
+
+      .dropzone:hover {
+        cursor: pointer;
+        color: var(--gray-dark);
+        background-color: var(--gray-light);
+        border-color: var(--gray-dark);
       }
 
       .dropzone p {
@@ -190,18 +247,13 @@
         padding: 0;
       }
 
-      .dropzone:hover {
-        cursor: pointer;
-        background-color: #eee;
-      }
-
       .dropzone.dragover {
-        background-color: #ddd;
+        background-color: var(--gray);
       }
 
       .range-slider {
         appearance: none;
-        background-color: #ddd;
+        background-color: var(--gray);
         height: 8px;
         width: 100%;
         border-radius: 10px;
@@ -213,7 +265,7 @@
         appearance: none;
         height: 16px;
         width: 16px;
-        background-color: #4caf50;
+        background-color: var(--gray-dark);
         border-radius: 50%;
         cursor: pointer;
         border: 0;
@@ -238,7 +290,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
+        background-color: var(--gray-medium);
         border-radius: 34px;
         transition: 0.4s;
       }
@@ -256,11 +308,11 @@
       }
 
       input:checked + .switch-slider {
-        background-color: #4caf50;
+        background-color: var(--blue-light);
       }
 
       input:focus + .switch-slider {
-        box-shadow: 0 0 1px #4caf50;
+        box-shadow: 0 0 1px var(--blue-light);
       }
 
       input:checked + .switch-slider:before {
@@ -281,8 +333,7 @@
         padding: 6px 12px;
         margin: 10px 0 0;
         border-radius: 8px;
-        color: #fff;
-        font-size: 12px;
+        color: var(--gray-light);
         transform: translateY(30px);
         opacity: 0;
         visibility: hidden;
@@ -290,19 +341,21 @@
 
       .toast .toast-body {
         padding: 8px 0;
-        color: #fdfdfd;
+        font-weight: 600;
+        color: var(--gray-light);
+        letter-spacing: 0.5px;
       }
 
       .toast.success {
-        background-color: #8ac926;
+        background-color: var(--success-medium);
       }
 
       .toast.error {
-        background-color: #ff595e;
+        background-color: var(--error-light);
       }
 
       .toast.warning {
-        background-color: #f48c06;
+        background-color: var(--warning-light);
       }
 
       .toast-progress {
@@ -317,15 +370,27 @@
       }
 
       .toast.success .toast-progress {
-        background: linear-gradient(to right, #8ac926, #548c2f);
+        background: linear-gradient(
+          to right,
+          var(--success-light),
+          var(--success-medium)
+        );
       }
 
       .toast.error .toast-progress {
-        background: linear-gradient(to right, #ff595e, #c9262b);
+        background: linear-gradient(
+          to right,
+          var(--error-light),
+          var(--error-medium)
+        );
       }
 
       .toast.warning .toast-progress {
-        background: linear-gradient(to right, #f48c06, #e85d04);
+        background: linear-gradient(
+          to right,
+          var(--warning-light),
+          var(--warning-medium)
+        );
       }
 
       #multipleCanvas {
@@ -359,16 +424,20 @@
         width: 100%;
         border: 0;
         padding: 10px 18px;
-        border-radius: 4px;
-        color: #fdfdfd;
+        border-radius: 50px;
+        color: var(--gray);
         cursor: pointer;
         margin: 0 0 10px;
-        background: #1982c4;
+        background: var(--gray-medium);
+        border: 1px solid var(--gray-dark);
         transition: all 0.5s ease-in-out;
+        font-size: 14px;
+        font-weight: 600;
       }
 
       .button:hover {
-        background: #4267ac;
+        background: var(--gray-dark);
+        border: 1px solid var(--gray-medium);
       }
 
       .button:last-child {
@@ -381,36 +450,19 @@
         width: 100%;
       }
 
-      .buttonRainbow {
-        width: 100%;
-        border: 0;
-        padding: 10px 18px;
-        border-radius: 4px;
-        color: #fdfdfd;
-        cursor: pointer;
-        background: linear-gradient(
-          to right,
-          #ff595e,
-          #ffca3a,
-          #8ac926,
-          #1982c4,
-          #6a4c93
-        );
-      }
-
-      .buttonRainbow:hover {
-        animation-play-state: paused;
-      }
-
       #preview {
-        border: 1px solid #cccccc;
-        padding: 20px;
+        width: 100%;
         margin: 20px 0 10px;
         border-radius: 8px;
       }
 
       #preview .buttons {
-        margin: 0 0 20px;
+        margin: 0 0 15px;
+      }
+
+      #recreatedImage {
+        margin: 0 5px;
+        width: calc(100% - 10px);
       }
 
       #overlay {
@@ -419,7 +471,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: var(--overlay);
         display: none;
       }
 
@@ -431,7 +483,8 @@
         left: calc(50% - 19px);
         width: 26px;
         height: 26px;
-        border: 6px solid rgba(255, 255, 255, 0.5);
+        border: 6px solid var(--gray-light);
+        border-top-color: var(--gray-dark);
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }
@@ -439,17 +492,15 @@
       input.invalid,
       select.invalid,
       textarea.invalid {
-        border: 1px solid #df1f1f;
+        border: 1px solid var(--error-dark);
       }
 
-      input.invalid + .error-message,
-      select.invalid + .error-message,
-      textarea.invalid + .error-message {
+      .error-message {
         display: block;
-        color: #df1f1f;
+        color: var(--error-dark);
         padding: 4px 0;
-        font-size: 12px;
         font-weight: 600;
+        font-size: 12px;
       }
 
       .slide-container {
@@ -480,7 +531,7 @@
       }
 
       footer {
-        margin-top: 10px;
+        margin: 10px 5px 0;
       }
 
       @media (max-width: 767px) {
@@ -500,7 +551,7 @@
         }
 
         .divider {
-          margin: 20px auto 0;
+          margin: 10px auto 0;
         }
       }
 
@@ -513,26 +564,6 @@
       @keyframes spin {
         to {
           transform: rotate(360deg);
-        }
-
-        0% {
-          border-top-color: #ff595e;
-        }
-
-        25% {
-          border-top-color: #ffca3a;
-        }
-
-        50% {
-          border-top-color: #8ac926;
-        }
-
-        75% {
-          border-top-color: #1982c4;
-        }
-
-        100% {
-          border-top-color: #6a4c93;
         }
       }
 
@@ -568,75 +599,60 @@
               xmlns:xlink="http://www.w3.org/1999/xlink"
               x="0px"
               y="0px"
-              viewBox="0 0 560 360"
-              enable-background="new 0 0 560 360"
+              width="200px"
+              height="130px"
+              viewBox="0 0 200 130"
+              enable-background="new 0 0 200 130"
               xml:space="preserve">
               <image
+                width="200"
+                height="130"
                 x="0"
                 y="0"
-                href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAFoCAMAAAB+GjFaAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-          AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA8FBMVEUAAAD0jAb0jAb0jAb0
-          jAb0jAb0jAb0jAYlJSUlJSUlJSX0jAb0jAb0jAYlJSUlJSUlJSUlJSUlJSX0jAYlJSUlJSUlJSUl
-          JSUlJSVqTJNqTJNqTJNqTJNqTJNqTJMZgsSKySb/yjr/WV6KySYZgsT/WV6KySaKySZqTJP/WV7/
-          WV4ZgsT/WV7/WV7/WV7/yjoZgsQZgsSKySZqTJNqTJOKySYZgsSKySaKySb/WV7/WV4ZgsSKySZq
-          TJMZgsSKySaKySaKySYZgsQZgsT/yjr/yjr/yjolJSX0jAYlJSVqTJMZgsSKySb/yjr/WV7///+0
-          60LYAAAASHRSTlMAj78wQIDfn2C/gM9wIBBAMCCfYI/P799wIIBgQL/vQIC/QL+/v0Bw3xDPEHCA
-          34/fgGDPcDBgnxBgIJ/fEM+PzyAwIJ+AQFCp9vlwAAAAAWJLR0RPbmZBSQAAAAd0SU1FB+cGCgIB
-          LXgoLQQAAAtPSURBVHja7d1rQ9vWAYdxQoFgkiBwQwkEGgokTZMlS9ru0jXd1u5Wlm7f/+O0WJLR
-          OT63vyRbFz/PO9DFkvWrSyzpaGODiIiIiIiIiIiIiIiIqNvubRZ90vWW0CDa/Lloq+stoUEEGJIC
-          DEkBhqQAQ1KAobS283ZKMPfzn3FD7n52t931dlFPAwxJAYakAENSgCGpOmB2J+G63qc6zfdpt+st
-          6Xl1wOzdhOt6n+o036e9rrek5wHG2ifAhNvKe1BKeZj//Ci0DGBIOjUAGAIMYKQAAxipNDB7eZMI
-          mGI25z9Q97Oig473+DAzmgJGKg3MjZTz+5gsOHWF+T4mAWO1VWb8FjCA8TT/qsX47afFdTHbwX9P
-          A2YNc4NJCzBrGGDyAJMYYPIAkxhg8gCTWFdgHudXDxyVUz8rLic46Oh9AExiTcAUx/h4gcasz4Jg
-          Jp4DlHX0PpQXwADG05bnQgbXFy+flGM53HOuauE/zvzX9nvfbzBlgPGkgJnPu+lcFWDWIcC4A4wn
-          wLgDjCfAuAOMp9WDOSquHNh3TgVMz1s9GJMEYAZWEpit/JT1/XLiTnEO21yVB8yBdSmSSaKY+sT9
-          +dNdgPFUfrcyl+IaNnPbo8pclQeMb6rxGdKbUwNlgIkU/KYXMICxA4wZYCIBxgwwkQBjBphIgwDz
-          eGJc/LBbZ3wIexnPsAyAidQxmIPy+D0ObeTEXDb8gp4SJQAmUsdg0gJMf3Lfl1T0KJ/0sITywDkv
-          YMis3qkB31TAjD7AkBRgSAowJLUCMNY3LZMbdx4wzoN7IzXxLAWYGq0AjPUZEgZzaF0aAZieVe82
-          E9/U5mCKMnsqYIYRYEgKMCQFGJICDEnVAnNgjlp5ZE71gZkWI3LOZvKAyYp5ANPXaoEJf4b4phqv
-          4AEjSmkM5t6m6/p58rcEMEWZZyYbjLA5Ze2B4Qm8aoABjBRgACMFGMBIAQYwUoABjNTyRm/wgpGE
-          Oje6BTDFyAQ7JZj7+c8DcnNyGu5p8pqeRtZ0Up05Ecxx8YXa4WyqPeyqE8xhscjCOJ0tgpmaD+cR
-          wHhuqRjQI5vP/hvuPHlN55E1nVVnrjUCVdHCZ0j4xMESwGSe3wMGMNUAswGY4OZYAWYDMMHNsQLM
-          BmCCm2MFmA3ABDfHup4CMBuAkTYHMH0Dk1QaGN/MzqOZCKb5jWzFyAQPSikP85+Dj8nsV4AJbE77
-          YIoGfGoAMIHNAcxigAlsDmAWA0xgcwCzGGACmwOYxUYLxndq+9g1imY/wDwqh4Lr8z+aRgvGPtjB
-          F/Rszu6emeejTAfzaXFdzLZBY3sIX8sApunmtHcjG2AAIwUYwEgBBjBSgAGMFGC6ALNvj+1QC0yx
-          ksOkDQLMkMG0c5uJdOgTlgoP+Xf3UESjzdgLd9F4wRy5B5PpBkx4UFHA9AFM5CHpxlTAJAcY5+YA
-          xhdgnJsDGF+AcW4OYHwBxrk5gPE1HjD29QwRMMZzP31gju3HhE4rYwPMC4HZys9K3y8R7BSnqY0V
-          AKYLMDYJE0z56BP3wd31TPUk3GaS9AjMYlDN+SAgO6HHNHTcuoApC//voyMw9rx80wsYwCwEGMAA
-          BjB2gAlNBcxCgAlNBcxC4wXjPrqAaVjXYCbVh9OkNQdjjrFZ3BMyTQTjvHOk+OWCval5u4nvizvH
-          Oot7jR6WFh4Utx65doz7khLA1Lg6zfPlvz01Aib0CuJzsxPWGXnI7oACjCPA+AOMI8D4A4wjwPgD
-          jCPA+IuB+fzcqProgafmpM8B459lfcBYnVYWPdUWXWsw4dtMhlRHYGgkxf4QUcCk//lDgw0wJAUY
-          kgIMSQGGpABDUoAhKcCQFGBICjAkBRiSAgxJ9RDMR7tnraz24peldVF9nS/+F6ru1l/+X+qynUPh
-          CDCAkQIMYKQAAxgpwABGCjCAkQIMYKQAAxgpwABGCjCAkQIMYKQAAxgpwABGCjCAkRozmAujK8C0
-          USdgnn1s0HXyvi1PyFLAPNdMKAEGMIBZPZgX3r6MLHkVeFXAjBaMf8kXgAEMYAADGMAABjCAAQxg
-          AAMYwAAGMIABDGAAAxjArCuYl5WHC7wETKtgvro0ejUKMEqA0cCI17gABjCASev1s1CAKXp16et3
-          b8zejhxMuIGD+f0XoRQwz5P3NPb3cjsHZhZgXDUBkx5g2tkkwABGCjCAkQIMYKQAAxgpwABGCjCA
-          kQIMYKQAAxgpwPQKzMmpUeySBaWX5qpPam5hBMy790aBoR0A0waYsxaFhDuruYUfpd77VwQYwHQG
-          xhxr5usmR2DeOMB8c3bXtwtTv61M/WZJYMze9wNM+ga3d3lDAzAtDigUA3MenLeKIPb3MmAAA5h4
-          gAEMYAADmNQAAxgpwABGCjCAkQIMYKQAAxgpwABGCjDzzMGc/1BZEjB39QHMH6/Te7c8MGbVM9CA
-          6ReY2KeGEmAA0xYY8385fxLA/Hnh6QP9BvOddXP+m78ApgYYs9gDttq5KKobMMsMMICRAgxgpAAD
-          GCnAAEYKMICRAgxgpAADGCnAAEYKMICRAgxgpLoBYw7d/H2LYL43V/3au+MxMB8uQgFmtWBaFBLO
-          P5hDDEw4wAAGMK2D+eHM7oclgfFfQPVXwAwHTLg2wfhfRXzyCWDaDjCAkQIMYKQAAxgpwABGCjCA
-          kQIMYKQAAxgpwABGCjCAkQIMYKQAU6sro78F3pb2wLw1b39t8X5pwCwdjMVnJWCs3gBmpWC+vgoF
-          mLGAea1drPcsutnuugDz1aXRK8DcVR+MVexy4CGBsYo9kgQwgDECTGVewAAGMO4A4wswzgDjCzDO
-          AOMLMM4A4wswzgDjCzDOAOMLMM4A42uNwfzdHPX5x+qaAONrNbfK/tZPlRXVB7N4tro+GKuLlYB5
-          +7x24wOTjGCNwTQIMK2DCQ4O8wEwgPlFuOwydrUMYAADGMAABjCAAQxgAAMYwAAGMIABDGAAAxjA
-          AAYwgOkDGPOE0BVgABOeN3KYAQMYwKwCzKnR0/pgzs01nVSPs9F15Ki/M2f/RwjMtX/egYH5zhwO
-          RiNhjSVj1S6YumtaAHOaumTsY+JaWDTwgK2BgbHSwCxvtCrAAEYKMICRAgxgpAADGCnAAEYKMICR
-          AgxgpAADGCnAAEYKMICRAgxgpAADGCnArBbMP/9llP729gXMGtULMP/u+l2g5ABDUoAhKcCQFGBI
-          CjAkBRiSAgxJAYakAENSgCEpwJBUDExrXVRfFTCDrZ9gsptQbb8He0tZ60iLjQ9Tvw/mql9UXxUw
-          I+miuZN5wgO2ADPUVgUmFmAGUh/AHGRZ9mQVYG5faNYUMHXrA5hJyMrR5Lda2tnJUhiuV70Hk7W4
-          s4BpHmBICjAkBRiS6gOY3b1qx7ODOf/xsMWdvX2hKWAa1QcwZpPlHswMMI0CDEkBhqR6BWZvBQcT
-          MM0CDA03wJAUYEgqAcxhZnQozwKYEZUApjLL7Ps9eRbAjCjAkBRgSAowJBUBc3sucmJqmJjnJw/j
-          swBmREXA3Hi6uwIik2bpenepaYAhKcCQFGBICjAkFQFjfuXv0rBvzPEEMCNPOvno0mCWAWbkAYak
-          AENSYTD5oZ5/0397z/WxtYA5y4F/FsCMIgmMa4HkWQAzigBDUoAhKT+Yu5tcvRoSZrkNMCPKD2Yy
-          n+DVkDDLbYAZUYAhKcCQFGBICjAkBRiSAgxJAYakAENSKWBmZY4FEma5DTAjKuVcUqoGwKxBgCEp
-          wJBUMpjpbMzn/2RTv4aEWbreXWpaMhizmY0as3S9u9S0mmC4kW1dAwxJAYakAENSOZgnt/dFO6bu
-          3z3eM0dQtq/MkoOZel6DBtWe9WngnSX4ASHfe0BDDTAkBRiSAgwRERERERERERERERENol8B24m3
-          Ck3A57UAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDYtMTBUMDI6MDE6NDUrMDA6MDB2cvTKAAAA
-          JXRFWHRkYXRlOm1vZGlmeQAyMDIzLTA2LTEwVDAyOjAxOjQ1KzAwOjAwBy9MdgAAACh0RVh0ZGF0
-          ZTp0aW1lc3RhbXAAMjAyMy0wNi0xMFQwMjowMTo0NSswMDowMFA6bakAAAAZdEVYdFNvZnR3YXJl
-          AEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAAElFTkSuQmCC" />
+                href="data:image/png;base64,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
+          ZVJlYWR5ccllPAAAAABJRU5ErkJggg==" />
             </svg>
           </div>
           <div class="row">
@@ -657,23 +673,27 @@
           <div class="row">
             <div class="column valitade">
               <label for="pattern">Pattern</label>
-              <select name="pattern" id="pattern" required>
-                <option value="">Select a choice</option>
-                <option value="1" title="['ffffff']" selected>
-                  Individual
-                </option>
-                <option value="2" title="[0, 'ffffff']">Index</option>
-                <option value="3" title="[0, 5, 'ffffff']">Range</option>
-              </select>
+              <div class="customSelect">
+                <select name="pattern" id="pattern" required>
+                  <option value="">Select a choice</option>
+                  <option value="1" title="['ffffff']" selected>
+                    Individual
+                  </option>
+                  <option value="2" title="[0, 'ffffff']">Index</option>
+                  <option value="3" title="[0, 5, 'ffffff']">Range</option>
+                </select>
+              </div>
             </div>
             <div class="column valitade">
               <label for="output">Output</label>
-              <select name="output" id="output" required>
-                <option value="">Select a choice</option>
-                <option value="json" selected>WLED JSON</option>
-                <option value="ha">Home Assistant</option>
-                <option value="curl">CURL</option>
-              </select>
+              <div class="customSelect">
+                <select name="output" id="output" required>
+                  <option value="">Select a choice</option>
+                  <option value="json" selected>WLED JSON</option>
+                  <option value="ha">Home Assistant</option>
+                  <option value="curl">CURL</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="row output" style="display: none">
@@ -697,20 +717,27 @@
           <div class="row">
             <div class="column valitade">
               <label for="segments">Segment Id</label>
-              <select name="segments" id="segments" required>
-                <option value="">Select a choice</option>
-              </select>
+              <div class="customSelect">
+                <select name="segments" id="segments" required>
+                  <option value="">Select a choice</option>
+                </select>
+              </div>
             </div>
             <div class="column valitade">
               <label for="brightness">Brightness</label>
-              <input
-                type="range"
-                name="brightness"
-                id="brightness"
-                min="0"
-                max="255"
-                value="128"
-                class="range-slider" />
+              <div class="input-group">
+                <input
+                  type="range"
+                  name="brightness"
+                  id="brightness"
+                  min="0"
+                  max="255"
+                  value="128"
+                  class="range-slider" />
+                <div id="brightnessValue" class="input-description square">
+                  128
+                </div>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -788,26 +815,32 @@
           <div class="row transparentImage" style="display: none">
             <div class="column valitade w-full">
               <label for="color">Choose a color</label>
-              <small class="subtitle">
+              <small>
                 Color that will replace the
                 <strong>transparent pixels</strong> in the image
               </small>
-              <input type="color" name="color" id="color" value="#ffffff" />
+              <input type="color" name="color" id="color" value="#eee" />
             </div>
           </div>
           <div class="row">
             <div class="column valitade w-full">
               <label for="images">Images</label>
-              <small class="subtitle"
-                >Images uploaded to
-                <a href="http://[wled-ip]/edit" target="_blank">
+              <div class="customSelect">
+                <select name="images" id="images" required>
+                  <option value="">Select a choice</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row m-zero">
+            <div class="column w-full">
+              <small>
+                Images uploaded to
+                <a id="wledEdit" href="http://[wled-ip]/edit" target="_blank">
                   <strong>WLED</strong>
                 </a>
-                or upload image</small
-              >
-              <select name="images" id="images" required>
-                <option value="">Select a choice</option>
-              </select>
+                or upload image
+              </small>
             </div>
           </div>
           <div id="dropzone" class="dropzone valitade" style="display: none">
@@ -823,7 +856,7 @@
           </div>
           <div class="row">
             <div class="column w-full">
-              <button type="button" class="buttonRainbow" id="btnGenerate">
+              <button type="button" class="button" id="btnGenerate">
                 Generate
               </button>
             </div>
@@ -838,7 +871,7 @@
                 readonly="readonly"></textarea>
             </div>
           </div>
-          <div class="buttons" data-animation="false" style="display: none">
+          <div class="buttons">
             <div class="row m-zero">
               <div class="column">
                 <button type="button" class="button" id="btnCopyToClipboard">
@@ -846,43 +879,18 @@
                 </button>
               </div>
               <div class="column">
+                <button type="button" class="button" id="btnSave">Save</button>
+              </div>
+              <div class="column">
                 <button type="button" class="button" id="btnDownloadPreset">
                   Download
                 </button>
               </div>
             </div>
-            <div class="divider"></div>
-            <div class="row m-zero">
-              <div class="column">
+            <div class="row m-zero" id="simulate" style="display: none">
+              <div class="column w-full m-top">
                 <button type="button" class="button" id="btnSimulatePreset">
                   Simulate
-                </button>
-              </div>
-              <div class="column">
-                <button type="button" class="button" id="btnSavePreset">
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="buttons" data-animation="true" style="display: none">
-            <div class="row m-zero">
-              <div class="column">
-                <button type="button" class="button" id="btnCopyToClipboard">
-                  Copy to Clipboard
-                </button>
-              </div>
-              <div class="column">
-                <button type="button" class="button" id="btnDownloadPreset">
-                  Download
-                </button>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <div class="row m-zero">
-              <div class="column w-full">
-                <button type="button" class="button" id="btnSavePlaylist">
-                  Save
                 </button>
               </div>
             </div>
@@ -935,9 +943,7 @@
     })();
 
     function hostnameLabel() {
-      const images = document.getElementById("images");
-      const link = images.parentNode.querySelector("a");
-
+      const link = document.getElementById("wledEdit");
       link.href = link.href.replace("[wled-ip]", hostname.value);
     }
 
@@ -1235,11 +1241,13 @@
         }
       });
 
-    document
-      .getElementById("btnSavePreset")
-      .addEventListener("click", async () => {
-        const { value: name } = document.getElementById("name");
+    document.getElementById("btnSave").addEventListener("click", async () => {
+      const { checked } = document.getElementById("animation");
+      const { value: name } = document.getElementById("name");
 
+      if (checked) {
+        await insert(jsonSaveWLED, true);
+      } else {
         jsonSaveWLED.splice(0);
 
         jsonSaveWLED.push(
@@ -1247,13 +1255,8 @@
         );
 
         await insert(jsonSaveWLED);
-      });
-
-    document
-      .getElementById("btnSavePlaylist")
-      .addEventListener("click", async () => {
-        await insert(jsonSaveWLED, true);
-      });
+      }
+    });
 
     document.querySelectorAll("#btnCopyToClipboard").forEach((button) => {
       button.addEventListener("click", async () => {
@@ -1308,6 +1311,13 @@
           element.style.display = "none";
         }
       });
+    });
+
+    document.getElementById("brightness").addEventListener("change", (e) => {
+      const { value } = e.target;
+      const brightnessValue = document.getElementById("brightnessValue");
+
+      brightnessValue.textContent = value;
     });
 
     document.getElementById("images").addEventListener("change", (e) => {
@@ -1374,6 +1384,7 @@
             "warning",
             5000
           );
+
           element.style.display = "flex";
           pattern.value = 3;
         } else {
@@ -1391,7 +1402,7 @@
         const recreatedImage = document.getElementById("recreatedImage");
         const preview = document.getElementById("preview");
 
-        const dataAnimation = document.querySelectorAll("[data-animation]");
+        const simulate = document.getElementById("simulate");
 
         if (validateForm(event)) {
           jsonSaveWLED.splice(0);
@@ -1399,20 +1410,22 @@
           preview.style.display = "block";
           recreatedImage.innerHTML = "";
 
-          dataAnimation.forEach((buttons) => {
-            const animation =
-              buttons.dataset.animation === "true" ? true : false;
+          // dataAnimation.forEach((buttons) => {
+          //   const animation =
+          //     buttons.dataset.animation === "true" ? true : false;
 
-            if (animation === checked) {
-              buttons.style.display = "flex";
-            } else {
-              buttons.style.display = "none";
-            }
-          });
+          //   if (animation === checked) {
+          //     buttons.style.display = "flex";
+          //   } else {
+          //     buttons.style.display = "none";
+          //   }
+          // });
 
           if (checked) {
+            simulate.style.display = "none";
             await generateAnimation();
           } else {
+            simulate.style.display = "flex";
             await generate();
           }
         }
@@ -1620,14 +1633,14 @@
           ctx.fillRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
 
           ctx.lineWidth = 1;
-          ctx.strokeStyle = "#ffffff";
+          ctx.strokeStyle = "#eee";
           ctx.strokeRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
 
           let offsetX = coordinateX + pixelsRef / 2;
           let offsetY = coordinateY + pixelsRef / 2;
 
           ctx.font = `${fontSize}px Arial`;
-          ctx.fillStyle = hex == "ffffff" ? "#252525" : "#ffffff";
+          ctx.fillStyle = hex == "ffffff" ? "#252525" : "#eee";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(index + 1, offsetX, offsetY);
