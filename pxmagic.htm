@@ -4,27 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="@ajotanc" />
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
 
     <title>Pixel Magic Tool</title>
-
-    <link
-      rel="shortcut icon"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKpJREFUeNqMU4sNxCAIpRcGODdxhN5ITnIj1RHYxG7QYsI1pD0+LyFGorzHExdwUEp581JlS2OM/X7mBT7m5U2i/juAAbO+VDn/UIIBs8ZX1g9Hz7YQwipAwtRUrkmOHh4YbnfpGVS+WybqnnWPPyVwZ74KMMsauN29ucCs25ZSzDjtzQVKpaqYm/RLmbnA6WzGbQuYdJscpXnMF+M4JFbvL0AwoZfSU4ABABLYR6r7lELpAAAAAElFTkSuQmCC" />
 
     <style>
       :root {
         --overlay: rgba(0, 0, 0, 0.5);
         --background: #111;
+        --color: #bbb;
         --gray-dark: #222;
         --gray-medium: #333;
-        --gray-light: #eee;
-        --gray: #bbb;
+        --gray-light: #eeeeee;
         --blue-dark: #284352;
         --blue-medium: #3b708b;
         --blue-light: #48a;
@@ -58,12 +48,22 @@
         background: var(--background);
       }
 
+      textarea,
+      form,
+      canvas {
+        width: 100%;
+      }
+
       small {
         display: block;
         font-weight: 400;
         margin: 2px 0 5px;
-        color: var(--gray);
+        color: var(--color);
         font-size: 12px;
+      }
+
+      footer {
+        margin: 10px 5px 0;
       }
 
       a {
@@ -108,12 +108,6 @@
         margin-top: 10px !important;
       }
 
-      #response,
-      form,
-      canvas {
-        width: 100%;
-      }
-
       .row {
         display: flex;
         flex-wrap: wrap;
@@ -135,7 +129,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
-        color: var(--gray);
+        color: var(--color);
       }
 
       input[type="text"],
@@ -175,9 +169,9 @@
         min-width: 40px;
         padding: 10px 0;
         color: #222;
-        background: var(--gray);
+        background: var(--color);
         border-radius: 0px 5px 5px 0;
-        border: 1px solid var(--gray);
+        border: 1px solid var(--color);
         border-left: 0;
         text-align: center;
         font-size: 14px;
@@ -248,12 +242,12 @@
       }
 
       .dropzone.dragover {
-        background-color: var(--gray);
+        background-color: var(--color);
       }
 
       .range-slider {
         appearance: none;
-        background-color: var(--gray);
+        background-color: var(--color);
         height: 8px;
         width: 100%;
         border-radius: 10px;
@@ -393,22 +387,30 @@
         );
       }
 
-      #multipleCanvas {
+      .header {
         display: flex;
-        justify-content: center;
         align-items: center;
+        padding: 0 0 40px;
         flex-direction: column;
-        position: relative;
       }
 
-      #multipleCanvas .carousel {
+      .header .brand {
+        width: 100%;
+        max-width: 200px;
+        height: 100%;
+        display: block;
+        outline: none;
+        border: 0;
+      }
+
+      .carousel {
         display: flex;
         height: 100%;
         width: 100%;
         cursor: pointer;
       }
 
-      #multipleCanvas .carousel img {
+      .carousel img {
         display: block;
         width: 100%;
         height: 100%;
@@ -416,7 +418,7 @@
         border: 0;
       }
 
-      #multipleCanvas .carousel img:last-child {
+      .carousel img:last-child {
         margin-right: 0;
       }
 
@@ -425,7 +427,7 @@
         border: 0;
         padding: 10px 18px;
         border-radius: 50px;
-        color: var(--gray);
+        color: var(--color);
         cursor: pointer;
         margin: 0 0 10px;
         background: var(--gray-medium);
@@ -514,29 +516,17 @@
         scroll-snap-align: center;
       }
 
-      .header {
-        display: flex;
-        align-items: center;
-        padding: 0 0 30px;
-        flex-direction: column;
-      }
-
-      .header .brand {
-        width: 100%;
-        max-width: 200px;
-        height: 100%;
-        display: block;
-        outline: none;
-        border: 0;
-      }
-
-      footer {
-        margin: 10px 5px 0;
-      }
-
       @media (max-width: 767px) {
+        .m-top {
+          margin: 20px 0 !important;
+        }
+
         .content {
           min-width: 360px;
+        }
+
+        .header {
+          padding-bottom: 0;
         }
 
         .row {
@@ -548,10 +538,6 @@
           flex-basis: 100%;
           margin: 20px 0 0;
           padding: 0;
-        }
-
-        .divider {
-          margin: 10px auto 0;
         }
       }
 
@@ -656,11 +642,11 @@
             </svg>
           </div>
           <div class="row">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="hostname">Hostname</label>
               <input type="text" name="hostname" id="hostname" required />
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="name">Preset Name</label>
               <input
                 type="text"
@@ -671,7 +657,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="pattern">Pattern</label>
               <div class="customSelect">
                 <select name="pattern" id="pattern" required>
@@ -684,7 +670,7 @@
                 </select>
               </div>
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="output">Output</label>
               <div class="customSelect">
                 <select name="output" id="output" required>
@@ -697,15 +683,15 @@
             </div>
           </div>
           <div class="row output" style="display: none">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="device">Device</label>
               <input type="text" name="device" id="device" required />
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="uniqueId">Unique Id</label>
               <input type="text" name="uniqueId" id="uniqueId" required />
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="friendlyName">Friendly Name</label>
               <input
                 type="text"
@@ -715,7 +701,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="segments">Segment Id</label>
               <div class="customSelect">
                 <select name="segments" id="segments" required>
@@ -723,7 +709,7 @@
                 </select>
               </div>
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="brightness">Brightness</label>
               <div class="input-group">
                 <input
@@ -741,14 +727,14 @@
             </div>
           </div>
           <div class="row">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="animation">Animation</label>
               <label class="switch">
                 <input type="checkbox" name="animation" id="animation" />
                 <span class="switch-slider"></span>
               </label>
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="transparentImage">Transparent Image</label>
               <label class="switch">
                 <input
@@ -758,7 +744,7 @@
                 <span class="switch-slider"></span>
               </label>
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="resizeImage">Resize Image</label>
               <label class="switch">
                 <input type="checkbox" name="resizeImage" id="resizeImage" />
@@ -767,21 +753,21 @@
             </div>
           </div>
           <div class="row resizeImage" style="display: none">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="width">Width</label>
               <input type="number" name="width" id="width" value="16" />
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="height">Height</label>
               <input type="number" name="height" id="height" value="16" />
             </div>
           </div>
           <div class="row animation" style="display: none">
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="frames">Frames</label>
               <input type="number" name="frames" id="frames" value="4" />
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="duration">Duration</label>
               <div class="input-group">
                 <input
@@ -796,7 +782,7 @@
                 <div class="input-description">sec</div>
               </div>
             </div>
-            <div class="column valitade">
+            <div class="column" validate>
               <label for="transition">Transition</label>
               <div class="input-group">
                 <input
@@ -813,17 +799,17 @@
             </div>
           </div>
           <div class="row transparentImage" style="display: none">
-            <div class="column valitade w-full">
+            <div class="column w-full" validate>
               <label for="color">Choose a color</label>
               <small>
                 Color that will replace the
                 <strong>transparent pixels</strong> in the image
               </small>
-              <input type="color" name="color" id="color" value="#eee" />
+              <input type="color" name="color" id="color" value="#eeeeee" />
             </div>
           </div>
           <div class="row">
-            <div class="column valitade w-full">
+            <div class="column w-full" validate>
               <label for="images">Images</label>
               <div class="customSelect">
                 <select name="images" id="images" required>
@@ -843,7 +829,7 @@
               </small>
             </div>
           </div>
-          <div id="dropzone" class="dropzone valitade" style="display: none">
+          <div id="dropzone" class="dropzone" validate style="display: none">
             <p id="dropzoneLabel">
               Drag and drop a file here or click to select a file
             </p>
@@ -968,7 +954,7 @@
             data[key].n.startsWith(name)
         );
 
-        const psave =
+        const id =
           items.find(
             (key) =>
               typeof data[key] === "object" &&
@@ -978,7 +964,7 @@
           ) || parseInt(items.pop()) + 1;
 
         const body = {
-          psave,
+          psave: parseInt(id),
           n: name,
           on: true,
           o: false,
@@ -1030,7 +1016,7 @@
               const data = await response.json();
               const items = Object.keys(data);
 
-              const psave =
+              const id =
                 items.find(
                   (key) =>
                     typeof data[key] === "object" &&
@@ -1038,7 +1024,7 @@
                     data[key].n === item.n
                 ) || parseInt(items.pop()) + 1;
 
-              const body = Object.assign(item, { psave });
+              const body = Object.assign(item, { psave: parseInt(id) });
               const options = {
                 method: "POST",
                 body: JSON.stringify(body),
@@ -1071,7 +1057,7 @@
             .then(() => {
               hide();
             })
-            .catch(() => {
+            .finally(() => {
               hide();
             });
         }, delay);
@@ -1090,11 +1076,6 @@
         { text: "Upload", value: "upload" },
       ];
 
-      options.forEach(({ text, value }) => {
-        const option = new Option(text, value);
-        selectImages.appendChild(option);
-      });
-
       show();
 
       try {
@@ -1102,24 +1083,27 @@
         const data = await response.json();
         const mimeTypes = ["jpeg", "jpg", "png", "gif"];
 
-        const images = data
-          .filter((file) => {
-            const { name } = file;
-            const [filename, mimetype] = name.split(".");
+        const images = data.filter((file) => {
+          const { name } = file;
+          const [filename, mimetype] = name.split(".");
+          file.name = name.replace("/", "");
 
-            file.name = name.replace("/", "");
+          return mimeTypes.includes(mimetype);
+        });
 
-            return mimeTypes.includes(mimetype);
-          })
-          .map((file) => {
-            const { name } = file;
-            const option = document.createElement("option");
+        if (images) {
+          options.push(
+            ...images.map(({ name }) => ({
+              text: name,
+              value: `${WLED_URL}/${name}`,
+            }))
+          );
 
-            option.text = name;
-            option.value = `${WLED_URL}/${name}`;
-
-            selectImages.add(option);
+          options.forEach(({ text, value }) => {
+            const option = new Option(text, value);
+            selectImages.appendChild(option);
           });
+        }
       } catch (error) {
         toast(error, "error");
       } finally {
@@ -1133,41 +1117,39 @@
       const width = document.getElementById("width");
       const height = document.getElementById("height");
 
-      const url = `${WLED_URL}/json/state`;
-
       selectSegments.innerHTML = "";
-
-      const options = [{ text: "Select a choice", value: "" }];
-
-      options.forEach(({ text, value }) => {
-        const option = new Option(text, value);
-        selectSegments.appendChild(option);
-      });
 
       show();
 
       try {
+        const url = `${WLED_URL}/json/state`;
         const response = await fetch(url);
         const { seg: segments } = await response.json();
 
-        segments &&
-          segments.forEach(function ({ id, n, stop: w, stopY: h }, index) {
-            const option = document.createElement("option");
-            option.text = n ? n : `Segment ${id}`;
-            option.value = id;
-            option.dataset.width = w;
-            option.dataset.height = h;
+        const options = [
+          { text: "Select a choice", value: "", width: 16, height: 16 },
+          ...segments.map(({ id, n, stop, stopY }) => ({
+            text: n ? n : `Segment ${id}`,
+            value: id,
+            width: stop,
+            height: stopY,
+          })),
+        ];
 
-            if (index === 0) {
-              option.selected = true;
-              width.value = w;
-              height.value = h;
+        options.forEach(({ text, value, width: w, height: h }, index) => {
+          const option = new Option(text, value);
+          option.dataset.width = w;
+          option.dataset.height = h;
 
-              pattern.value = w * h > 512 ? 3 : 1;
-            }
+          if (index === 0) {
+            option.selected = true;
+            width.value = w;
+            height.value = h;
+            pattern.value = w * h > 512 ? 3 : 1;
+          }
 
-            selectSegments.add(option);
-          });
+          selectSegments.add(option);
+        });
       } catch (error) {
         toast(error, "error");
       } finally {
@@ -1258,8 +1240,9 @@
       }
     });
 
-    document.querySelectorAll("#btnCopyToClipboard").forEach((button) => {
-      button.addEventListener("click", async () => {
+    document
+      .getElementById("btnCopyToClipboard")
+      .addEventListener("click", async () => {
         const response = document.getElementById("response");
 
         response.select();
@@ -1276,10 +1259,10 @@
           }
         }
       });
-    });
 
-    document.querySelectorAll("#btnDownloadPreset").forEach((button) => {
-      button.addEventListener("click", () => {
+    document
+      .getElementById("btnDownloadPreset")
+      .addEventListener("click", () => {
         const { value: response } = document.getElementById("response");
         const { value: output } = document.getElementById("output");
 
@@ -1288,7 +1271,6 @@
 
         downloadFile(response, filename, output);
       });
-    });
 
     document.getElementById("segments").addEventListener("change", (e) => {
       const width = document.getElementById("width");
@@ -1399,9 +1381,8 @@
       .addEventListener("click", async (event) => {
         const { checked } = document.getElementById("animation");
 
-        const recreatedImage = document.getElementById("recreatedImage");
         const preview = document.getElementById("preview");
-
+        const recreatedImage = document.getElementById("recreatedImage");
         const simulate = document.getElementById("simulate");
 
         if (validateForm(event)) {
@@ -1409,17 +1390,6 @@
 
           preview.style.display = "block";
           recreatedImage.innerHTML = "";
-
-          // dataAnimation.forEach((buttons) => {
-          //   const animation =
-          //     buttons.dataset.animation === "true" ? true : false;
-
-          //   if (animation === checked) {
-          //     buttons.style.display = "flex";
-          //   } else {
-          //     buttons.style.display = "none";
-          //   }
-          // });
 
           if (checked) {
             simulate.style.display = "none";
@@ -1464,7 +1434,7 @@
             images === "upload" ? URL.createObjectURL(file) : images;
 
           const image = await loadImage(urlImage);
-          const { canvas, bri, id, i, length } = recreate(image);
+          const { canvas, bri, id, i } = recreate(image);
 
           await new Promise((resolve) => {
             Object.assign(jsonSendWLED, {
@@ -1495,9 +1465,7 @@
     async function generateAnimation() {
       if (checkMimeType()) {
         const file = document.getElementById("source").files[0];
-
         const images = document.getElementById("images");
-
         const response = document.getElementById("response");
 
         const { value: presetName } = document.getElementById("name");
@@ -1587,7 +1555,7 @@
     function recreate(image) {
       const { value: pattern } = document.getElementById("pattern");
       const { value: segmentId } = document.getElementById("segments");
-      const { value: bri } = document.getElementById("brightness");
+      const { value: brightness } = document.getElementById("brightness");
       const { value: width } = document.getElementById("width");
       const { value: height } = document.getElementById("height");
 
@@ -1597,7 +1565,6 @@
       const fullWidth = width * pixelsRef;
       const fullHeight = height * pixelsRef;
       const fontSize = fullWidth <= 768 ? 14 : 18;
-      const length = width * height;
 
       const colors = [];
 
@@ -1633,14 +1600,14 @@
           ctx.fillRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
 
           ctx.lineWidth = 1;
-          ctx.strokeStyle = "#eee";
+          ctx.strokeStyle = "#eeeeee";
           ctx.strokeRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
 
           let offsetX = coordinateX + pixelsRef / 2;
           let offsetY = coordinateY + pixelsRef / 2;
 
           ctx.font = `${fontSize}px Arial`;
-          ctx.fillStyle = hex == "ffffff" ? "#252525" : "#eee";
+          ctx.fillStyle = hex == "ffffff" ? "#252525" : "#eeeeee";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(index + 1, offsetX, offsetY);
@@ -1661,10 +1628,9 @@
 
       return {
         canvas,
-        bri,
-        id: segmentId,
+        bri: parseInt(brightness),
+        id: parseInt(segmentId),
         i,
-        length,
       };
     }
 
@@ -1988,7 +1954,7 @@
       const browserLanguage = navigator.language || navigator.userLanguage;
 
       inputs.forEach((input) => {
-        const parent = input.closest(".valitade");
+        const parent = input.closest("[validate]");
 
         if (!parent) {
           return;
