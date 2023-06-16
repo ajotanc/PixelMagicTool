@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="@ajotanc" />
 
     <title>Pixel Magic Tool</title>
 
@@ -88,7 +89,7 @@
       .content {
         width: 100%;
         min-width: 540px;
-        max-width: 900px;
+        max-width: 1024px;
         margin: 20px;
       }
 
@@ -704,8 +705,10 @@
             <div class="column" validate>
               <label for="segments">Segment Id</label>
               <div class="customSelect">
-                <select name="segments" id="segments" required>
-                  <option value="">Select a choice</option>
+                <select name="segments" id="segments">
+                  <option value="0" data-width="16" data-height="16">
+                    Segment 0
+                  </option>
                 </select>
               </div>
             </div>
@@ -814,6 +817,7 @@
               <div class="customSelect">
                 <select name="images" id="images" required>
                   <option value="">Select a choice</option>
+                  <option value="upload">Upload</option>
                 </select>
               </div>
             </div>
@@ -837,7 +841,7 @@
               type="file"
               name="source"
               id="source"
-              accept="image/*"
+              accept="image/jpg,image/jpeg,image/png,image/gif"
               style="display: none" />
           </div>
           <div class="row">
@@ -894,10 +898,11 @@
     <div id="overlay"></div>
   </body>
   <script>
+    const d = document;
     const params = new URLSearchParams(window.location.search);
     const host =
       params.get("mode") === "dev"
-        ? "10.0.0.41"
+        ? params.get("hn")
         : window.location.host
         ? window.location.host
         : "0.0.0.0";
@@ -906,7 +911,7 @@
 
     let WLED_URL = `${protocol}//${host}`;
 
-    const hostname = document.getElementById("hostname");
+    const hostname = element("hostname");
     hostname.value = host;
 
     hostname.addEventListener("change", async () => {
@@ -928,15 +933,19 @@
       hostnameLabel();
     })();
 
+    function element(id) {
+      return d.getElementById(id);
+    }
+
     function hostnameLabel() {
-      const link = document.getElementById("wledEdit");
+      const link = element("wledEdit");
       link.href = link.href.replace("[wled-ip]", hostname.value);
     }
 
     async function playlist() {
-      const { value: duration } = document.getElementById("duration");
-      const { value: transition } = document.getElementById("transition");
-      const { value: name } = document.getElementById("name");
+      const { value: duration } = element("duration");
+      const { value: transition } = element("transition");
+      const { value: name } = element("name");
 
       const urlPreset = `${WLED_URL}/presets.json`;
       const url = `${WLED_URL}/json`;
@@ -990,7 +999,7 @@
           const { success } = await response.json();
 
           if (success) {
-            toast(`Playlist "${name}" save successfully!`);
+            toast(`Playlist "${name}" save successfully`);
           }
         } catch (error) {
           toast(`Error saving preset: ${error}`, "error");
@@ -1035,7 +1044,7 @@
                 const { success } = await response.json();
 
                 if (success) {
-                  toast(`Preset "${item.n}" save successfully!`);
+                  toast(`Preset "${item.n}" save successfully`);
                 }
               } catch (error) {
                 toast(`Error saving preset: ${error}`, "error");
@@ -1068,13 +1077,7 @@
 
     async function images() {
       const url = `${WLED_URL}/edit?list=/`;
-      const selectImages = document.getElementById("images");
-      selectImages.innerHTML = "";
-
-      const options = [
-        { text: "Select a choice", value: "" },
-        { text: "Upload", value: "upload" },
-      ];
+      const select = element("images");
 
       show();
 
@@ -1087,9 +1090,13 @@
           const { name } = file;
           const [filename, mimetype] = name.split(".");
           file.name = name.replace("/", "");
-
           return mimeTypes.includes(mimetype);
         });
+
+        const options = [
+          { text: "Select a choice", value: "" },
+          { text: "Upload", value: "upload" },
+        ];
 
         if (images) {
           options.push(
@@ -1099,9 +1106,11 @@
             }))
           );
 
+          select.innerHTML = "";
+
           options.forEach(({ text, value }) => {
             const option = new Option(text, value);
-            selectImages.appendChild(option);
+            select.appendChild(option);
           });
         }
       } catch (error) {
@@ -1112,12 +1121,10 @@
     }
 
     async function segments() {
-      const selectSegments = document.getElementById("segments");
-      const pattern = document.getElementById("pattern");
-      const width = document.getElementById("width");
-      const height = document.getElementById("height");
-
-      selectSegments.innerHTML = "";
+      const select = element("segments");
+      const pattern = element("pattern");
+      const width = element("width");
+      const height = element("height");
 
       show();
 
@@ -1127,14 +1134,22 @@
         const { seg: segments } = await response.json();
 
         const options = [
-          { text: "Select a choice", value: "", width: 16, height: 16 },
-          ...segments.map(({ id, n, stop, stopY }) => ({
-            text: n ? n : `Segment ${id}`,
-            value: id,
-            width: stop,
-            height: stopY,
-          })),
+          { text: "Segment Default", value: 0, width: 16, height: 16 },
         ];
+
+        if (segments) {
+          options.splice(0);
+          options.push(
+            ...segments.map(({ id, n, start, stop, startY, stopY }) => ({
+              text: n ? n : `Segment ${id}`,
+              value: id,
+              width: stop - start,
+              height: stopY - startY,
+            }))
+          );
+        }
+
+        select.innerHTML = "";
 
         options.forEach(({ text, value, width: w, height: h }, index) => {
           const option = new Option(text, value);
@@ -1148,7 +1163,7 @@
             pattern.value = w * h > 512 ? 3 : 1;
           }
 
-          selectSegments.add(option);
+          select.add(option);
         });
       } catch (error) {
         toast(error, "error");
@@ -1157,8 +1172,8 @@
       }
     }
 
-    const dropzone = document.getElementById("dropzone");
-    const source = document.getElementById("source");
+    const dropzone = element("dropzone");
+    const source = element("source");
 
     dropzone.addEventListener("dragover", (e) => {
       e.preventDefault();
@@ -1167,15 +1182,14 @@
     dropzone.addEventListener("drop", (e) => {
       e.preventDefault();
 
-      const dropzoneLabel = document.getElementById("dropzoneLabel");
+      const dropzoneLabel = element("dropzoneLabel");
 
-      console.log(e.dataTransfer);
       source.files = e.dataTransfer.files;
 
       const { name } = source.files[0];
       dropzoneLabel.textContent = `Image ${name} selected!`;
 
-      validateForm(e);
+      validate(e);
     });
 
     dropzone.addEventListener("click", () => {
@@ -1183,7 +1197,7 @@
     });
 
     source.addEventListener("change", (e) => {
-      const dropzoneLabel = document.getElementById("dropzoneLabel");
+      const dropzoneLabel = element("dropzoneLabel");
       const { value } = e.target;
 
       if (value) {
@@ -1194,38 +1208,36 @@
           "Drag and drop a file here or click to select a file";
       }
 
-      validateForm(e);
+      validate(e);
     });
 
-    document
-      .getElementById("btnSimulatePreset")
-      .addEventListener("click", async () => {
-        const url = `${WLED_URL}/json/state`;
+    element("btnSimulatePreset").addEventListener("click", async () => {
+      const url = `${WLED_URL}/json/state`;
 
-        const options = {
-          method: "POST",
-          body: JSON.stringify(jsonSendWLED),
-        };
+      const options = {
+        method: "POST",
+        body: JSON.stringify(jsonSendWLED),
+      };
 
-        show();
+      show();
 
-        try {
-          const response = await fetch(url, options);
-          const { success } = await response.json();
+      try {
+        const response = await fetch(url, options);
+        const { success } = await response.json();
 
-          if (success) {
-            toast("Preset sent successfully!");
-          }
-        } catch (error) {
-          toast(error, "error");
-        } finally {
-          hide();
+        if (success) {
+          toast("Successfully simulated preset");
         }
-      });
+      } catch (error) {
+        toast(error, "error");
+      } finally {
+        hide();
+      }
+    });
 
-    document.getElementById("btnSave").addEventListener("click", async () => {
-      const { checked } = document.getElementById("animation");
-      const { value: name } = document.getElementById("name");
+    element("btnSave").addEventListener("click", async () => {
+      const { checked } = element("animation");
+      const { value: name } = element("name");
 
       if (checked) {
         await insert(jsonSaveWLED, true);
@@ -1240,41 +1252,37 @@
       }
     });
 
-    document
-      .getElementById("btnCopyToClipboard")
-      .addEventListener("click", async () => {
-        const response = document.getElementById("response");
+    element("btnCopyToClipboard").addEventListener("click", async () => {
+      const response = element("response");
 
-        response.select();
+      response.select();
 
+      try {
+        await navigator.clipboard.writeText(response.value);
+        toast("Text copied to clipboard");
+      } catch (error) {
         try {
-          await navigator.clipboard.writeText(response.value);
+          await d.execCommand("copy");
           toast("Text copied to clipboard");
         } catch (error) {
-          try {
-            await document.execCommand("copy");
-            toast("Text copied to clipboard");
-          } catch (error) {
-            toast(error, "error");
-          }
+          toast(error, "error");
         }
-      });
+      }
+    });
 
-    document
-      .getElementById("btnDownloadPreset")
-      .addEventListener("click", () => {
-        const { value: response } = document.getElementById("response");
-        const { value: output } = document.getElementById("output");
+    element("btnDownloadPreset").addEventListener("click", () => {
+      const { value: response } = element("response");
+      const { value: output } = element("output");
 
-        const timestamp = new Date().getTime();
-        const filename = `WLED_${timestamp}`;
+      const timestamp = new Date().getTime();
+      const filename = `WLED_${timestamp}`;
 
-        downloadFile(response, filename, output);
-      });
+      downloadFile(response, filename, output);
+    });
 
-    document.getElementById("segments").addEventListener("change", (e) => {
-      const width = document.getElementById("width");
-      const height = document.getElementById("height");
+    element("segments").addEventListener("change", (e) => {
+      const width = element("width");
+      const height = element("height");
 
       const { width: w, height: h } = e.target.selectedOptions[0].dataset;
 
@@ -1282,8 +1290,8 @@
       height.value = h;
     });
 
-    document.getElementById("output").addEventListener("change", (e) => {
-      const output = document.getElementsByClassName("output");
+    element("output").addEventListener("change", (e) => {
+      const output = d.getElementsByClassName("output");
       const { value } = e.target.selectedOptions[0];
 
       Array.from(output).forEach(function (element) {
@@ -1295,20 +1303,20 @@
       });
     });
 
-    document.getElementById("brightness").addEventListener("change", (e) => {
+    element("brightness").addEventListener("change", (e) => {
       const { value } = e.target;
-      const brightnessValue = document.getElementById("brightnessValue");
+      const brightnessValue = element("brightnessValue");
 
       brightnessValue.textContent = value;
     });
 
-    document.getElementById("images").addEventListener("change", (e) => {
-      const dropzone = document.getElementById("dropzone");
+    element("images").addEventListener("change", (e) => {
+      const dropzone = element("dropzone");
       const { value } = e.target.selectedOptions[0];
 
       if (value === "upload") {
-        const dropzoneLabel = document.getElementById("dropzoneLabel");
-        const source = document.getElementById("source");
+        const dropzoneLabel = element("dropzoneLabel");
+        const source = element("source");
 
         dropzoneLabel.textContent =
           "Drag and drop a file here or click to select a file";
@@ -1320,25 +1328,22 @@
       }
     });
 
-    document
-      .getElementById("transparentImage")
-      .addEventListener("change", (e) => {
-        const transparentImage =
-          document.getElementsByClassName("transparentImage");
-        const { checked } = e.target;
+    element("transparentImage").addEventListener("change", (e) => {
+      const transparentImage = d.getElementsByClassName("transparentImage");
+      const { checked } = e.target;
 
-        Array.from(transparentImage).forEach(function (element) {
-          if (checked) {
-            element.style.display = "flex";
-          } else {
-            element.style.display = "none";
-          }
-        });
+      Array.from(transparentImage).forEach(function (element) {
+        if (checked) {
+          element.style.display = "flex";
+        } else {
+          element.style.display = "none";
+        }
       });
+    });
 
-    document.getElementById("resizeImage").addEventListener("change", (e) => {
-      const resizeImage = document.getElementsByClassName("resizeImage");
-      const pattern = document.getElementById("pattern");
+    element("resizeImage").addEventListener("change", (e) => {
+      const resizeImage = d.getElementsByClassName("resizeImage");
+      const pattern = element("pattern");
       const { checked } = e.target;
 
       Array.from(resizeImage).forEach(function (element) {
@@ -1352,10 +1357,11 @@
       });
     });
 
-    document.getElementById("animation").addEventListener("change", (e) => {
-      const animation = document.getElementsByClassName("animation");
+    element("animation").addEventListener("change", (e) => {
+      const animation = d.getElementsByClassName("animation");
 
-      const pattern = document.getElementById("pattern");
+      const pattern = element("pattern");
+      const source = element("source");
 
       const { checked } = e.target;
 
@@ -1367,39 +1373,42 @@
             5000
           );
 
+          source.setAttribute("accept", "image/gif");
           element.style.display = "flex";
           pattern.value = 3;
         } else {
+          source.setAttribute(
+            "accept",
+            "image/jpg,image/jpeg,image/png,image/gif"
+          );
           element.style.display = "none";
           pattern.value = 1;
         }
       });
     });
 
-    document
-      .getElementById("btnGenerate")
-      .addEventListener("click", async (event) => {
-        const { checked } = document.getElementById("animation");
+    element("btnGenerate").addEventListener("click", async (event) => {
+      const { checked } = element("animation");
 
-        const preview = document.getElementById("preview");
-        const recreatedImage = document.getElementById("recreatedImage");
-        const simulate = document.getElementById("simulate");
+      const preview = element("preview");
+      const recreatedImage = element("recreatedImage");
+      const simulate = element("simulate");
 
-        if (validateForm(event)) {
-          jsonSaveWLED.splice(0);
+      if (validate(event)) {
+        jsonSaveWLED.splice(0);
 
-          preview.style.display = "block";
-          recreatedImage.innerHTML = "";
+        preview.style.display = "block";
+        recreatedImage.innerHTML = "";
 
-          if (checked) {
-            simulate.style.display = "none";
-            await generateAnimation();
-          } else {
-            simulate.style.display = "flex";
-            await generate();
-          }
+        if (checked) {
+          simulate.style.display = "none";
+          await generateAnimation();
+        } else {
+          simulate.style.display = "flex";
+          await generate();
         }
-      });
+      }
+    });
 
     function loadImage(src) {
       return new Promise((resolve, reject) => {
@@ -1418,157 +1427,167 @@
     }
 
     async function generate() {
-      if (checkMimeType()) {
-        const file = document.getElementById("source").files[0];
+      const file = element("source").files[0];
 
-        const { value: images } = document.getElementById("images");
-        const { value: output } = document.getElementById("output");
+      const { value: images } = element("images");
+      const { value: output } = element("output");
 
-        show();
+      show();
 
-        try {
-          const response = document.getElementById("response");
-          const recreatedImage = document.getElementById("recreatedImage");
+      try {
+        const response = element("response");
+        const recreatedImage = element("recreatedImage");
 
-          const urlImage =
-            images === "upload" ? URL.createObjectURL(file) : images;
+        const urlImage =
+          images === "upload" ? URL.createObjectURL(file) : images;
 
-          const image = await loadImage(urlImage);
-          const { canvas, bri, id, i } = recreate(image);
+        const image = await loadImage(urlImage);
+        const { canvas, bri, id, i } = recreate(image);
 
-          await new Promise((resolve) => {
-            Object.assign(jsonSendWLED, {
-              on: true,
-              bri,
-              seg: {
-                id,
-                i,
-              },
-            });
-
-            resolve();
+        await new Promise((resolve) => {
+          Object.assign(jsonSendWLED, {
+            on: true,
+            bri,
+            seg: {
+              id,
+              i,
+            },
           });
 
-          const jsonData = JSON.stringify(jsonSendWLED);
-          const dataResponse = formatOutput(output, jsonData);
+          resolve();
+        });
 
-          response.value = dataResponse;
-          recreatedImage.appendChild(canvas);
-        } catch (error) {
-          toast(error, "error");
-        } finally {
-          hide();
-        }
+        const jsonData = JSON.stringify(jsonSendWLED);
+        const dataResponse = formatOutput(output, jsonData);
+
+        response.value = dataResponse;
+        recreatedImage.appendChild(canvas);
+      } catch (error) {
+        toast(error, "error");
+      } finally {
+        hide();
       }
     }
 
     async function generateAnimation() {
-      if (checkMimeType()) {
-        const file = document.getElementById("source").files[0];
-        const images = document.getElementById("images");
-        const response = document.getElementById("response");
+      const file = element("source").files[0];
+      const images = element("images");
+      const response = element("response");
 
-        const { value: presetName } = document.getElementById("name");
-        const { value: amount } = document.getElementById("frames");
-        const { value: output } = document.getElementById("output");
-        const { value: duration } = document.getElementById("duration");
+      const { value: presetName } = element("name");
+      const { value: amount } = element("frames");
+      const { value: output } = element("output");
+      const { value: duration } = element("duration");
 
-        const { text: imageName, value: imageValue } =
-          images.selectedOptions[0];
+      const { text: imageName, value: imageValue } = images.selectedOptions[0];
 
-        show();
+      show();
 
-        try {
-          const body = new FormData();
+      try {
+        const body = new FormData();
 
-          if (imageValue === "upload") {
-            body.append("image", file);
-          } else {
-            const responseImage = await fetch(imageValue);
-            const blob = await responseImage.blob();
+        if (imageValue === "upload") {
+          body.append("image", file);
+        } else {
+          const responseImage = await fetch(imageValue);
+          const blob = await responseImage.blob();
 
-            const file = new File([blob], imageName, { type: blob.type });
+          const file = new File([blob], imageName, { type: blob.type });
 
-            body.append("image", file);
-          }
-
-          const responseFrames = await fetch(
-            `https://pixelmagictool.vercel.app/api/wled/frames?amount=${amount}`,
-            {
-              method: "POST",
-              body,
-            }
-          );
-
-          const { message, frames } = await responseFrames.json();
-
-          if (!responseFrames.ok) {
-            toast(message, "error");
-            return;
-          }
-
-          jsonSaveWLED = [];
-
-          const texteares = [];
-          const canvases = [];
-
-          const delay = duration * 1000;
-
-          const promises = frames.map(async (frame, index) => {
-            const image = await loadImage(frame);
-            const { canvas, bri, id, i } = recreate(image);
-            const jsonData = {
-              on: true,
-              bri,
-              seg: { id, i },
-            };
-
-            const n = `${presetName} ${index + 1}`;
-
-            texteares.push(`${n}|${JSON.stringify(jsonData)}`);
-            canvases.push(canvas);
-
-            jsonSaveWLED.push(Object.assign(jsonData, { n, o: true }));
-          });
-
-          await Promise.all(promises);
-
-          const dataResponse = texteares.map((item) => {
-            const [presetName, json] = item.split("|");
-            const outputFormatted = formatOutput(output, json);
-            const comment = ["ha", "curl"].includes(output) ? "#" : "//";
-
-            return `${comment} ${presetName}\n${outputFormatted}`;
-          });
-
-          response.value = dataResponse.join("\n");
-          toast(message);
-          carousel("recreatedImage", canvases, delay);
-        } catch (error) {
-          toast(error, "error");
-        } finally {
-          hide();
+          body.append("image", file);
         }
+
+        const responseFrames = await fetch(
+          `https://pixelmagictool.vercel.app/api/wled/frames?amount=${amount}`,
+          {
+            method: "POST",
+            body,
+          }
+        );
+
+        const { message, frames } = await responseFrames.json();
+
+        if (!responseFrames.ok) {
+          toast(message, "error");
+          return;
+        }
+
+        jsonSaveWLED = [];
+
+        const texteares = [];
+        const canvases = [];
+
+        const delay = duration * 1000;
+
+        const promises = frames.map(async (frame, index) => {
+          const image = await loadImage(frame);
+          const { canvas, bri, id, i } = recreate(image);
+          const jsonData = {
+            on: true,
+            bri,
+            seg: { id, i },
+          };
+
+          const n = `${presetName} ${index + 1}`;
+
+          texteares.push(`${n}|${JSON.stringify(jsonData)}`);
+          canvases.push(canvas);
+
+          jsonSaveWLED.push(Object.assign(jsonData, { n, o: true }));
+        });
+
+        await Promise.all(promises);
+
+        const dataResponse = texteares.map((item) => {
+          const [presetName, json] = item.split("|");
+          const outputFormatted = formatOutput(output, json);
+          const comment = ["ha", "curl"].includes(output) ? "#" : "//";
+
+          return `${comment} ${presetName}\n${outputFormatted}`;
+        });
+
+        response.value = dataResponse.join("\n");
+        toast(message);
+        carousel("recreatedImage", canvases, delay);
+      } catch (error) {
+        toast(error, "error");
+      } finally {
+        hide();
       }
     }
 
     function recreate(image) {
-      const { value: pattern } = document.getElementById("pattern");
-      const { value: segmentId } = document.getElementById("segments");
-      const { value: brightness } = document.getElementById("brightness");
-      const { value: width } = document.getElementById("width");
-      const { value: height } = document.getElementById("height");
+      const { value: pattern } = element("pattern");
+      const { value: segmentId } = element("segments");
+      const { value: brightness } = element("brightness");
+      const { value: resizeWidth } = element("width");
+      const { value: resizeHeight } = element("height");
+      const { checked: resizeImage } = element("resizeImage");
 
-      const { checked: resizeImage } = document.getElementById("resizeImage");
+      const imgWidth = image.naturalWidth;
+      const imgHeight = image.naturalHeight;
+
+      const width = resizeImage ? resizeWidth : imgWidth;
+      const height = resizeImage ? resizeHeight : imgHeight;
+
+      const { width: segmentWidth, height: segmentHeight } =
+        element("segments").selectedOptions[0].dataset;
 
       const pixelsRef = 48;
-      const fullWidth = width * pixelsRef;
-      const fullHeight = height * pixelsRef;
+
+      const fullWidth = resizeImage
+        ? segmentWidth * pixelsRef
+        : imgWidth * pixelsRef;
+      const fullHeight = resizeImage
+        ? segmentHeight * pixelsRef
+        : imgHeight * pixelsRef;
+
       const fontSize = fullWidth <= 768 ? 14 : 18;
 
-      const colors = [];
+      const segmentWidthFinal = resizeImage ? segmentWidth : width;
+      const segmentHeightFinal = resizeImage ? segmentHeight : height;
 
-      let i = [];
+      const colors = [];
 
       const { ctx: reference } = createCanvas(width, height);
 
@@ -1579,38 +1598,48 @@
 
       const { canvas, ctx } = createCanvas(fullWidth, fullHeight);
 
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const index = y * width + x;
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, fullWidth, fullHeight);
 
-          const red = pixels[index * 4];
-          const green = pixels[index * 4 + 1];
-          const blue = pixels[index * 4 + 2];
-          const alpha = pixels[index * 4 + 3];
-
-          const hex = pixelColor(red, green, blue, alpha);
-          const { r, g, b } = hexToRgb(hex);
-
-          colors.push(hex);
-
+      for (let y = 0; y < segmentHeightFinal; y++) {
+        for (let x = 0; x < segmentWidthFinal; x++) {
           let coordinateX = x * pixelsRef;
           let coordinateY = y * pixelsRef;
 
-          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-          ctx.fillRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
+          let hex = "000000";
+
+          if (x < width && y < height) {
+            let index = y * width + x;
+
+            let red = pixels[index * 4];
+            let green = pixels[index * 4 + 1];
+            let blue = pixels[index * 4 + 2];
+            let alpha = pixels[index * 4 + 3];
+
+            hex = pixelColor(red, green, blue, alpha);
+            let { r, g, b } = hexToRgb(hex);
+
+            colors.push(hex);
+
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            ctx.fillRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
+          } else {
+            colors.push("000000");
+          }
 
           ctx.lineWidth = 1;
-          ctx.strokeStyle = "#eeeeee";
+          ctx.strokeStyle = "#111111";
           ctx.strokeRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
 
+          let pixelId = y * segmentWidth + x + 1;
           let offsetX = coordinateX + pixelsRef / 2;
           let offsetY = coordinateY + pixelsRef / 2;
 
           ctx.font = `${fontSize}px Arial`;
-          ctx.fillStyle = hex == "ffffff" ? "#252525" : "#eeeeee";
+          ctx.fillStyle = hex === "ffffff" ? "#111111" : "#eeeeee";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText(index + 1, offsetX, offsetY);
+          ctx.fillText(pixelId, offsetX, offsetY);
         }
       }
 
@@ -1619,10 +1648,10 @@
           i = colors;
           break;
         case "2":
-          i = individualLedIndex(colors);
+          i = index(colors);
           break;
         case "3":
-          i = rangeLeds(colors);
+          i = range(colors);
           break;
       }
 
@@ -1634,7 +1663,7 @@
       };
     }
 
-    function rangeLeds(colors) {
+    function range(colors) {
       let startIndex = 0;
       let endIndex = 0;
       let currentColor = colors[0];
@@ -1667,8 +1696,8 @@
     }
 
     function pixelColor(r, g, b, a) {
-      const { checked } = document.getElementById("transparentImage");
-      const { value } = document.getElementById("color");
+      const { checked } = element("transparentImage");
+      const { value } = element("color");
 
       if (a === 0) {
         if (checked) {
@@ -1700,7 +1729,7 @@
       return ("000000" + hex).slice(-6);
     }
 
-    function individualLedIndex(colors) {
+    function index(colors) {
       const pattern = [];
       colors.forEach((led, index) => {
         pattern.push(index, led);
@@ -1710,7 +1739,7 @@
     }
 
     function createCanvas(width, height) {
-      const canvas = document.createElement("canvas");
+      const canvas = d.createElement("canvas");
 
       canvas.width = width;
       canvas.height = height;
@@ -1725,7 +1754,7 @@
 
     function formatOutput(output, json) {
       return output === "ha"
-        ? homeAssistant(json)
+        ? yaml(json)
         : output === "curl"
         ? curl(json)
         : json;
@@ -1754,20 +1783,20 @@
       const blob = new Blob([text], { type: mimeType });
       const url = URL.createObjectURL(blob);
 
-      const anchorElement = document.createElement("a");
+      const anchorElement = d.createElement("a");
       anchorElement.href = url;
       anchorElement.download = `${filename}.${fileExtension}`;
 
       anchorElement.click();
 
-      WLED_URL.revokeObjectURL(url);
+      URL.revokeObjectURL(url);
     }
 
-    function homeAssistant(jsonData) {
-      const { value: device } = document.getElementById("device");
-      const { value: friendly_name } = document.getElementById("friendlyName");
-      const { value: unique_id } = document.getElementById("uniqueId");
-      const { value: hostname } = document.getElementById("hostname");
+    function yaml(jsonData) {
+      const { value: device } = element("device");
+      const { value: friendly_name } = element("friendlyName");
+      const { value: unique_id } = element("uniqueId");
+      const { value: hostname } = element("hostname");
 
       if (device) {
         const yamlData = {
@@ -1786,7 +1815,7 @@
     }
 
     function curl(jsonData) {
-      const { value: hostname } = document.getElementById("hostname");
+      const { value: hostname } = element("hostname");
       return `curl -X POST "http://${hostname}/json/state" -d '${jsonData}' -H "Content-Type: application/json"`;
     }
 
@@ -1824,8 +1853,8 @@
       duration = 2000,
       hideElement = "preview"
     ) {
-      const hide = document.getElementById(hideElement);
-      const toast = document.createElement("div");
+      const hide = element(hideElement);
+      const toast = d.createElement("div");
       const wait = 100;
 
       toast.style.animation = "fadeIn";
@@ -1834,14 +1863,14 @@
 
       toast.classList.add("toast", type);
 
-      const body = document.createElement("span");
+      const body = d.createElement("span");
       body.classList.add("toast-body");
 
       body.textContent = message;
 
       toast.appendChild(body);
 
-      const progress = document.createElement("div");
+      const progress = d.createElement("div");
       progress.classList.add("toast-progress");
 
       progress.style.animation = "progress";
@@ -1850,7 +1879,7 @@
 
       toast.appendChild(progress);
 
-      document.getElementById("toast-container").appendChild(toast);
+      element("toast-container").appendChild(toast);
 
       setTimeout(() => {
         toast.style.opacity = 0;
@@ -1866,7 +1895,7 @@
 
     function carousel(id, images, delay = 3000) {
       let index = 0;
-      const carousel = document.createElement("div");
+      const carousel = d.createElement("div");
       carousel.classList.add("carousel");
 
       images.forEach((canvas, i) => {
@@ -1878,7 +1907,7 @@
         }
       });
 
-      const container = document.getElementById(id);
+      const container = element(id);
       container.innerHTML = "";
       container.appendChild(carousel);
 
@@ -1926,32 +1955,36 @@
     }
 
     function show() {
-      const overlay = document.getElementById("overlay");
+      const overlay = element("overlay");
       overlay.classList.add("loading");
       overlay.style.display = "block";
       overlay.style.cursor = "not-allowed";
 
-      document.body.style.overflow = "hidden";
+      d.body.style.overflow = "hidden";
     }
 
     function hide() {
-      const overlay = document.getElementById("overlay");
+      const overlay = element("overlay");
       overlay.classList.remove("loading");
       overlay.style.display = "none";
       overlay.style.cursor = "default";
 
-      document.body.style.overflow = "auto";
+      d.body.style.overflow = "auto";
     }
 
-    function validateForm(event) {
+    function validate(event) {
       event.preventDefault();
 
-      const form = document.getElementById("formGenerate");
+      const form = element("formGenerate");
       const inputs = form.querySelectorAll("input, select, textarea");
 
       let isValid = true;
 
       const browserLanguage = navigator.language || navigator.userLanguage;
+      const messageRequired =
+        browserLanguage === "pt-br"
+          ? "Este campo é obrigatório"
+          : "This field is required";
 
       inputs.forEach((input) => {
         const parent = input.closest("[validate]");
@@ -1963,7 +1996,7 @@
         let isVisible = true;
 
         let tempParent = parent;
-        while (tempParent !== document.body) {
+        while (tempParent !== d.body) {
           const parentStyles = window.getComputedStyle(tempParent);
           if (
             parentStyles.display === "none" ||
@@ -1985,12 +2018,12 @@
           const errorMessage =
             input.dataset.errorMessage ||
             input.validationMessage ||
-            getRequiredFieldMessage(browserLanguage);
+            messageRequired;
 
           let errorElement = parent.querySelector(".error-message");
 
           if (!errorElement) {
-            errorElement = document.createElement("div");
+            errorElement = d.createElement("div");
             errorElement.classList.add("error-message");
             parent.appendChild(errorElement);
           }
@@ -2008,51 +2041,6 @@
       });
 
       return isValid;
-    }
-
-    function getRequiredFieldMessage(language) {
-      if (language.includes("-")) {
-        language = language.split("-")[1];
-      }
-
-      const messages = {
-        en: "This field is required.",
-        br: "Este campo é obrigatório.",
-        pt: "Este campo é obrigatório.",
-        es: "¡Este campo es obligatorio.",
-        fr: "Ce champ est obligatoire.",
-        de: "Dieses Feld ist erforderlich.",
-        it: "Questo campo è obbligatorio.",
-      };
-
-      return messages[language.toLowerCase()] || messages.en;
-    }
-
-    function checkMimeType() {
-      const { checked: animation } = document.getElementById("animation");
-      const mimeTypes = animation ? ["gif"] : ["jpeg", "jpg", "png", "gif"];
-
-      const source = document.getElementById("source").files[0];
-      const images = document.getElementById("images");
-
-      const { value: image } = images.selectedOptions[0];
-
-      const extension =
-        image === "upload"
-          ? source.name.split(".").pop()
-          : image.split(".").pop();
-
-      if (!mimeTypes.includes(extension)) {
-        toast(
-          animation
-            ? "Image format is not valid, select a GIF!"
-            : "Image format is not valid",
-          "error"
-        );
-        return false;
-      }
-
-      return true;
     }
   </script>
 </html>
