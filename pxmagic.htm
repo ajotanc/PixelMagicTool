@@ -142,7 +142,6 @@
         border-radius: 50px;
         background-color: var(--gray-medium);
         border: 1px solid var(--gray-medium);
-        display: inline-block;
         outline: none;
         color: var(--gray-light);
         font-size: 14px;
@@ -888,9 +887,9 @@
           <div id="recreatedImage"></div>
         </div>
         <footer>
-          <a href="https://github.com/ajotanc/PixelMagicTool" target="_blank"
-            >Github &copy; Pixel Magic Tool</a
-          >
+          <a href="https://github.com/ajotanc/PixelMagicTool" target="_blank">
+            Github &copy; Pixel Magic Tool
+          </a>
         </footer>
       </div>
     </div>
@@ -900,12 +899,11 @@
   <script>
     const d = document;
     const params = new URLSearchParams(window.location.search);
-    const host =
-      params.get("mode") === "dev"
-        ? params.get("hn")
-        : window.location.host
-        ? window.location.host
-        : "0.0.0.0";
+    const host = params.get("hn")
+      ? params.get("hn")
+      : window.location.host
+      ? window.location.host
+      : "0.0.0.0";
     const protocol =
       window.location.protocol === "file:" ? "http:" : window.location.protocol;
 
@@ -1560,9 +1558,18 @@
       const { value: pattern } = element("pattern");
       const { value: segmentId } = element("segments");
       const { value: brightness } = element("brightness");
-      const { value: resizeWidth } = element("width");
-      const { value: resizeHeight } = element("height");
+      const { value: inputWidth } = element("width");
+      const { value: inputHeight } = element("height");
       const { checked: resizeImage } = element("resizeImage");
+
+      const resizeWidth = parseInt(inputWidth);
+      const resizeHeight = parseInt(inputHeight);
+
+      const { width: dataWidth, height: dataHeight } =
+        element("segments").selectedOptions[0].dataset;
+
+      const segmentWidth = parseInt(dataWidth);
+      const segmentHeight = parseInt(dataHeight);
 
       const imgWidth = image.naturalWidth;
       const imgHeight = image.naturalHeight;
@@ -1570,22 +1577,18 @@
       const width = resizeImage ? resizeWidth : imgWidth;
       const height = resizeImage ? resizeHeight : imgHeight;
 
-      const { width: segmentWidth, height: segmentHeight } =
-        element("segments").selectedOptions[0].dataset;
+      const overallWidth = resizeImage ? segmentWidth : width;
+      const overallHeight = resizeImage ? segmentHeight : height;
+
+      const startX = Math.floor((segmentWidth - width) / 2);
+      const startY = Math.floor((segmentHeight - height) / 2);
 
       const pixelsRef = 48;
 
-      const fullWidth = resizeImage
-        ? segmentWidth * pixelsRef
-        : imgWidth * pixelsRef;
-      const fullHeight = resizeImage
-        ? segmentHeight * pixelsRef
-        : imgHeight * pixelsRef;
+      const canvasWidth = overallWidth * pixelsRef;
+      const canvasHeight = overallHeight * pixelsRef;
 
-      const fontSize = fullWidth <= 768 ? 14 : 18;
-
-      const segmentWidthFinal = resizeImage ? segmentWidth : width;
-      const segmentHeightFinal = resizeImage ? segmentHeight : height;
+      const fontSize = canvasWidth <= 768 ? 14 : 18;
 
       const colors = [];
 
@@ -1596,20 +1599,32 @@
       const imageData = reference.getImageData(0, 0, width, height);
       const pixels = imageData.data;
 
-      const { canvas, ctx } = createCanvas(fullWidth, fullHeight);
+      const { canvas, ctx } = createCanvas(canvasWidth, canvasHeight);
 
       ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, fullWidth, fullHeight);
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      for (let y = 0; y < segmentHeightFinal; y++) {
-        for (let x = 0; x < segmentWidthFinal; x++) {
-          let coordinateX = x * pixelsRef;
-          let coordinateY = y * pixelsRef;
+      for (let h = 0; h < overallHeight; h++) {
+        for (let w = 0; w < overallWidth; w++) {
+          let pixelId = h * overallWidth + w + 1;
+
+          let coordinateX = w * pixelsRef;
+          let coordinateY = h * pixelsRef;
+
+          let pixelX = w - startX;
+          let pixelY = h - startY;
 
           let hex = "000000";
 
-          if (x < width && y < height) {
-            let index = y * width + x;
+          if (
+            (resizeImage &&
+              pixelX >= 0 &&
+              pixelX < width &&
+              pixelY >= 0 &&
+              pixelY < height) ||
+            (!resizeImage && w < width && h < height)
+          ) {
+            let index = resizeImage ? pixelY * width + pixelX : h * width + w;
 
             let red = pixels[index * 4];
             let green = pixels[index * 4 + 1];
@@ -1631,12 +1646,11 @@
           ctx.strokeStyle = "#111111";
           ctx.strokeRect(coordinateX, coordinateY, pixelsRef, pixelsRef);
 
-          let pixelId = y * segmentWidth + x + 1;
           let offsetX = coordinateX + pixelsRef / 2;
           let offsetY = coordinateY + pixelsRef / 2;
 
           ctx.font = `${fontSize}px Arial`;
-          ctx.fillStyle = hex === "ffffff" ? "#111111" : "#eeeeee";
+          ctx.fillStyle = hex === "000000" ? "#eeeeee" : "#111111";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(pixelId, offsetX, offsetY);
