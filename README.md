@@ -15,6 +15,17 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 - Can save, simulate, copy or download generated code
 
 ### Improvements and fixes
+### (15/06/2023)
+- Changing the use of **document**
+- Creation of function **element** to be reduced in relation to **document.getElementById**
+- Fixes
+- Image being generated according to its size
+- Re-creation of the redone image
+- Reworked Resize, if your segment is 20x20 and you want to use 16x16 it will be fine, credits @blazoncek 
+- Default Segment Default as 0 and **data-width** and **data-height** as 16 if user opens via Desktop and not via WLED, credits @ALDIY#2452 
+- Final file size reduction
+- Improved functionality and interaction between parameters
+-
 #### (12/06/2023)
 - The API domain was **ajota.vercel.app** now it's **pixelmagictool.vercel.app**
 - Performance in **pxmagic** and **inpxmagic** version
