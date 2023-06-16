@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt_BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+    <meta name="author" content="@ajotanc" />
 
     <title>Pixel Magic Tool (Inline) - @ajotanc</title>
 
@@ -124,11 +119,15 @@
     const protocol =
       window.location.protocol === "file:" ? "http:" : window.location.protocol;
     const query = window.location.search;
+    const params = new URLSearchParams(query);
+
+    const hostname = params.get("hostname")
+      ? params.get("hostname")
+      : params.get("hn")
+      ? params.get("hn")
+      : "0.0.0.0";
 
     async function execute() {
-      const params = new URLSearchParams(query);
-
-      const hostname = params.get("hostname");
       const image = params.get("image");
 
       if (!image) {
@@ -153,14 +152,18 @@
       const file = new File([blob], "image", { type: blob.type });
       body.append("image", file);
 
-      await convertImage(body, query, params);
+      await convertImage(body, query);
     }
 
-    async function convertImage(body, query, params) {
+    async function convertImage(body, query) {
       const mode = params.get("mode") ? params.get("mode") : "production";
       const filename = params.get("image").replace(/\.[^.]+$/, "");
-      const hostname = params.get("hostname");
-      const output = params.get("output");
+
+      const output = params.get("output")
+        ? params.get("output")
+        : params.get("o")
+        ? params.get("o")
+        : "json";
 
       const file =
         params.get("file") && params.get("file") === "true" ? true : false;
@@ -202,7 +205,7 @@
         }
 
         if (simulate && output === "json") {
-          await requestSimulate(hostname, data);
+          await requestSimulate(data);
         }
 
         const code = document.getElementById("code");
@@ -212,7 +215,7 @@
       }
     }
 
-    async function requestSimulate(hostname, body) {
+    async function requestSimulate(body) {
       const url = `${protocol}//${hostname}/json/state`;
 
       try {
