@@ -698,7 +698,11 @@
             <div class="column" validate>
               <label for="animation">Animation</label>
               <label class="switch">
-                <input type="checkbox" name="animation" id="animation" />
+                <input
+                  type="checkbox"
+                  name="animation"
+                  id="animation"
+                  data-parent="animation" />
                 <span class="switch-slider"></span>
               </label>
             </div>
@@ -708,14 +712,20 @@
                 <input
                   type="checkbox"
                   name="transparentImage"
-                  id="transparentImage" />
+                  id="transparentImage"
+                  data-parent="transparentImage" />
                 <span class="switch-slider"></span>
               </label>
             </div>
             <div class="column" validate>
               <label for="resizeImage">Resize Image</label>
               <label class="switch">
-                <input type="checkbox" name="resizeImage" id="resizeImage" />
+                <input
+                  type="checkbox"
+                  name="resizeImage"
+                  id="resizeImage"
+                  data-parent="resizeImage"
+                  checked />
                 <span class="switch-slider"></span>
               </label>
             </div>
@@ -888,6 +898,7 @@
       await segments();
       await images();
 
+      checked();
       hostnameLabel();
     })();
 
@@ -898,6 +909,18 @@
     function hostnameLabel() {
       const link = element("wledEdit");
       link.href = link.href.replace("[wled-ip]", hostname.value);
+    }
+
+    function checked() {
+      const checkbox = d.querySelectorAll('input[type="checkbox"]');
+
+      checkbox.forEach((cb) => {
+        let parentName = cb.dataset.parent;
+        let parent = d.getElementsByClassName(parentName)[0];
+        let { checked } = cb;
+
+        parent.style.display = checked ? "flex" : "none";
+      });
     }
 
     async function playlist() {
@@ -1297,62 +1320,55 @@
     });
 
     element("transparentImage").addEventListener("change", (e) => {
-      const transparentImage = d.getElementsByClassName("transparentImage");
+      const transparentImage = d.getElementsByClassName("transparentImage")[0];
       const { checked } = e.target;
 
-      Array.from(transparentImage).forEach(function (element) {
-        if (checked) {
-          element.style.display = "flex";
-        } else {
-          element.style.display = "none";
-        }
-      });
+      if (checked) {
+        transparentImage.style.display = "flex";
+      } else {
+        transparentImage.style.display = "none";
+      }
     });
 
     element("resizeImage").addEventListener("change", (e) => {
-      const resizeImage = d.getElementsByClassName("resizeImage");
+      const resizeImage = d.getElementsByClassName("resizeImage")[0];
       const pattern = element("pattern");
       const { checked } = e.target;
 
-      Array.from(resizeImage).forEach(function (element) {
-        if (checked) {
-          pattern.value = 3;
-          element.style.display = "flex";
-        } else {
-          pattern.value = 1;
-          element.style.display = "none";
-        }
-      });
+      if (checked) {
+        pattern.value = 3;
+        resizeImage.style.display = "flex";
+      } else {
+        pattern.value = 1;
+        resizeImage.style.display = "none";
+      }
     });
 
     element("animation").addEventListener("change", (e) => {
-      const animation = d.getElementsByClassName("animation");
-
+      const animation = d.getElementsByClassName("animation")[0];
       const pattern = element("pattern");
       const source = element("source");
 
       const { checked } = e.target;
 
-      Array.from(animation).forEach(function (element) {
-        if (checked) {
-          toast(
-            'If you want all frames in the image, set it to "0"',
-            "warning",
-            5000
-          );
+      if (checked) {
+        toast(
+          'If you want all frames in the image, set it to "0"',
+          "warning",
+          5000
+        );
 
-          source.setAttribute("accept", "image/gif");
-          element.style.display = "flex";
-          pattern.value = 3;
-        } else {
-          source.setAttribute(
-            "accept",
-            "image/jpg,image/jpeg,image/png,image/gif"
-          );
-          element.style.display = "none";
-          pattern.value = 1;
-        }
-      });
+        source.setAttribute("accept", "image/gif");
+        animation.style.display = "flex";
+        pattern.value = 3;
+      } else {
+        source.setAttribute(
+          "accept",
+          "image/jpg,image/jpeg,image/png,image/gif"
+        );
+        animation.style.display = "none";
+        pattern.value = 1;
+      }
     });
 
     element("btnGenerate").addEventListener("click", async (event) => {
