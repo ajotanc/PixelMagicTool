@@ -309,8 +309,11 @@
       }, duration);
     }
 
-    window.addEventListener("load", async () => {
+    (async () => {
       await execute();
-    });
+    })();
+    // window.addEventListener("load", async () => {
+    //   await execute();
+    // });
   </script>
 </html>

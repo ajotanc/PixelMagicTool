@@ -65,7 +65,7 @@
         display: block;
         font-weight: 400;
         margin: 2px 0 5px;
-        color: var(--text);
+        color: var(--gray-light);
         font-size: 12px;
       }
 
@@ -172,18 +172,19 @@
       }
 
       .input-group .input-description {
-        width: 38px;
+        width: 100%;
+        max-width: 38px;
         height: 38px;
-        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         color: var(--gray-dark);
         background: var(--gray-light);
-        border-radius: 0px 5px 5px 0;
+        border-radius: 0px 8px 8px 0;
         border: 1px solid var(--gray-light);
         border-left: 0;
-        text-align: center;
         font-size: 14px;
         line-height: 16px;
-        font-weight: 600;
       }
 
       .input-group .square {
@@ -191,10 +192,19 @@
         margin-left: 10px;
       }
 
+      .input-group .square input {
+        text-align: center;
+        background: none;
+        padding: 0;
+        border: 0;
+        color: var(--gray-dark);
+      }
+
       textarea {
         resize: vertical;
         min-height: 200px;
         border-radius: 8px;
+        overflow-x: hidden;
       }
 
       .custom-select {
@@ -253,7 +263,7 @@
         width: 100%;
         border-radius: 10px;
         outline: none;
-        margin: 16px 0;
+        margin: 15px 0;
       }
 
       .range-slider::-webkit-slider-thumb {
@@ -360,7 +370,7 @@
         height: 3px;
         transform: scaleX(0);
         transform-origin: left;
-        border-radius: inherit;
+        border-radius: 8px;
       }
 
       .toast.success .toast-progress {
@@ -408,18 +418,6 @@
         height: 100%;
         width: 100%;
         cursor: pointer;
-      }
-
-      .carousel img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        margin-right: 20px;
-        border: 0;
-      }
-
-      .carousel img:last-child {
-        margin-right: 0;
       }
 
       .button {
@@ -686,11 +684,13 @@
                   max="255"
                   value="128"
                   class="range-slider" />
-                <input
-                  type="text"
-                  id="brightnessValue"
-                  class="input-description square"
-                  value="128" />
+                <div class="input-description square">
+                  <input
+                    type="text"
+                    name="brightnessValue"
+                    id="brightnessValue"
+                    value="128" />
+                </div>
               </div>
             </div>
           </div>
@@ -747,7 +747,9 @@
                   min="0"
                   step="0.1"
                   inputmode="numeric" />
-                <div class="input-description">sec</div>
+                <div class="input-description">
+                  <span>sec</span>
+                </div>
               </div>
             </div>
             <div class="column" validate>
@@ -762,7 +764,9 @@
                   min="0"
                   step="0.1"
                   inputmode="numeric" />
-                <div class="input-description">sec</div>
+                <div class="input-description">
+                  <span>sec</span>
+                </div>
               </div>
             </div>
           </div>
