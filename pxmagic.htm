@@ -83,7 +83,7 @@
         font-weight: 600;
       }
 
-      :is(a:hover, a:focus, a:active) {
+      a:is(:hover, :focus, :active) {
         color: var(--blue-medium);
       }
 
@@ -108,8 +108,7 @@
       }
 
       .content {
-        width: calc(100% - 40px);
-        max-width: 768px;
+        width: min(768px, calc(100% - 40px));
         margin: 20px;
       }
 
@@ -117,19 +116,19 @@
         display: flex;
         flex-wrap: nowrap;
         justify-content: space-between;
-        margin: 20px 0 0;
+        margin-top: 20px;
       }
 
       .column {
         flex-basis: calc(50% - 10px);
         position: relative;
-        padding: 0 5px;
+        padding-inline: 5px;
       }
 
       .column-full {
         flex-basis: 100%;
         position: relative;
-        padding: 0 5px;
+        padding-inline: 5px;
       }
 
       label {
@@ -157,7 +156,7 @@
         width: 32px;
         height: 32px;
         cursor: pointer;
-        padding: 0px 1px;
+        padding-inline: 1px;
         outline: none;
       }
 
@@ -241,7 +240,7 @@
         text-align: center;
         padding: 40px 10px;
         border-radius: 8px;
-        margin: 20px 0 0;
+        margin-top: 20px;
         transition: all 0.5s ease-in-out;
       }
 
@@ -263,7 +262,7 @@
         width: 100%;
         border-radius: 10px;
         outline: none;
-        margin: 15px 0;
+        margin-block: 15px;
       }
 
       .range-slider::-webkit-slider-thumb {
@@ -336,7 +335,7 @@
         align-items: center;
         width: auto;
         padding: 6px 12px;
-        margin: 10px 0 0;
+        margin-top: 10px;
         border-radius: 8px;
         transform: translateY(30px);
         opacity: 0;
@@ -344,7 +343,7 @@
       }
 
       .toast .toast-body {
-        padding: 8px 0;
+        padding-block: 8px;
         font-weight: 600;
         color: var(--text);
         letter-spacing: 0.5px;
@@ -401,7 +400,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0 0 20px;
+        padding-bottom: 20px;
       }
 
       .header .brand {
@@ -427,7 +426,7 @@
         border-radius: 50px;
         color: var(--text);
         cursor: pointer;
-        margin: 0 0 10px;
+        margin-bottom: 10px;
         background: var(--gray-medium);
         border: 1px solid var(--gray-dark);
         transition: all 0.5s ease-in-out;
@@ -475,7 +474,7 @@
       }
 
       #recreatedImage {
-        margin: 20px 0;
+        margin-block: 20px;
       }
 
       .invalid {
@@ -485,7 +484,7 @@
       .error-message {
         display: block;
         color: var(--error-dark);
-        padding: 4px 0;
+        padding-block: 4px;
         font-weight: 600;
         font-size: 12px;
       }
@@ -504,7 +503,7 @@
         .column,
         .column-full {
           flex-basis: 100%;
-          margin: 20px 0 0;
+          margin-top: 20px;
           padding: 0;
         }
       }
