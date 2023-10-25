@@ -15,6 +15,14 @@ It is a tool that converts any image into code in JSON WLED format, currently be
 - Can save, simulate, copy or download generated code
 
 ### Improvements and fixes
+### (25/10/2023)
+ - Correction in animation generation that was actually breaking
+ - Button to return to WLED if pxmagic.htm is accessed via url (http://), if accessed via external (file://) the button will not show
+ - Adjustments to CSS and some features
+ - CSS adjustments
+ - Rremoving unnecessary html
+ - Correction of CORS error when using the file locally, it was unable to generate the images that are saved in WLED
+
 ### (15/06/2023)
 - Changing the use of **document**
 - Creation of function **element** to be reduced in relation to **document.getElementById**
